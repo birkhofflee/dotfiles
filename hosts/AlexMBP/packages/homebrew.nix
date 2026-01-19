@@ -26,6 +26,7 @@
       "dropbox"
       "figma"
       "ghostty"
+      "ogdesign-eagle"
       "google-chrome"
       "heptabase"
       "handbrake-app"
