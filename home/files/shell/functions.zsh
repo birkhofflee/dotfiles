@@ -141,7 +141,10 @@ function gg {
 # Wrapper around https://github.com/simonw/llm
 function _llm {
   # uvx --with llm-anthropic llm -m claude-3.5-haiku 'fun facts about skunks'
-  with_llm uvx --with llm-openrouter llm
+  # with_llm uvx --with llm-openrouter llm
+  #
+  # $ uv tool install --with llm-openrouter llm
+  with_llm command llm "$@"
 }
 
 # Render the Markdown output with glow (https://github.com/charmbracelet/glow)
@@ -186,7 +189,7 @@ function md {
     -title "md" \
     -ignoreDnD \
     -group md \
-    -sound Hero
+    -sound Hero &>/dev/null # Don't show message of removal of previous notification
 
   return 0
 }
