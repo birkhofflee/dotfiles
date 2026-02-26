@@ -201,6 +201,7 @@
       httpie
 
       # Code quality
+      dprint
       yamllint
 
       # Databases

@@ -1,10 +1,20 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, config, ... }:
 
 {
   programs.helix = {
     enable = true;
     defaultEditor = true;
     package = inputs.helix.packages.${pkgs.system}.default;
+
+    languages = {
+      language = [{
+        name = "markdown";
+        formatter = {
+          command = "${pkgs.dprint}/bin/dprint";
+          args = ["fmt" "--config" "${config.xdg.configHome}/dprint/dprint.jsonc" "--stdin" "md"];
+        };
+      }];
+    };
 
     settings = {
       theme = "snazzy";
