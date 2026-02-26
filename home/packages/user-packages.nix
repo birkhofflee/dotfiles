@@ -163,7 +163,6 @@
       trippy
       wakeonlan
       dns2tcp
-      tcptrace
       dnslookup
 
       # VPN & security
