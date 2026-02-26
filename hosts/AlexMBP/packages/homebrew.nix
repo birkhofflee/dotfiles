@@ -15,6 +15,7 @@
     casks = [
       "1password"
       "1password-cli"
+      "typora"
       "temurin"
       "anki"
       "arc"
