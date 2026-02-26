@@ -75,6 +75,7 @@
           sshkey = "pubkey";
           brewery = "brew update && brew upgrade && brew cleanup";
           o = "open"; # Open with default app
+          tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
         };
         generalAliases = {
           # Disable correction
