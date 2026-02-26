@@ -149,7 +149,7 @@
           diffu = "diff --unified"; # diff
 
           # Utilities
-          http-serve = "python3 -m http.server";
+          http-serve = "nr simple-http-server --cors";
           urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))'";
           urlencode = "python3 -c 'import sys, urllib.parse as ul; print (ul.quote_plus(sys.argv[1]))'";
           lg = "lazygit";
