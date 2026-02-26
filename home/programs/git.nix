@@ -77,6 +77,12 @@ in
         postBuffer = "52428800";
       };
 
+      url = {
+        "git@github.com:" = {
+          insteadOf = "https://github.com/";
+        };
+      };
+
       color = {
         ui = "true";
       };
