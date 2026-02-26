@@ -2,80 +2,6 @@
 
 # `functions.zsh` provides helper functions and utilities.
 
-function burnsrt {
-  if [[ $# -ne 3 || ! -f "$1" || "${1##*.}" != "mp4" || ! -f "$2" || "${2##*.}" != "srt" || "${3##*.}" != "mp4" ]]; then
-    echo "Usage: burnsrt <input.mp4> <input.srt> <output.mp4>" >&2
-    echo "  - <input.mp4>: Path to a valid MP4 video file." >&2
-    echo "  - <input.srt>: Path to a valid SRT subtitle file." >&2
-    echo "  - <output.mp4>: Path for the output MP4 file." >&2
-    return 1
-  fi
-
-  ffmpeg -i "$1" -f srt -i "$2" -map 0:0 -map 0:1 -map 1:0 -c:v copy \
-    -c:a copy -c:s mov_text "$3"
-}
-
-function shrinkvid {
-  if [ $# -lt 2 ]; then
-    echo "Usage: shrinkvid <input_file> <output_file> [bitrate]"
-    echo "Example: shrinkvid input.mp4 output.mp4 5M"
-    echo "Bitrate: 2M-10M recommended, default is 5M (higher = better quality)"
-    if [[ "$OSTYPE" == darwin* ]]; then
-      echo "Uses hardware acceleration (VideoToolbox) on Apple Silicon"
-    else
-      echo "Uses software encoding (libx264) on Linux"
-    fi
-    return 1
-  fi
-
-  # Helper function to convert bytes to human-readable format (using decimal units like eza)
-  human_readable() {
-    awk -v bytes="$1" 'BEGIN {
-      if (bytes >= 1000000000)
-        printf "%.1f GB", bytes/1000000000
-      else if (bytes >= 1000000)
-        printf "%.1f MB", bytes/1000000
-      else if (bytes >= 1000)
-        printf "%.1f KB", bytes/1000
-      else
-        printf "%d B", bytes
-    }'
-  }
-
-  # Get file size (use macOS native stat, not GNU stat)
-  get_size() {
-    /usr/bin/stat -f%z "$1" 2>/dev/null || stat --format=%s "$1" 2>/dev/null
-  }
-
-  # Get input file size
-  local input_size=$(get_size "$1")
-
-  # Run ffmpeg with hardware acceleration on macOS, software encoding on Linux
-  if [[ "$OSTYPE" == darwin* ]]; then
-    ffmpeg -i "$1" -c:v h264_videotoolbox -b:v "${3:-5M}" -tag:v avc1 -movflags faststart "$2"
-  else
-    ffmpeg -i "$1" -c:v libx264 -b:v "${3:-5M}" -movflags faststart "$2"
-  fi
-
-  # Check if ffmpeg succeeded and output file exists
-  if [ $? -eq 0 ] && [ -f "$2" ]; then
-    local output_size=$(get_size "$2")
-    local saved_bytes=$((input_size - output_size))
-    local compression_ratio=$(awk -v input="$input_size" -v output="$output_size" 'BEGIN {
-      if (input > 0)
-        printf "%.2f", (input - output) / input * 100
-      else
-        printf "0.00"
-    }')
-
-    echo ""
-    echo "Compression complete:"
-    echo "  Input:  $(human_readable $input_size)"
-    echo "  Output: $(human_readable $output_size)"
-    echo "  Saved:  $(human_readable $saved_bytes) (${compression_ratio}%)"
-  fi
-}
-
 # Output the image data in clipboard to stdout.
 # @example impaste > /tmp/image.png
 # @see https://til.simonwillison.net/macos/impaste
@@ -236,31 +162,6 @@ function e {
   fi
 }
 
-# Decrypt all PDFs in the current directory
-# Example: decrypt_pdfs "password"
-function decrypt_pdfs {
-  local password="$1"
-  for file in *.pdf; do
-    # Skip if it's not a regular file
-    [ -f "$file" ] || continue
-
-    # Check if it's encrypted
-    if qpdf --check "$file" 2>&1 | grep -q "is not encrypted"; then
-      echo "Already decrypted: $file"
-    else
-      echo "Decrypting: $file"
-      local tmp_file="tmp_decrypted.pdf"
-      if qpdf --decrypt --password="$password" "$file" "$tmp_file"; then
-        mv "$tmp_file" "$file"
-        echo "Decrypted: $file"
-      else
-        echo "Failed to decrypt: $file"
-        rm -f "$tmp_file"
-      fi
-    fi
-  done
-}
-
 # Update geoip.mmdb if it's older than 30 days
 function _update_geoip {
   if [ ! -f $HOME/.cache/geoip.mmdb ] || [ $(find $HOME/.cache/geoip.mmdb -mtime +30 2>/dev/null | wc -l) -gt 0 ]; then
@@ -376,45 +277,6 @@ function ns {
   # Print the actual command in bold
   printf "\033[1m%s\033[0m\n" "$cmd"
   eval "$cmd"
-}
-
-# Apply scanner effect to a PDF
-# https://gist.github.com/andyrbell/25c8632e15d17c83a54602f6acde2724
-# https://github.com/NixOS/nixpkgs/issues/138638#issuecomment-1068569761
-function dirtypdf {
-  if [ $# -ne 2 ]; then
-    echo "Usage: dirtypdf <input_pdf> <output_pdf>"
-    return 1
-  fi
-
-  input_file="$1"
-  output_file="$2"
-
-  if [ ! -f "$input_file" ]; then
-    echo "Error: Input file '$input_file' does not exist"
-    return 1
-  fi
-
-  nix-shell --packages 'imagemagickBig' --run "magick -density 90 \"$input_file\" -rotate 0.5 -attenuate 0.2 +noise Multiplicative -colorspace Gray \"$output_file\""
-
-  # Open the output file in file manager
-  if [[ "$OSTYPE" == darwin* ]]; then
-    open -R "$output_file"
-  elif command -v xdg-open &> /dev/null; then
-    xdg-open "$(dirname "$output_file")"
-  else
-    echo "Output saved to: $output_file"
-  fi
-}
-
-# `favicon 1.png` will generate 4 sizes of favicon.ico
-function favicon {
-  convert $1 -background white \
-    \( -clone 0 -resize 16x16 -extent 16x16 \) \
-    \( -clone 0 -resize 32x32 -extent 32x32 \) \
-    \( -clone 0 -resize 48x48 -extent 48x48 \) \
-    \( -clone 0 -resize 64x64 -extent 64x64 \) \
-    -delete 0 -alpha off -colors 256 favicon.ico
 }
 
 # Search in files, then pipe files with 10 line buffer into fzf preview using bat.

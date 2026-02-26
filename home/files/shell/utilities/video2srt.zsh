@@ -59,7 +59,7 @@ BASENAME="${INPUT_MP4:r:t}"
 WAV_FILE="$TMPDIR/${BASENAME}.wav"
 SRT_FILE="${BASENAME}.srt"
 JSON_FILE="${BASENAME}.json"
-PROCESSED_SRT="${BASENAME}_postprocessed.srt"
+PROCESSED_SRT="${BASENAME}.processed.srt"
 
 echo "${GREEN}Starting video to subtitle conversion...${NC}"
 echo "Input: $INPUT_MP4"
