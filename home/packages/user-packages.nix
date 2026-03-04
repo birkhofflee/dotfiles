@@ -134,7 +134,8 @@
       # TLS
       mkcert
 
-      # Encryption
+      # Credential Managers
+      _1password-cli
       age
       # yubikey-manager
       # yubikey-personalization
