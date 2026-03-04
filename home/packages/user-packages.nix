@@ -13,7 +13,7 @@
       golangci-lint
 
       # Node.js
-      nodejs_22
+      nodejs
       yarn
 
       # Ruby
@@ -91,7 +91,7 @@
       # azure-cli
       # oci-cli
       # aws-vault
-      backblaze-b2
+      # backblaze-b2
       # flarectl
 
       # Container & orchestration
@@ -170,7 +170,7 @@
       wireguard-go
       wireguard-tools
       sqlmap
-      thc-hydra # network logon cracker
+      # thc-hydra # network logon cracker
       testssl
 
       # ============================================================================
@@ -307,7 +307,7 @@
       # Fun & misc
       cowsay
       lolcat
-      neofetch
+      fastfetch
 
       # Notifications
       noti

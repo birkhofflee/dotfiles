@@ -149,8 +149,17 @@
             ocr = callPackage ./packages/ocr/ocr.nix { };
           };
 
-        tweaks = _: _: {
-          # Add temporary overrides here
+        tweaks = _: prev: {
+          mactop = prev.mactop.overrideAttrs (_: {
+            version = "2.0.6";
+            src = prev.fetchFromGitHub {
+              owner = "metaspartan";
+              repo = "mactop";
+              tag = "v2.0.6";
+              hash = "sha256-J+ebxVV5aNTz0qtBkd8G4NX0EB7wWkWIIzS0h/jvQWI=";
+            };
+            doCheck = false;
+          });
         };
       };
 
