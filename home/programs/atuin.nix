@@ -16,7 +16,7 @@
 
       auto_sync = true;
       sync_frequency = "5m";
-      sync_address = "https://atuin.hippo-hexatonic.ts.net";
+      sync_address = "http://homelab-nuc:8010";
     };
   };
 }
