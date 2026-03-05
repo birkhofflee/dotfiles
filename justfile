@@ -42,10 +42,13 @@ switch-fast:
 
 # Switch homelab (NixOS) configuration with nixos-rebuild-ng
 # because neither nh or nixos-rebuild works.
+#
+# The binary name is `nixos-rebuild`
+#
 # @see https://github.com/NixOS/nixpkgs/issues/439945
 [group('homelab')]
 switch-homelab:
-  nixos-rebuild-ng switch --flake . --accept-flake-config --target-host homelab-nuc --build-host homelab-nuc
+  nixos-rebuild switch --flake . --accept-flake-config --target-host homelab-nuc --build-host homelab-nuc --sudo
 
 alias o := optimize
 # Frees up space by optimizing the Nix Store
