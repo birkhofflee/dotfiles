@@ -99,6 +99,8 @@
           # Print the current line's git blame information to the statusline.
           "B" = ":echo %sh{git blame -L %{cursor_line},+1 %{buffer_name}}";
           "A-d" = ":pipe awk '!s[$0]++'";
+          # Shortcut to open the selected URL in default browser (macOS)
+          "o" = ":sh open -u '%{selection}'";
         };
 
         # yazi integration
