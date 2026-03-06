@@ -25,12 +25,6 @@ in
     device = "nodev";
     efiSupport = true;
     efiInstallAsRemovable = true;
-    # The /boot (ESP) partition is only 127M (should be 512M — fix on next reinstall
-    # via nixos-anywhere by updating disk-config.nix). Each kernel+initrd pair is ~45MB,
-    # so keeping more than 2 generations fills the partition. This also ensures the
-    # bootloader installer only copies kernel files for the last N configs, preventing
-    # "no space left on device" errors when old generations accumulate.
-    configurationLimit = 2;
   };
 
   # For a small server, disk swap is fine but slow; zram creates a compressed

@@ -13,7 +13,7 @@
               priority = 1;
               name = "ESP";
               start = "1M";
-              end = "512M"; # TODO: was 128M, too small — apply on next nixos-anywhere reinstall
+              end = "512M";
               type = "EF00";
               content = {
                 type = "filesystem";

@@ -2,7 +2,8 @@ let
   ale = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0762tms0QT6kCQ7tTgoOdm+ry29ImKgDk09hXurEfM";
   users = [ ale ];
 
-  homelab-nuc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOas7y/oxsQef9rkmfsaPxst+DrYBLHoGd2KjVHxmnDO";
+  # ssh-keyscan -t ed25519 homelab-nuc
+  homelab-nuc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFD2LZIYz9eBmt3W+rALfdC3LEkyaYKUYO9Pkecxh4iN";
   systems = [ homelab-nuc ];
 in
 {
