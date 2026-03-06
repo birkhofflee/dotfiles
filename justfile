@@ -73,6 +73,12 @@ alias ui := update-input
 update-input input:
   nix flake update {{input}} --commit-lock-file
 
+# Edit an agenix secret. Usage: `just edit-secret mysecret.age`
+[group('secrets')]
+[working-directory: 'secrets']
+edit-secret secret_file:
+  agenix -e {{secret_file}} --identity <(op read 'op://Personal/id_ed25519/private key?ssh-format=openssh')
+
 # Push darwin build artifacts to cachix
 [group('cache')]
 cache-darwin:
