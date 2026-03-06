@@ -1,8 +1,8 @@
 # dotfiles
 
-My [nix-darwin](https://github.com/nix-darwin/nix-darwin) / NixOS configuration. Works on Apple Silicon.
+My [nix-darwin](https://github.com/nix-darwin/nix-darwin) / NixOS configuration.
 
-The daily driver is macOS, a NixOS homelab setup is in the works, and NixOS VM setups are recently added for experiments.
+My daily driver is macOS. There are also a NixOS homelab setup and NixOS VM setups (for experiments).
 
 ![Screenshot of fastfetch on M1 Pro running macOS Sequoia](./assets/screenshot-alexmbp-fastfetch.png)
 
