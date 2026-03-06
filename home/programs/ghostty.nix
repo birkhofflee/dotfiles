@@ -83,6 +83,7 @@
 
         "super+c=copy_to_clipboard"
         "super+v=paste_from_clipboard"
+        "super+s=text:\\x1b[115;9u" # KKP encoding for Cmd+S (for Helix :write)
 
         # Moving around terminal buffer
         "end=scroll_to_bottom"
