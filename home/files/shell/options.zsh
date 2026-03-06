@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# Shell configuration
+
 # Treat slashes as word separators (https://stackoverflow.com/a/11200998/2465955)
 WORDCHARS=''${WORDCHARS/\/}
 
@@ -28,5 +30,19 @@ setopt HASH_EXECUTABLES_ONLY
 # Sort numbers numerically, not lexicographically.
 setopt NUMERIC_GLOB_SORT
 
-# Disable start/stop characters (^Z, ^C, etc) in shell editor, so we can use them as shortcuts
+# Disable start/stop characters (^Z, ^C, etc) in shell editor, so we can use
+# them as shortcuts
 unsetopt FLOW_CONTROL
+
+# This disables the original zsh behavior to put white background behind the
+# pasted text.
+# @see https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#Character-Highlighting
+zle_highlight=('paste:none')
+
+# Remove the trailing newline from the pasted text (if any)
+# @see https://unix.stackexchange.com/a/693146
+bracketed-paste() {
+  zle .$WIDGET && LBUFFER=${LBUFFER%%$'\n'##}
+}
+zle -N bracketed-paste
+
