@@ -1,3 +1,6 @@
+# Shared full-featured home config used by most hosts (macOS and NixOS).
+# Platform-agnostic: loads all files under ./programs and ./files.
+
 { pkgs, lib, ... }:
 
 let
@@ -44,10 +47,11 @@ rec {
     "${home.homeDirectory}/.local/bin"
   ]
   ++ lib.optionals isDarwin [
+    # macOS-specific paths
+
     # Homebrew (env vars are hardcoded in zsh.nix profileExtra for performance)
     "/opt/homebrew/bin"
     "/opt/homebrew/sbin"
-    # macOS-specific paths
     # Apple
     "/Library/Apple/usr/bin"
     # Wireshark

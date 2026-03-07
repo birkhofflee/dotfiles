@@ -182,24 +182,11 @@
           user = "ale";
         };
 
-        # FIXME: not using mkSystem because using existing home config
-        # breaks the installation due to too many files error.
-        # This should be fixed in the future when another refactor
-        # is done (re-organizing the packages)
-        homelab-nuc = inputs.nixpkgs-unstable.lib.nixosSystem {
+        homelab-nuc = mkSystem "homelab-nuc" {
           system = "x86_64-linux";
-          modules = [
-            inputs.disko.nixosModules.disko
-            ./hosts/homelab-nuc
-            inputs.nixos-facter-modules.nixosModules.facter
-            inputs.agenix.nixosModules.default
-            {
-              config.facter.reportPath = ./hosts/homelab-nuc/facter.json;
-            }
-            {
-              nixpkgs = nixpkgsDefaults;
-            }
-          ];
+          user = "ale";
+          nixos-anywhere = true;
+          homeConfig = ./hosts/homelab-nuc/home.nix;
         };
       };
     }

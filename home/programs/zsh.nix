@@ -6,6 +6,8 @@
 }:
 
 {
+  imports = [ ../files/shell.nix ];
+
   # https://github.com/jnunyez/home-manager/blob/master/modules/programs/zsh.nix
   programs.zsh = {
     enable = true;

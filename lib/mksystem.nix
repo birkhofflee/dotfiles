@@ -11,6 +11,7 @@ name:
   darwin ? false,
   wsl ? false,
   nixos-anywhere ? false,
+  homeConfig ? ../home,
 }:
 
 let
@@ -23,8 +24,6 @@ let
   # The config files for this system.
   # Host configs are in hosts/${name}/ and will auto-import default.nix
   machineConfig = ../hosts/${name};
-  # Shared home-manager config at the root
-  userHMConfig = ../home;
 
   # NixOS vs nix-darwin functions
   systemFunc = if darwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
@@ -76,7 +75,7 @@ systemFunc rec {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = { inherit inputs; };
-      home-manager.users.${user} = import userHMConfig;
+      home-manager.users.${user} = import homeConfig;
     }
 
     # nix-index-database integration
