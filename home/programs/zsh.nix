@@ -256,9 +256,10 @@
     '';
 
     completionInit = ''
-      # Regenerate the completion cache file (~/.zcompdump) if it's older than 24 hours
+      # Regenerate the completion cache file if it's older than 24 hours.
+      # Use ''${ZDOTDIR:-$HOME} so the glob matches where compinit actually writes the dump.
       autoload -Uz compinit
-      for dump in ~/.zcompdump(N.mh+24); do
+      for dump in ''${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24); do
         compinit
       done
       compinit -C
