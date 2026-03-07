@@ -251,7 +251,14 @@
 
     profileExtra = ''
       ${lib.optionalString pkgs.stdenv.isDarwin ''
-        eval "$(${if pkgs.stdenv.isAarch64 then "/opt/homebrew/bin" else "/usr/local/bin"}/brew shellenv)"
+        # Hardcoded from: /opt/homebrew/bin/brew shellenv (saves ~44ms per login shell)
+        # PATH is handled via home.sessionPath in home/default.nix
+        export HOMEBREW_PREFIX="/opt/homebrew"
+        export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+        export HOMEBREW_REPOSITORY="/opt/homebrew"
+        fpath[1,0]="/opt/homebrew/share/zsh/site-functions"
+        [ -z "''${MANPATH-}" ] || export MANPATH=":''${MANPATH#:}"
+        export INFOPATH="/opt/homebrew/share/info:''${INFOPATH:-}"
       ''}
     '';
 

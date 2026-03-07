@@ -36,8 +36,6 @@ rec {
   #
   # @see https://nix-community.github.io/home-manager/options.xhtml#opt-home.sessionPath
   home.sessionPath = [
-    # Note: Homebrew is loaded with `brew shellenv` in `zsh/default.nix` (macOS only)
-
     # Rust
     "${home.homeDirectory}/.cargo/bin"
     # Golang
@@ -46,6 +44,9 @@ rec {
     "${home.homeDirectory}/.local/bin"
   ]
   ++ lib.optionals isDarwin [
+    # Homebrew (env vars are hardcoded in zsh.nix profileExtra for performance)
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
     # macOS-specific paths
     # Apple
     "/Library/Apple/usr/bin"
