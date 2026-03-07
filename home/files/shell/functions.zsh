@@ -2,6 +2,14 @@
 
 # `functions.zsh` provides helper functions and utilities.
 
+# Send a notification through the terminal app
+# using OSC 777
+function notify_osc777() {
+    local title="$1"
+    local body="$2"
+    printf '\e]777;notify;%s;%s\a' "$title" "$body"
+}
+
 # Output the image data in clipboard to stdout.
 # @example impaste > /tmp/image.png
 # @see https://til.simonwillison.net/macos/impaste
