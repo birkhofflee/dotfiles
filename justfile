@@ -48,7 +48,7 @@ switch-fast:
 # @see https://github.com/NixOS/nixpkgs/issues/439945
 [group('homelab')]
 switch-homelab:
-  nixos-rebuild switch --flake . --accept-flake-config --target-host homelab-nuc --build-host homelab-nuc --sudo
+  nh os switch -H homelab-nuc --accept-flake-config --target-host homelab-nuc --build-host homelab-nuc -e passwordless
 
 alias o := optimize
 # Frees up space by optimizing the Nix Store
