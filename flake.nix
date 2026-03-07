@@ -66,24 +66,9 @@
     }@inputs:
     # https://github.com/malob/nixpkgs/blob/61d4809925a523296278885ff8a75d3776a5c813/flake.nix#L34
     let
-      inherit (inputs.nixpkgs-unstable.lib) attrValues optionalAttrs singleton;
+      inherit (inputs.nixpkgs-unstable.lib) attrValues optionalAttrs;
 
-      # Overlays configuration
-      overlaysList =
-        attrValues self.overlays
-        ++ singleton (
-          final: prev:
-          (optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-            # Sub in x86 version of packages that don't build on Apple Silicon.
-            inherit (final.pkgs-x86)
-              agda
-              idris2
-              ;
-          })
-          // {
-            # Add other overlays here if needed.
-          }
-        );
+      overlaysList = attrValues self.overlays;
 
       nixpkgsDefaults = {
         config = {
@@ -102,6 +87,12 @@
     {
       overlays = {
         # Overlays to add different versions `nixpkgs` into package set
+        #
+        # After all overlays are applied, the following are available:
+        # - pkgs.pkgs-master.*     packages from nixpkgs master
+        # - pkgs.pkgs-stable.*     packages from nixpkgs 25.05
+        # - pkgs.pkgs-unstable.*   packages from nixpkgs unstable
+        # - pkgs.pkgs-x86.*        x86_64 packages (Apple Silicon only)
         pkgs-master = _: prev: {
           pkgs-master = import inputs.nixpkgs-master {
             inherit (prev.stdenv) system;
@@ -130,13 +121,7 @@
             };
           };
 
-        rust = inputs.rust-overlay.overlays.default;
-
-        zellij-plugins = _: prev: {
-          zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
-          zjstatus-hints = inputs.zjstatus-hints.packages.${prev.stdenv.hostPlatform.system}.default;
-          zj-quit = inputs.zj-quit.packages.${prev.stdenv.hostPlatform.system}.default;
-        };
+        # My packages
 
         fonts =
           _: prev: with _; {
@@ -149,6 +134,17 @@
             ocr = callPackage ./packages/ocr/ocr.nix { };
           };
 
+        # External flakes below
+
+        rust = inputs.rust-overlay.overlays.default;
+
+        zellij-plugins = _: prev: {
+          zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
+          zjstatus-hints = inputs.zjstatus-hints.packages.${prev.stdenv.hostPlatform.system}.default;
+          zj-quit = inputs.zj-quit.packages.${prev.stdenv.hostPlatform.system}.default;
+        };
+
+        # Temporary overlays
         tweaks = _: prev: {
           mactop = prev.mactop.overrideAttrs (_: {
             version = "2.0.6";
