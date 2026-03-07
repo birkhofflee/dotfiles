@@ -14,11 +14,11 @@ in
     publicKeys = withHomelab;
     armor = true;
   };
-  "armored-tailscale-authkey.age" = {
+  "tailscale-authkey.age" = {
     publicKeys = withHomelab;
     armor = true;
   };
-  "armored-ssh-config.age" = {
+  "ssh-config.age" = {
     publicKeys = [
       ale
     ];

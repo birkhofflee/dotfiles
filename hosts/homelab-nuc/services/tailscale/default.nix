@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  age.secrets.tailscale-authkey.file = ../../../../secrets/armored-tailscale-authkey.age;
+  age.secrets.tailscale-authkey.file = ../../../../secrets/tailscale-authkey.age;
 
   services.tailscale = {
     enable = true;
