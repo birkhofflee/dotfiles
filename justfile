@@ -82,7 +82,5 @@ edit-secret secret_file:
 # Push darwin build artifacts to cachix
 [group('cache')]
 cache-darwin:
-  nix build '.#darwinConfigurations.AlexMBP.config.system.build.toplevel' --json \
-    | jq -r '.[].outputs | to_entries[].value' \
-    | {{CACHIX_COMMAND}} push birkhoff
+  {{CACHIX_COMMAND}} watch-exec birkhoff -- nix build '.#darwinConfigurations.AlexMBP.config.system.build.toplevel'
 
