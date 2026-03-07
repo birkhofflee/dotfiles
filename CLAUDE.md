@@ -55,8 +55,10 @@ The repository uses a flake-based architecture defined in `flake.nix`:
   - `apple-silicon`: Provides x86_64 packages on aarch64-darwin via `pkgs-x86`
   - `zellij-plugins`: Custom Zellij plugins (zjstatus, zjstatus-hints, zj-quit)
   - `fonts`: Custom fonts including Berkeley Mono (requires secrets) and Commit Mono NF
-  - `tweaks`: Temporary overrides placeholder
+  - `custom-packages`: Local derivations (e.g., `ocr` tool at `packages/ocr/ocr.nix`)
+  - `tweaks`: Temporary per-package overrides (e.g., pinned `mactop` version)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
+- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `nixfmt-tree`, `nixos-rebuild-ng`, `claude-code`, and sets `NH_FLAKE="."`
 
 ### Configuration Philosophy
 
@@ -67,9 +69,10 @@ The repository uses a flake-based architecture defined in `flake.nix`:
 The `lib/mksystem.nix` helper abstracts away the differences between Darwin and NixOS configurations, automatically:
 - Selecting the correct system function (darwinSystem vs nixosSystem)
 - Applying overlays and nixpkgs configuration
-- Integrating home-manager with correct modules
-- Integrating nix-index-database
-- Passing special arguments to modules
+- Integrating home-manager with correct modules (default: `home/`, overridable via `homeConfig` parameter)
+- Integrating nix-index-database and agenix
+- Passing special arguments to modules (`currentSystem`, `currentSystemName`, `currentSystemUser`, `inputs`)
+- Optionally including disko and nixos-facter modules when `nixos-anywhere = true`
 
 ### Home Configuration (`home/`)
 
@@ -98,8 +101,8 @@ The home-manager configuration is **shared across all hosts** and platform-agnos
 
 **homelab-nuc** (`hosts/homelab-nuc/default.nix`):
 - NixOS system configuration for physical homelab server
-- Uses disko for disk partitioning and nixos-facter for hardware detection
-- **Important**: Does NOT use `lib/mksystem.nix` - configured directly in `flake.nix` to avoid home-manager (too many files error)
+- Uses `mkSystem` with `nixos-anywhere = true` (enables disko and nixos-facter modules)
+- Uses a custom home config at `hosts/homelab-nuc/home.nix` (not the shared `home/`)
 - Includes services: tailscale, atuin, docker
 - Uses zramSwap for better memory management
 
@@ -123,27 +126,21 @@ Using `just` (preferred):
 ```bash
 just switch          # Build and switch to new configuration (alias: just s)
 just switch-fast     # Switch without network access (alias: just sf)
-just switch-homelab  # Switch homelab-nuc NixOS configuration remotely
+just switch-homelab  # Switch homelab-nuc NixOS configuration remotely via nh os switch
 just update          # Update all flake inputs and commit lock file (alias: just u)
 just update-input <name>  # Update specific flake input (alias: just ui)
 just format          # Format all Nix files using treefmt
 just optimize        # Clean old generations and optimize store (alias: just o)
 just repair          # Verify and repair Nix store
 just cache-darwin    # Push darwin build artifacts to cachix
+just edit-secret <file.age>  # Edit an agenix secret (uses 1Password for identity)
 ```
 
-Using `nh` directly:
+Using `nh` directly (from repo root, NH_FLAKE="."):
 ```bash
-nh darwin switch --hostname AlexMBP "$HOME/.config/dotfiles"
-nh darwin switch --update --hostname AlexMBP "$HOME/.config/dotfiles"
-nh darwin switch --update-input <name> --hostname AlexMBP "$HOME/.config/dotfiles"
+nh darwin switch --show-trace -- --accept-flake-config
+nh darwin switch --show-trace --offline -- --accept-flake-config
 nh clean all
-```
-
-Legacy Makefile commands:
-```bash
-make all     # Equivalent to: sudo darwin-rebuild switch --flake ".#AlexMBP"
-make repair  # Garbage collect and verify/repair Nix store
 ```
 
 ### Testing Configuration Changes
@@ -258,11 +255,10 @@ Example:
    - `gui-vm-shared.nix`: Shared GUI VM configuration (for NixOS VMs with desktop)
 5. Add to `flake.nix`:
    ```nix
-   # For macOS
+   # For macOS (darwin is auto-detected from system suffix)
    darwinConfigurations.<hostname> = mkSystem "<hostname>" {
      system = "aarch64-darwin";  # or "x86_64-darwin"
      user = "ale";
-     darwin = true;
    };
 
    # For NixOS (standard)
@@ -271,18 +267,15 @@ Example:
      user = "ale";
    };
 
-   # For NixOS with nixos-anywhere (without mkSystem)
-   nixosConfigurations.<hostname> = inputs.nixpkgs-unstable.lib.nixosSystem {
+   # For NixOS with nixos-anywhere (disko + nixos-facter, custom home config)
+   nixosConfigurations.<hostname> = mkSystem "<hostname>" {
      system = "x86_64-linux";
-     modules = [
-       inputs.disko.nixosModules.disko
-       ./hosts/<hostname>
-       inputs.nixos-facter-modules.nixosModules.facter
-       { config.facter.reportPath = ./hosts/<hostname>/facter.json; }
-       { nixpkgs = nixpkgsDefaults; }
-     ];
+     user = "ale";
+     nixos-anywhere = true;
+     homeConfig = ./hosts/<hostname>/home.nix;  # optional, defaults to ./home
    };
    ```
+   Note: `hosts/<hostname>/facter.json` must exist (generated by nixos-anywhere with `--generate-hardware-config nixos-facter`). `mksystem.nix` will throw an error if it's missing.
 
 ## Important Implementation Details
 
@@ -326,12 +319,12 @@ This is used for sensitive files like proprietary fonts (Berkeley Mono). Access 
 
 ### Homelab-Specific Architecture
 
-The `homelab-nuc` host differs from other NixOS configurations:
-- **Does NOT use home-manager**: Prevents "too many files" error on resource-constrained systems
+The `homelab-nuc` host uses `mkSystem` with `nixos-anywhere = true`:
+- **Custom home config**: Uses `hosts/homelab-nuc/home.nix` instead of the shared `home/`
 - **Uses nixos-anywhere**: Automated remote installation with disk partitioning (disko)
-- **Uses nixos-facter**: Hardware configuration auto-detection
-- **Remote deployment**: Use `just switch-homelab` which uses `nixos-rebuild-ng` (not `nh`)
-- **Hardware config**: Stored in `hosts/homelab-nuc/facter.json`, regenerated during nixos-anywhere deployment
+- **Uses nixos-facter**: Hardware configuration auto-detection; `facter.json` must exist
+- **Remote deployment**: `just switch-homelab` uses `nh os switch` targeting `homelab-nuc` host
+- **Secrets**: Uses agenix for secret management (identity via 1Password: `just edit-secret <file.age>`)
 
 ### Activation Scripts
 
@@ -392,12 +385,12 @@ Follow the process in README.md lines 96-120:
 ### Nix Store Issues
 
 ```bash
-make repair  # Garbage collect and verify/repair
+just repair  # Verify and repair Nix store
 ```
 
 ### Build Failures
 
-Add `--show-trace` flag to see detailed error information:
+`just switch` already includes `--show-trace`. For manual builds:
 ```bash
-just switch --show-trace
+nix build ".#darwinConfigurations.AlexMBP.system" --show-trace
 ```
