@@ -137,6 +137,7 @@ Note:
 
 1. Full Disk Access need to be granted for the Terminal app of choice (Ghostty), otherwise [some options will fail](https://github.com/nix-darwin/nix-darwin/issues/1049#issuecomment-2323300537)
 2. I currently use macOS Sequoia 15.7.2.
+3. Full Disk Access has to be enabled for the terminal app via `System Settings > Privacy & Security > Full Disk Access` to overcome `Could not write domain com.apple.universalaccess; exiting` when applying user defaults.
 
 ```shell
 xcode-select --install
