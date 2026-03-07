@@ -133,9 +133,9 @@
         rust = inputs.rust-overlay.overlays.default;
 
         zellij-plugins = _: prev: {
-          zjstatus = inputs.zjstatus.packages.${prev.system}.default;
-          zjstatus-hints = inputs.zjstatus-hints.packages.${prev.system}.default;
-          zj-quit = inputs.zj-quit.packages.${prev.system}.default;
+          zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
+          zjstatus-hints = inputs.zjstatus-hints.packages.${prev.stdenv.hostPlatform.system}.default;
+          zj-quit = inputs.zj-quit.packages.${prev.stdenv.hostPlatform.system}.default;
         };
 
         fonts =
