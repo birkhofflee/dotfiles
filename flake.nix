@@ -167,7 +167,6 @@
         AlexMBP = mkSystem "AlexMBP" {
           system = "aarch64-darwin";
           user = "ale";
-          darwin = true;
         };
       };
 

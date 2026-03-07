@@ -8,27 +8,21 @@ name:
 {
   system,
   user,
-  darwin ? false,
-  wsl ? false,
   nixos-anywhere ? false,
   homeConfig ? ../home,
 }:
 
 let
-  # True if this is a WSL system.
-  isWSL = wsl;
-
-  # True if Linux, which is a heuristic for not being Darwin.
-  isLinux = !darwin && !isWSL;
+  isDarwin = nixpkgs.lib.hasSuffix "-darwin" system;
 
   # The config files for this system.
   # Host configs are in hosts/${name}/ and will auto-import default.nix
   machineConfig = ../hosts/${name};
 
   # NixOS vs nix-darwin functions
-  systemFunc = if darwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
+  systemFunc = if isDarwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
   home-manager =
-    if darwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
+    if isDarwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
 in
 systemFunc rec {
   inherit system;
@@ -63,9 +57,6 @@ systemFunc rec {
     # Allow unfree packages.
     { nixpkgs.config.allowUnfree = true; }
 
-    # Bring in WSL if this is a WSL build
-    (if isWSL then inputs.nixos-wsl.nixosModules.wsl else { })
-
     # Machine-specific configuration
     machineConfig
 
@@ -79,11 +70,11 @@ systemFunc rec {
     }
 
     # nix-index-database integration
-    inputs.nix-index-database.${if darwin then "darwinModules" else "nixosModules"}.nix-index
+    inputs.nix-index-database.${if isDarwin then "darwinModules" else "nixosModules"}.nix-index
     { programs.nix-index-database.comma.enable = true; }
 
     # agenix integration
-    (if darwin then inputs.agenix.darwinModules.default else inputs.agenix.nixosModules.default)
+    (if isDarwin then inputs.agenix.darwinModules.default else inputs.agenix.nixosModules.default)
 
     # We expose some extra arguments so that our modules can parameterize
     # better based on these values.
@@ -92,7 +83,6 @@ systemFunc rec {
         currentSystem = system;
         currentSystemName = name;
         currentSystemUser = user;
-        isWSL = isWSL;
         inputs = inputs;
       };
     }
