@@ -311,7 +311,14 @@
             source "${config.home.homeDirectory}/.shell/proxy.zsh"
           ''}
 
-          command -v rbenv > /dev/null && eval "$(rbenv init - zsh)"
+          # Lazy-load rbenv: only initialize on the first ruby/gem/bundle/rbenv call
+          if command -v rbenv > /dev/null; then
+            rbenv() {
+              unfunction rbenv
+              eval "$(command rbenv init - zsh)"
+              rbenv "$@"
+            }
+          fi
 
           # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
           # Note: `lg` is alias for `lazygit`
