@@ -1,17 +1,21 @@
 let
   ale = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0762tms0QT6kCQ7tTgoOdm+ry29ImKgDk09hXurEfM";
-  users = [ ale ];
-
   # ssh-keyscan -t ed25519 homelab-nuc
   homelab-nuc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFD2LZIYz9eBmt3W+rALfdC3LEkyaYKUYO9Pkecxh4iN";
-  systems = [ homelab-nuc ];
+
+  withHomelab = [ ale homelab-nuc ];
 in
 {
+  "rybbit-auth-secret.age" = {
+    publicKeys = withHomelab;
+    armor = true;
+  };
+  "cloudflared-creds.age" = {
+    publicKeys = withHomelab;
+    armor = true;
+  };
   "armored-tailscale-authkey.age" = {
-    publicKeys = [
-      ale
-      homelab-nuc
-    ];
+    publicKeys = withHomelab;
     armor = true;
   };
   "armored-ssh-config.age" = {
@@ -20,9 +24,4 @@ in
     ];
     armor = true;
   };
-  # "secret2.age".publicKeys = users ++ systems;
-  # "armored-secret.age" = {
-  #   publicKeys = [ ale ];
-  #   armor = true;
-  # };
 }

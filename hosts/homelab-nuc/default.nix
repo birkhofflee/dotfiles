@@ -17,6 +17,9 @@ in
 
     ./services/tailscale
     ./services/atuin
+    ./services/rybbit
+    ./services/caddy
+    ./services/cloudflared
   ];
 
   hardware.enableRedistributableFirmware = lib.mkDefault true;
@@ -50,7 +53,7 @@ in
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
   programs.zsh.enable = true; # Enable zsh system-wide
-  virtualisation.docker.enable = true;
+  virtualisation.podman.enable = true;
 
   # Don't require password for sudo
   security.sudo.wheelNeedsPassword = false;
@@ -66,7 +69,6 @@ in
     home = "/home/${username}";
     extraGroups = [
       "wheel"
-      "docker"
     ];
     shell = pkgs.zsh;
     hashedPassword = "$y$j9T$NyO3jDlhxZvG1xEfAZ21i.$K2iEBoqfPs009g1mFI1Td8t00gd8/m.BIUSyFo9QqX9";
