@@ -310,7 +310,7 @@
             source "${config.home.homeDirectory}/.shell/proxy.zsh"
           ''}
 
-          eval "$(rbenv init - zsh)"
+          command -v rbenv > /dev/null && eval "$(rbenv init - zsh)"
 
           # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
           # Note: `lg` is alias for `lazygit`
