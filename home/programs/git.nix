@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, lib, ... }:
 
 let
 
@@ -33,7 +33,7 @@ in
         editor = "hx";
       };
 
-      credential = {
+      credential = lib.mkIf pkgs.stdenv.isDarwin {
         helper = "osxkeychain";
       };
 
@@ -54,14 +54,16 @@ in
       gpg = {
         format = "ssh";
 
-        ssh = {
-          program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
-          allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers";
-        };
+        ssh = lib.mkMerge [
+          { allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers"; }
+          (lib.mkIf pkgs.stdenv.isDarwin {
+            program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+          })
+        ];
       };
 
       commit = {
-        gpgsign = true;
+        gpgsign = pkgs.stdenv.isDarwin;
       };
 
       pull = {
