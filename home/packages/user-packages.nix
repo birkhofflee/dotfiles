@@ -1,5 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
+let
+  berkeley-mono = pkgs.callPackage ./fonts/berkeley-mono.nix { secrets = inputs.secrets; };
+  commit-mono-nf = pkgs.callPackage ./fonts/commit-mono-nf.nix { };
+  ocr = pkgs.callPackage ./ocr/ocr.nix { };
+in
 {
   home.packages =
     with pkgs;

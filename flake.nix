@@ -121,19 +121,6 @@
             };
           };
 
-        # My packages
-
-        fonts =
-          _: prev: with _; {
-            berkeley-mono = callPackage ./packages/fonts/berkeley-mono.nix { secrets = inputs.secrets; };
-            commit-mono-nf = callPackage ./packages/fonts/commit-mono-nf.nix { };
-          };
-
-        custom-packages =
-          _: prev: with _; {
-            ocr = callPackage ./packages/ocr/ocr.nix { };
-          };
-
         # External flakes below
 
         rust = inputs.rust-overlay.overlays.default;
