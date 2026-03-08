@@ -6,10 +6,10 @@
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "berkeley-mono";
+  pname = "berkeley-mono-variable";
   version = "2.004";
 
-  src = "${secrets}/fonts/BerkeleyMono.zip";
+  src = "${secrets}/fonts/BerkeleyMonoVariable.zip";
 
   outputs = [ "out" ];
 
@@ -31,7 +31,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   meta = {
-    description = "Berkeley Mono™ Typeface";
+    description = "Berkeley Mono™ Variable Typeface";
     homepage = "https://usgraphics.com/products/berkeley-mono";
     license = lib.licenses.unfree;
     platforms = lib.platforms.all;

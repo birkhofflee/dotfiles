@@ -2,6 +2,7 @@
 
 let
   berkeley-mono = pkgs.callPackage ./fonts/berkeley-mono.nix { secrets = inputs.secrets; };
+  berkeley-mono-variable = pkgs.callPackage ./fonts/berkeley-mono-variable.nix { secrets = inputs.secrets; };
   commit-mono-nf = pkgs.callPackage ./fonts/commit-mono-nf.nix { };
   ocr = pkgs.callPackage ./ocr/ocr.nix { };
 in
@@ -353,6 +354,7 @@ in
       # ============================================================================
       lcdf-typetools
       berkeley-mono
+      berkeley-mono-variable
       commit-mono-nf
       noto-fonts-cjk-sans-static
       monaspace

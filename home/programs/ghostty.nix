@@ -51,12 +51,34 @@
 
       # Noto Sans as fallback for CJK characters.
       font-family = [
-        "Berkeley Mono" # https://luke.hsiao.dev/blog/berkeley-mono-ghostty
+        "Berkeley Mono Variable" # https://luke.hsiao.dev/blog/berkeley-mono-ghostty
         # "CommitMono Nerd Font"
         # "SF Mono"
         # "IBM Plex Mono"
         # "JuliaMono" # For the glyph. https://juliamono.netlify.app/
-        "Noto Sans"
+        "Noto Sans" # as fallback for CJK characters
+      ];
+      # Font width (60 to 100)
+      #  60 = UltraCondensed
+      #  70 = ExtraCondensed
+      #  80 = Condensed
+      #  90 = SemiCondensed
+      # 100 = Normal
+      #
+      # Font weight (100 to 900)
+      # 100 = Thin
+      # 200 = ExtraLight
+      # 300 = Light
+      # 350 = SemiLight
+      # 400 = Regular
+      # 500 = Medium
+      # 600 = SemiBold
+      # 700 = Bold
+      # 800 = ExtraBold
+      # 900 = Black
+      font-variation = [
+        "wdth=100"
+        "wght=450"
       ];
       font-size = 15;
       # bold-is-bright = true
