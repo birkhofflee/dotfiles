@@ -29,25 +29,27 @@
     # https://ghostty.org/docs/config/reference
 
     settings = {
+      # =========================
+      # THEME & COLORS
+      # =========================
+      #
+      # Use the following to preview all available
+      # builtin themes in Ghostty:
+      #
+      # $ ghostty +list-themes
+      #
       # Some other themes to choose from:
       # theme = Horizon
-      # theme = Rapture
-      # theme = Snazzy
       # theme = Arcoiris (with the modification of cursor-color = ffc656)
-
+      #
       # Lighter Themes
       # theme = Sublette
       # theme = xcodedark
 
-      # Darker Themes
-      # theme = NightLion v2
-
-      # Use the following to preview all available
-      # builtin themes in Ghostty:
-      #
-      # ghostty +list-themes
-
-      theme = "Snazzy Soft";
+      # theme = "TokyoNight Storm";
+      # theme = "Snazzy Soft";
+      theme = "Catppuccin Macchiato";
+      minimum-contrast = 1.1;
 
       # Noto Sans as fallback for CJK characters.
       font-family = [

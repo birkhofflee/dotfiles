@@ -6,7 +6,7 @@
 _vivid_cache="${HOME}/.cache/zsh/ls_colors"
 if [[ ! -f "$_vivid_cache" ]] || [[ "$(command -v vivid)" -nt "$_vivid_cache" ]]; then
   mkdir -p "${_vivid_cache:h}"
-  vivid generate snazzy > "$_vivid_cache"
+  vivid generate catppuccin-macchiato > "$_vivid_cache"
 fi
 export LS_COLORS="$(<$_vivid_cache)"
 unset _vivid_cache

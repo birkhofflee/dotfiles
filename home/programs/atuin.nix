@@ -1,6 +1,21 @@
 # Manual one-time setup for sync is required:
 # $ atuin login
 {
+  xdg.configFile."atuin/themes/catppuccin-macchiato-blue.toml".text = ''
+    [theme]
+    name = "catppuccin-macchiato-blue"
+
+    [colors]
+    AlertInfo = "#a6da95"
+    AlertWarn = "#f5a97f"
+    AlertError = "#ed8796"
+    Annotation = "#8aadf4"
+    Base = "#cad3f5"
+    Guidance = "#939ab7"
+    Important = "#ed8796"
+    Title = "#8aadf4"
+  '';
+
   programs.atuin = {
     enable = true;
     enableBashIntegration = false;
@@ -17,6 +32,8 @@
       auto_sync = true;
       sync_frequency = "5m";
       sync_address = "http://homelab-nuc:8010";
+
+      theme.name = "catppuccin-macchiato-blue";
     };
   };
 }

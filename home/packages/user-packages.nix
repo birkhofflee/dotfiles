@@ -245,7 +245,6 @@ in
 
       # File operations
       entr # run arbitrary commands when files change
-      bat
       hexyl # modern hex viewer
       coreutils-prefixed
       eza

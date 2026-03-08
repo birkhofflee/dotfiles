@@ -28,6 +28,12 @@ in
         log = "emojify";
       };
 
+      diff = {
+        # Moved lines of code are colored differently
+        # @see https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---color-movedmode
+        colorMoved = "default";
+      };
+
       core = {
         preloadindex = "yes";
         editor = "hx";

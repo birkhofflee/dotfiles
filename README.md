@@ -18,6 +18,7 @@ My daily driver is macOS. There are also a NixOS homelab setup and NixOS VM setu
 * On macOS, [it sets](home/libs/wallpaper.nix) a beautiful wallpaper from [Raycast](https://www.raycast.com/wallpapers)
 * Shell configuration:
   * Zsh with a customized [Pure prompt](https://starship.rs/presets/pure-preset#pure-preset) using [Starship](https://starship.rs)
+  * Theme of choice: [Catppuccin Macchiato](https://catppuccin.com/) (Blue accent wherever available)
   * A number of handy [aliases](home/programs/zsh.nix) and [functions](home/files/shell/functions.zsh)
   * [Automatic](home/files/shell/proxy.zsh) shell proxy propagation from macOS settings
   * Some shell integrations:

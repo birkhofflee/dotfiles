@@ -48,6 +48,10 @@ __FZF_TAB[PREVIEW_FILE_OR_DIR]="
 export FZF_DEFAULT_OPTS="
   --header '?: preview, alt-up: pgup, alt-down: pgdown, ^o: open editor'
   --color header:italic
+  --color=bg:#24273a,bg+:#363a4f,spinner:#f4dbd6,hl:#ed8796
+  --color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6
+  --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796
+  --color=selected-bg:#494d64,border:#363a4f,label:#cad3f5
   --style full
   --multi
   --bind 'alt-up:preview-page-up'
@@ -150,7 +154,7 @@ zstyle ':fzf-tab:complete:(cd|vim|nano|e|hx|cursor|code|mv|cp|rm|file):*' \
   fzf-preview "${__FZF_TAB[PREVIEW_FILE_OR_DIR]}"
 
 # git
-__FZF_TAB[PREVIEW_DELTA]='DELTA_FEATURES=decorations delta --hunk-header-decoration-style="cyan box"'
+__FZF_TAB[PREVIEW_DELTA]='delta --hunk-header-decoration-style="cyan box"'
 zstyle ':fzf-tab:complete:git-(add|diff|restore|show|checkout):*' fzf-flags \
   --height=-2 \
   --preview-window 'right:40%:nowrap' \
