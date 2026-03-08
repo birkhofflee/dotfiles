@@ -551,10 +551,10 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1761872371,
-        "narHash": "sha256-WQ/lI2+burNJcwlYv9yVuWvSI7IJZ2aKAd7v5IAoRe0=",
+        "lastModified": 1773004519,
+        "narHash": "sha256-S2XaBApPxNVENlaCyZANcAXtyE2ZoWmooAWsLeakleQ=",
         "ref": "main",
-        "rev": "5b129e83306041d5654b59202670a0d8f63fdbdd",
+        "rev": "183ec027c4af17db93725e7530165aa40c5ac4f9",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/BirkhoffLee/dotfiles.secret.git"
