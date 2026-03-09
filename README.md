@@ -281,11 +281,6 @@ sudo ./result/sw/bin/darwin-rebuild switch --flake "$HOME/.config/dotfiles#AlexM
 * [Supercharge](https://sindresorhus.com/supercharge) has to be downloaded manually due to licensing constraints.
 * While I'd like Nix to handle every app on my Mac, most GUI apps are better managed by Homebrew due to the conflicting nature of Nix and the self-updating capabilities of those apps.
 
-## TODOs
-
-* File completion
-  * When completing with fzf-tab, there's the slash in file names which i dont like
-
 ## Articles
 
 Here are some reads you might find interesting:

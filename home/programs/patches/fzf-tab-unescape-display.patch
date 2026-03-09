@@ -1,0 +1,11 @@
+--- a/fzf-tab.zsh
++++ b/fzf-tab.zsh
+@@ -81,7 +81,7 @@
+       if [[ -n $dscr ]]; then
+         dscr=${dscr//$'\n'}
+       elif [[ -n $word ]]; then
+-        dscr=$word
++        dscr=${(Q)word}
+       fi
+       _ftb_compcap+=$dscr$'\2'$__tmp_value$'\0word\0'$word
+     done
