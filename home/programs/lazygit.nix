@@ -15,10 +15,14 @@
         commit = {
           signOff = true;
         };
+
+        parseEmoji = true;
       };
 
       # Catppuccin Macchiato - Blue Accent
       # @see https://github.com/catppuccin/lazygit/blob/main/themes-mergable/macchiato/blue.yml
+      update.method = "never";
+
       gui = {
         mouseEvents = false;
 
