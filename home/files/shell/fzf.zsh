@@ -1,12 +1,17 @@
 #!/usr/bin/env zsh
 
+# =========================
 # fzf (https://github.com/junegunn/fzf)
-# fzf shell integration binds C-t, C-r, Alt-C
-# docs: https://github.com/junegunn/fzf?tab=readme-ov-file#key-bindings-for-command-line
+#
+# Shell integration binds C-t, C-r, Alt-C
+# @see https://github.com/junegunn/fzf?tab=readme-ov-file#key-bindings-for-command-line
+# =========================
 
 typeset -AU __FZF __FZF_TAB
 
-# Determine clipboard copy command based on OS
+# =========================
+# DETERMINE CLIPBOARD COPY COMMAND
+# =========================
 if [[ "$OSTYPE" == darwin* ]]; then
   __FZF_COPY_CMD="pbcopy"
 elif command -v xclip &> /dev/null; then
@@ -17,8 +22,12 @@ else
   __FZF_COPY_CMD="cat"  # Fallback: just output to stdout
 fi
 
+# Preview a file or an image in the preview window of fzf:
 # https://github.com/junegunn/fzf/blob/master/bin/fzf-preview.sh
 
+# =========================
+# COMMON COMMANDS USED IN PREVIEW
+# =========================
 __FZF[PREVIEW_DIR]="eza -a --tree --level 3 --color=always --icons --no-quotes --group-directories-first --show-symlinks"
 
 __FZF[PREVIEW_TEXT]="bat --style=numbers,changes --wrap never --color always {} || cat {}"
@@ -60,10 +69,11 @@ export FZF_DEFAULT_OPTS="
   --bind '?:toggle-preview'
 "
 
+# =========================
 # FZF - File Browser (C-t) and Alt-C
 # Override FZF_CTRL_T_COMMAND and FZF_ALT_C_COMMAND to use fd and xargs
-#
-# Ref: https://github.com/niksingh710/cdots/blob/bc79fa30cd62f5655b45c64cc79401082b4bd791/home/.shell/fzf.zsh#L101-L106
+# @see https://github.com/niksingh710/cdots/blob/bc79fa30cd62f5655b45c64cc79401082b4bd791/home/.shell/fzf.zsh#L101-L106
+# =========================
 #
 # Explanation of the options:
 # -0: tells both fd and xargs to use a null character (\0) as a separator
@@ -107,20 +117,28 @@ export FZF_CTRL_R_OPTS="
   --bind 'ctrl-y:execute-silent(echo -n {2..} | $__FZF_COPY_CMD)+abort'
   --header 'CTRL-T: Track command, CTRL-Y: copy command to clipboard'"
 
-# FZF - Completion Options
-# https://github.com/junegunn/fzf?tab=readme-ov-file#customizing-fzf-options-for-completion
+# =========================
+# COMPLETION OPTIONS - USING FZF-TAB (https://github.com/Aloxaf/fzf-tab)
+# @see https://github.com/junegunn/fzf?tab=readme-ov-file#customizing-fzf-options-for-completion
+# =========================
 
-# fzf-tab (https://github.com/Aloxaf/fzf-tab)
 # `${(Q)realpath:a}`
 # (Q) removes a level of quoting, :a converts it to an absolute path
 
-# switch group using `<` and `>`
+# =========================
+# KEYBIND TO SWITCH GROUP
+# =========================
 zstyle ':fzf-tab:*' switch-group '<' '>'
 
+# =========================
+# DEFAULT FLAGS FOR FZF WHEN USING FZF-TAB
+# =========================
+#
 # Note: fzf-tab does not use default fzf options
 # default_binds=tab:down,btab:up,change:top,ctrl-space:toggle,bspace:backward-delete-char/eof,ctrl-h:backward-delete-char/eof
-# Note: some other flags are already set in fzf-tab code,
-# refer to: https://github.com/Aloxaf/fzf-tab/blob/master/lib/-ftb-fzf#L90
+#
+# Note: some other flags are already set in fzf-tab code
+# @see https://github.com/Aloxaf/fzf-tab/blob/master/lib/-ftb-fzf#L90
 zstyle ':fzf-tab:*' fzf-flags \
   --color header:italic \
   --height=-2 \
@@ -130,30 +148,30 @@ zstyle ':fzf-tab:*' fzf-flags \
   --bind "ctrl-o:execute($VISUAL {})+abort" \
   --bind '?:toggle-preview'
 
-# disable or override preview for command options and subcommands
+# =========================
+# DISABLE OR OVERRIDE PREVIEW FOR COMMAND OPTIONS AND SUBCOMMANDS
+# =========================
 zstyle ':fzf-tab:complete:*:options' fzf-preview
 zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
 
 # FIXME: does not work
 # zstyle ':fzf-tab:complete:(-command-):*' fzf-preview 'builtin type -- {}'
 
-zstyle ':fzf-tab:*:file:*' fzf-flags --height=-2 --style=full --header-label=' File Type '
-zstyle ':fzf-tab:*:file:*' fzf-bindings 'focus:transform-header(
-    {_FTB_INIT_} {
-        file -LIb ${realpath} || echo "No file selected";
-        exiftool -m -fast -printFormat '' ${ImageWidth}x${ImageHeight}'' -i ${realpath} ${realpath}
-    } | paste -d ";" - -
-)'
-
-# Expand the value of environment variables or similar parameters in the preview window
+# =========================
+# EXPAND THE VALUE OF ENVIRONMENT VARIABLES OR SIMILAR PARAMETERS IN THE PREVIEW WINDOW
+# =========================
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
 	fzf-preview 'echo ${(P)word}'
 
-# preview directory or file's content when completing some commands
+# =========================
+# PREVIEW DIRECTORY OR FILE'S CONTENT WHEN COMPLETING SOME COMMANDS
+# =========================
 zstyle ':fzf-tab:complete:(cd|vim|nano|e|hx|cursor|code|mv|cp|rm|file):*' \
   fzf-preview "${__FZF_TAB[PREVIEW_FILE_OR_DIR]}"
 
-# git
+# =========================
+# GIT
+# =========================
 __FZF_TAB[PREVIEW_DELTA]='delta --hunk-header-decoration-style="cyan box"'
 zstyle ':fzf-tab:complete:git-(add|diff|restore|show|checkout):*' fzf-flags \
   --height=-2 \
@@ -176,7 +194,9 @@ zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 zstyle ':fzf-tab:complete:git-log:*' fzf-preview 'git log --color=always $word'
 zstyle ':fzf-tab:complete:git-help:*' fzf-preview 'git help $word | bat -plman --color=always'
 
-# homebrew
+# =========================
+# HOMEBREW
+# =========================
 zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-flags \
   --height=-2 \
   --preview-window 'right:70%:nowrap' \
@@ -184,7 +204,9 @@ zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' 
   --bind 'alt-down:preview-page-down'
 zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-preview 'brew info $word | bat --color=always'
 
-# cht.sh
+# =========================
+# CHT.SH
+# =========================
 zstyle ':fzf-tab:complete:(help|cht.sh):argument-1' fzf-flags \
   --height=-2 \
   --preview-window 'right:70%:nowrap' \
@@ -192,7 +214,9 @@ zstyle ':fzf-tab:complete:(help|cht.sh):argument-1' fzf-flags \
   --bind 'alt-down:preview-page-down'
 zstyle ':fzf-tab:complete:(help|cht.sh):argument-1' fzf-preview 'cht.sh $word'
 
-# kill/ps
+# =========================
+# KILL / PS
+# =========================
 zstyle ':fzf-tab:complete:(kill|ps):*' fzf-flags \
   --height=20 \
   --preview-window 'down:3:wrap'
