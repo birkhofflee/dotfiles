@@ -182,7 +182,7 @@
       # GENERAL WINDOW SETTINGS
       # =========================
       macos-titlebar-style = "transparent";
-      unfocused-split-opacity = 0.85;
+      unfocused-split-opacity = 0.65;
 
       # =========================
       # CURSOR & SHELL INTEGRATION
