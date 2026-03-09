@@ -51,7 +51,9 @@
       theme = "Catppuccin Macchiato";
       minimum-contrast = 1.1;
 
-      # Noto Sans as fallback for CJK characters.
+      # =========================
+      # FONT SETTINGS
+      # =========================
       font-family = [
         "Berkeley Mono Variable" # https://luke.hsiao.dev/blog/berkeley-mono-ghostty
         # "CommitMono Nerd Font"
@@ -86,10 +88,15 @@
       # bold-is-bright = true
       # font-thicken = true
 
-      # For compatibility:
+      # =========================
+      # COMPATIBILITY
       # @see https://ghostty.org/docs/help/terminfo
+      # =========================
       # term = xterm-256color
 
+      # =========================
+      # KEYS
+      # =========================
       macos-option-as-alt = true;
       keybind = [
         "super+q=quit"
@@ -156,32 +163,40 @@
         "super+shift+z=text:\\x18\\x1f"
       ];
 
-      ## Initial Window Size
+      # =========================
+      # INITIAL WINDOW SIZE
+      # =========================
       maximize = true;
       window-height = 35;
       window-width = 98;
-      ## End of Initial Window Size
 
-      macos-titlebar-style = "transparent";
-
-      ## Window Padding
+      # =========================
+      # WINDOW PADDING
+      # =========================
       # window-padding-balance = true;
       # window-padding-color = "extend";
       # window-padding-x = "2";
       window-padding-y = "2,0";
-      ## End of Window Padding
 
-      ## Cursor & Shell Integration
+      # =========================
+      # GENERAL WINDOW SETTINGS
+      # =========================
+      macos-titlebar-style = "transparent";
+      unfocused-split-opacity = 0.85;
+
+      # =========================
+      # CURSOR & SHELL INTEGRATION
+      # @see https://ghostty.org/docs/help/terminfo#ssh
+      # =========================
       cursor-style = "block";
       cursor-style-blink = true;
       shell-integration = "zsh";
-      # @see https://ghostty.org/docs/help/terminfo#ssh
       shell-integration-features = "no-cursor,sudo,title";
-      ## End of Cursor & Shell Integration
 
-      ## Quick Terminal
+      # =========================
+      # QUICK TERMINAL
+      # =========================
       quick-terminal-animation-duration = 0;
-      ## End of Quick Terminal
     };
   };
 }
