@@ -417,12 +417,17 @@
       }
       {
         name = "fzf-tab";
-        src = pkgs.fetchFromGitHub {
-          # https://github.com/Aloxaf/fzf-tab
-          owner = "Aloxaf";
-          repo = "fzf-tab";
-          rev = "2abe1f2f1cbcb3d3c6b879d849d683de5688111f";
-          sha256 = "sha256-zc9Sc1WQIbJ132hw73oiS1ExvxCRHagi6vMkCLd4ZhI=";
+        src = pkgs.applyPatches {
+          src = pkgs.fetchFromGitHub {
+            # https://github.com/Aloxaf/fzf-tab
+            owner = "Aloxaf";
+            repo = "fzf-tab";
+            rev = "2abe1f2f1cbcb3d3c6b879d849d683de5688111f";
+            sha256 = "sha256-zc9Sc1WQIbJ132hw73oiS1ExvxCRHagi6vMkCLd4ZhI=";
+          };
+          # Fix background color bleed: missing reset in dsuf for non-symlink files
+          # https://github.com/Aloxaf/fzf-tab/issues/NNN
+          patches = [ ./patches/fzf-tab-color-reset.patch ];
         };
       }
     ];
