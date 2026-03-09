@@ -172,8 +172,9 @@ function e {
 
 # Update geoip.mmdb if it's older than 30 days
 function _update_geoip {
-  if [ ! -f $HOME/.cache/geoip.mmdb ] || [ $(find $HOME/.cache/geoip.mmdb -mtime +30 2>/dev/null | wc -l) -gt 0 ]; then
-    wget -O $HOME/.cache/geoip.mmdb https://github.com/Dreamacro/maxmind-geoip/releases/latest/download/Country.mmdb
+  local _geoip_cache="${XDG_CACHE_HOME:-$HOME/.cache}/geoip.mmdb"
+  if [ ! -f "$_geoip_cache" ] || [ $(find "$_geoip_cache" -mtime +30 2>/dev/null | wc -l) -gt 0 ]; then
+    wget -O "$_geoip_cache" https://github.com/Dreamacro/maxmind-geoip/releases/latest/download/Country.mmdb
   fi
 }
 

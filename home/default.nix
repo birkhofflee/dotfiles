@@ -25,6 +25,8 @@ rec {
   home.username = "ale";
   home.homeDirectory = if isDarwin then "/Users/${home.username}" else "/home/${home.username}";
 
+  # This sets up env vars `XDG_CACHE_HOME`, `XDG_CONFIG_HOME`, `XDG_DATA_HOME` and `XDG_STATE_HOME`
+  # @see https://github.com/nix-community/home-manager/blob/master/modules/misc/xdg.nix
   xdg.enable = true;
 
   imports = [

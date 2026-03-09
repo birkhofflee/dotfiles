@@ -1,5 +1,8 @@
+{ config, ... }:
+
 {
-  home.file.".nanorc" = {
+  # GNU nano 7.0+ supports $XDG_CONFIG_HOME/nano/nanorc
+  xdg.configFile."nano/nanorc" = {
     text = ''
       # Editor:
       set morespace
@@ -11,7 +14,7 @@
 
       # Extra files:
       set backup
-      set backupdir "~/.nano-backups"
+      set backupdir "${config.xdg.dataHome}/nano/backups"
       set historylog
 
       # line numbers are copied with text,

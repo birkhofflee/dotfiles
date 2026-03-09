@@ -3,7 +3,7 @@
 # LS_COLORS
 # https://github.com/sharkdp/vivid?tab=readme-ov-file#usage
 # Cache vivid output to avoid regenerating on every shell start
-_vivid_cache="${HOME}/.cache/zsh/ls_colors"
+_vivid_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/ls_colors"
 if [[ ! -f "$_vivid_cache" ]] || [[ "$(command -v vivid)" -nt "$_vivid_cache" ]]; then
   mkdir -p "${_vivid_cache:h}"
   vivid generate catppuccin-macchiato > "$_vivid_cache"

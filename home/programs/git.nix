@@ -8,7 +8,7 @@ let
 
 in
 {
-  home.file.".config/git/allowed_signers".text = "${email} namespaces=\"git\" ${key}";
+  xdg.configFile."git/allowed_signers".text = "${email} namespaces=\"git\" ${key}";
 
   programs.git = {
     enable = true;
@@ -61,7 +61,7 @@ in
         format = "ssh";
 
         ssh = lib.mkMerge [
-          { allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers"; }
+          { allowedSignersFile = "${config.xdg.configHome}/git/allowed_signers"; }
           (lib.mkIf pkgs.stdenv.isDarwin {
             program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
           })

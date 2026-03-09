@@ -160,7 +160,7 @@
           rn = "date; echo && cal";
           oggi = "echo -n \"$(date '+%Y-%m-%d')\"";
           ds-destroy = "find . -name .DS_Store -delete"; # https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/bin/bin/ds-destroy
-          clear_history = "> ~/.zsh_history ; exec $SHELL -l";
+          clear_history = "> $ZDOTDIR/.zsh_history ; exec $SHELL -l";
           help = "cht.sh";
           du = "ncdu --color dark -rr -x --exclude .git --exclude node_modules";
           gist = "gh gist create";
@@ -225,7 +225,7 @@
         BAT_THEME = "Catppuccin Macchiato";
 
         # LLM (https://llm.datasette.io/en/stable/setup.html#configuration)
-        LLM_USER_PATH = "${config.home.homeDirectory}/.config/llm";
+        LLM_USER_PATH = "${config.xdg.configHome}/llm";
         LLM_MODEL = "openrouter/google/gemini-2.5-flash";
 
         # Zoxide (https://github.com/ajeetdsouza/zoxide/blob/main/README.md#environment-variables)
@@ -238,7 +238,7 @@
         PYTHONIOENCODING = "utf-8";
 
         # Enable persistent REPL history for `node`.
-        NODE_REPL_HISTORY = "${config.home.homeDirectory}/.node_history";
+        NODE_REPL_HISTORY = "${config.xdg.dataHome}/node_repl_history";
 
         # Use sloppy mode by default, matching web browsers.
         NODE_REPL_MODE = "sloppy";

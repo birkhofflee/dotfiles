@@ -296,7 +296,7 @@
         #   MaxMind "GeoLite2 City"
         #   IPinfo "IP to Country + ASN Database"
         #   IPinfo "IP to Geolocation Extended Database"
-        geoip-mmdb-file = "${config.home.homeDirectory}/.cache/geoip.mmdb";
+        geoip-mmdb-file = "${config.xdg.cacheHome}/geoip.mmdb";
 
         # How to render GeoIp information.
         #
