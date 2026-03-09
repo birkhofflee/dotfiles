@@ -112,6 +112,7 @@ zstyle ':completion:*:jobs' numbers true
 # disable sort when completing `git checkout`
 zstyle ":completion:*:git-checkout:*" sort false
 zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*:exa' sort false
 zstyle ':completion:*:docker' sort false
 zstyle ':completion:files' sort false

@@ -285,7 +285,6 @@ sudo ./result/sw/bin/darwin-rebuild switch --flake "$HOME/.config/dotfiles#AlexM
 ## TODOs
 
 * File completion
-  * List directories first like [this](https://github.com/Aloxaf/fzf-tab/pull/518)
   * When completing with fzf-tab, there's the slash in file names which i dont like
 * env check https://github.com/marlonrichert/zsh-launchpad/blob/main/.config/zsh/rc.d/04-env.zsh
 * check https://github.com/zhaofengli/nix-homebrew
