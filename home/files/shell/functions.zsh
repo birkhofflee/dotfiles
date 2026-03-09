@@ -287,24 +287,9 @@ function ns {
   eval "$cmd"
 }
 
-# Search in files, then pipe files with 10 line buffer into fzf preview using bat.
-# https://github.com/issmirnov/dotfiles/blob/df92f79a760740a7d389605f2f0f5085ca95a713/zsh/config/fzf.zsh#L149-L161
-# Notes:
-#  - if you want to replace ag for rg feel free (https://blog.burntsushi.net/ripgrep/)
-#  - Same goes for bat, although ccat and others are definitely worse
-#  - the $ext extraction uses a ZSH specific text globber
+# Grep using ripgrep and run enhancements on outputs
+# using delta
 function s {
-  local margin=5 # number of lines above and below search result.
-  local preview_cmd='search={};file=$(echo $search | cut -d':' -f 1 );'
-  preview_cmd+="margin=$margin;" # Inject value into scope.
-  preview_cmd+='line=$(echo $search | cut -d':' -f 2 );'
-  preview_cmd+='tail -n +$(( $(( $line - $margin )) > 0 ? $(($line-$margin)) : 0)) $file | head -n $(($margin*2+1)) |'
-  preview_cmd+='bat --paging=never --color=always --style=full --file-name $file --highlight-line $(($margin+1))'
-  local full=$(ag --silent "$*" \
-    | fzf --no-height --no-reverse --select-1 --exit-0 --preview-window up:$(($margin*2+1)) --preview $preview_cmd)
-  local file="$(echo $full | awk -F: '{print $1}')"
-  local line="$(echo $full | awk -F: '{print $2}')"
-  [ -n "$file" ] && \
-    (code -g "$file":$line || $VISUAL "$file" +$line)
+  rg --json -C 5 $1 | delta
 }
 
