@@ -201,7 +201,8 @@
         # Set the default Less options.
         # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
         # Remove -X and -F (exit if the content fits on one screen) to enable it.
-        LESS = "-F -g -i -M -R -S -w -X -z-4";
+        # Note: -z with negative numbers requires less >= 590; omit to avoid errors.
+        LESS = "-F -g -i -M -R -S -w -X";
 
         # Use lesspipe to read non-text files
         # @see https://github.com/wofr06/lesspipe?tab=readme-ov-file#4-supported-file-formats
@@ -213,6 +214,7 @@
         EDITOR = "hx"; # Managed by `programs.helix.defaultEditor`
         VISUAL = "hx";
         PAGER = "less";
+        MANPAGER = "bat -plman"; # https://github.com/sharkdp/bat?tab=readme-ov-file#man
 
         DO_NOT_TRACK = 1;
 
