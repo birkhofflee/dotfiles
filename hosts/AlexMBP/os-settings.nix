@@ -219,6 +219,14 @@
       "NSGlobalDomain" = {
         # Add a context menu item for showing the Web Inspector in web views
         "WebKitDeveloperExtras" = true;
+
+        # Date format in Finder
+        AppleICUDateFormatStrings = {
+          "1" = "yyyy-MM-dd";
+          "2" = "yyyy-MM-dd";
+          "3" = "yyyy-MM-dd";
+          "4" = "yyyy-MM-dd";
+        };
       };
 
       "com.apple.TextInputMenu" = {
@@ -384,6 +392,9 @@
       };
 
       "com.apple.finder" = {
+        # Use absolute dates (not relative like "yesterday")
+        # RelativeDates = false;
+
         # Keep the desktop clean
         ShowHardDrivesOnDesktop = false;
         ShowRemovableMediaOnDesktop = false;
