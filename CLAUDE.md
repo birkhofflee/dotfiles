@@ -81,6 +81,7 @@ The home-manager configuration is **shared across all hosts** and platform-agnos
 - Uses `pkgs.stdenv.isDarwin` to conditionally enable macOS-specific features
 - Session PATH configuration for Rust, Go, Python (uv), and platform-specific paths
 - Platform-specific activation scripts (e.g., macOS wallpaper, Library visibility)
+- `home/libs/wallpaper.nix`: Helper library for downloading and setting the Raycast wallpaper (used by activation scripts)
 
 ### Host Configurations
 
@@ -345,12 +346,15 @@ Order matters: home-manager activation scripts use `lib.hm.dag.entryAfter` to en
 ### Shell Configuration
 
 The shell setup uses several specialized files (all under `home/files/shell/`):
-- `home/files/shell/functions.zsh`: Custom functions (shrinkvid, impaste, timer, aic)
-- `home/files/shell/fzf.zsh`: fzf-tab configuration with smart previews
-- `home/files/shell/proxy.zsh`: Auto-propagated proxy settings
-- `home/files/shell/completions.zsh`: Custom completions
-- `home/files/shell/options.zsh`: Zsh options
-- `home/files/shell/colors.zsh`: Color definitions
+- `functions.zsh`: Custom functions (shrinkvid, impaste, timer, aic, gg, s, nr, ns)
+- `keys.zsh`: Custom Zsh keybindings (Ctrl+U, Alt+Q, Alt+Shift+S, etc.)
+- `fzf.zsh`: fzf-tab configuration with smart previews
+- `proxy.zsh`: Auto-propagated proxy settings from macOS system preferences
+- `completions.zsh`: Custom completions
+- `options.zsh`: Zsh options
+- `colors.zsh`: Color definitions
+- `op.zsh`: 1Password shell integration
+- `utilities/`: Additional shell utility scripts
 
 These are sourced in `home/programs/zsh.nix`.
 
@@ -360,27 +364,15 @@ As noted in the README: "Development Environments should be managed using nix-sh
 
 The `nix-index-database` and `comma` are configured to help locate and run commands without installation.
 
-## Configuration Philosophy
-
-1. **Declarative over imperative**: All system configuration should be in Nix files
-2. **Cross-platform by default**: Home configuration works on both macOS and NixOS
-3. **Separation of concerns**: System config in `hosts/`, user config in `home/`
-4. **Immutability**: Prefer Nix packages; use Homebrew only for GUI apps that self-update (macOS only)
-5. **Reproducibility**: Pin inputs in `flake.lock`, commit after updates
-6. **Modularity**: Separate concerns into individual `.nix` files that are auto-imported
-7. **Version flexibility**: Use overlays to access packages from different nixpkgs channels
-8. **Platform awareness**: Use `pkgs.stdenv.isDarwin` and `pkgs.stdenv.isLinux` for platform-specific config
-
 ## Troubleshooting
 
 ### After macOS Updates
 
-Follow the process in README.md lines 96-120:
-1. Upgrade Xcode CLI tools
-2. May need to uninstall and reinstall Nix
-3. System restart may be required
-4. Fix SSL certs if needed
-5. Review nix-darwin CHANGELOG
+1. `xcode-select --install` — upgrade Xcode CLI tools
+2. May need to uninstall and reinstall Nix (use the official installer, not the pkg)
+3. System restart may be required before `just switch` works
+4. If SSL errors appear, source `/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh`
+5. Review nix-darwin CHANGELOG for breaking changes
 
 ### Nix Store Issues
 

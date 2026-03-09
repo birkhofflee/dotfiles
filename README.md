@@ -8,27 +8,30 @@ My daily driver is macOS. There are also a NixOS homelab setup and NixOS VM setu
 
 ## Overview
 
-* [Nix](https://nixos.org/) enables reproducible builds.
-* On macOS, [nix-darwin](https://github.com/LnL7/nix-darwin) sets up the system configuration.
-* [home-manager](https://github.com/nix-community/home-manager) manages most of the user environment, including Homebrew packages.
+* [Nix flakes](https://nixos.org/) provide a reproducible, pin-exact configuration shared across all machines.
+* On macOS, [nix-darwin](https://github.com/LnL7/nix-darwin) manages system-level settings and packages declaratively.
+* [home-manager](https://github.com/nix-community/home-manager) manages the user environment (dotfiles, packages, shell) across both macOS and NixOS hosts.
 
 ## Highlights
 
-* [Ghostty](https://ghostty.org/) as the terminal emulator of choice
+* Terminal: [Ghostty](https://ghostty.org/), using its built-in splits and tabs instead of a multiplexer
+* Font: [Berkeley Mono™ Typeface](https://usgraphics.com/products/berkeley-mono)
 * On macOS, [it sets](home/libs/wallpaper.nix) a beautiful wallpaper from [Raycast](https://www.raycast.com/wallpapers)
-* Shell configuration:
-  * Zsh with a customized [Pure prompt](https://starship.rs/presets/pure-preset#pure-preset) using [Starship](https://starship.rs)
-  * Theme of choice: [Catppuccin Macchiato](https://catppuccin.com/) (Blue accent wherever available)
-  * A number of handy [aliases](home/programs/zsh.nix) and [functions](home/files/shell/functions.zsh)
+* General zsh configuration:
+  * Prompt: [Starship](https://starship.rs) with a customized [Pure prompt](https://starship.rs/presets/pure-preset#pure-preset)
+  * Theme: [Catppuccin Macchiato](https://catppuccin.com/) (Blue accent wherever available)
+  * A number of handy [aliases](home/programs/zsh.nix) and [functions](home/files/shell/functions.zsh) and [shell scripts](home/files/shell/utilities)
   * [Automatic](home/files/shell/proxy.zsh) shell proxy propagation from macOS settings
-  * Some shell integrations:
-    * [Atuin](https://github.com/atuinsh/atuin) for interactive shell history search
-    * [fzf shell integration](home/programs/fzf.nix)
-      * CTRL-T - Paste the path of selected files and directories onto the command-line
-      * ALT-C - cd into the selected directory
-    * [fzf-tab](https://github.com/Aloxaf/fzf-tab) for fuzzy-searching zsh completion results, including a [smart preview window](home/files/shell/fzf.zsh)
-    * [lazygit](https://github.com/jesseduffield/lazygit) ([a quick starter video](https://www.youtube.com/watch?v=CPLdltN7wgE))
-    * [nix-index-database](https://github.com/nix-community/nix-index-database) to locate the Nix package of a command, and [comma](https://github.com/nix-community/comma) to run the command without installing it.
+* CLI apps of choice:
+  * Editor: [Helix](https://helix-editor.com/)
+  * Shell History: [Atuin](https://github.com/atuinsh/atuin)
+  * Git TUI: [lazygit](https://github.com/jesseduffield/lazygit) ([a quick starter video](https://www.youtube.com/watch?v=CPLdltN7wgE))
+  * File Manager: [Yazi](https://yazi-rs.github.io/) (invoke with `y` for shell integration)
+  * Directory Navigation: [zoxide](https://github.com/ajeetdsouza/zoxide)
+  * [fzf shell integration](home/programs/fzf.nix)
+    * CTRL-T - Paste the path of selected files and directories
+    * ALT-C - cd into the selected directory
+  * [fzf-tab](https://github.com/Aloxaf/fzf-tab) for fuzzy-searching zsh completion results, including a [smart preview window](home/files/shell/fzf.zsh)
 
 ## Custom Shell Shortcuts & Functions
 
@@ -37,6 +40,9 @@ My daily driver is macOS. There are also a NixOS homelab setup and NixOS VM setu
 Custom Zsh keybindings are configured in [`home/files/shell/keys.zsh`](home/files/shell/keys.zsh).
 
 This is designed to work with default Ghostty macOS keybindings, or the iTerm2 Natural Text Editing keymappings preset.
+
+<details>
+<summary>Keybinding Reference</summary>
 
 | Key Combo | Description |
 |-----------|-------------|
@@ -48,6 +54,8 @@ This is designed to work with default Ghostty macOS keybindings, or the iTerm2 N
 | `Ctrl+X` then `Ctrl+E` | Edit current command line in `$EDITOR` |
 | `Alt+V` | Show next key combo's terminal code and description |
 | `Alt+Shift+S` | Prefix current/previous command with `sudo` |
+
+</details>
 
 ### Custom Functions
 
@@ -70,9 +78,9 @@ A non-exhaustive list:
 <summary>Development & Git</summary>
 
 - `gg <repo-url>` - Clone repo and cd into it
-- `aic` - Generate AI-powered conventional commit message from staged changes
+- `aic` - Generate conventional commit message using LLMs from staged changes
 - `e [file]` - Edit file with `$VISUAL`, or open current directory if no argument
-- `s <pattern>` - Search in files with fzf preview using bat
+- `s <pattern>` - Search in files and visualize with [Delta](https://github.com/dandavison/delta?tab=readme-ov-file)
 
 </details>
 
@@ -113,7 +121,7 @@ A non-exhaustive list:
 
 <details>
 
-<summary>Commonly used commands baked into justfile</summary>
+<summary>Commonly used commands baked into [justfile](justfile)</summary>
 
 ```shell
 # Switch darwin configuration
@@ -136,9 +144,8 @@ just update-input <flake-input-name>
 
 Note:
 
-1. Full Disk Access need to be granted for the Terminal app of choice (Ghostty), otherwise [some options will fail](https://github.com/nix-darwin/nix-darwin/issues/1049#issuecomment-2323300537)
-2. I currently use macOS Sequoia 15.7.2.
-3. Full Disk Access has to be enabled for the terminal app via `System Settings > Privacy & Security > Full Disk Access` to overcome `Could not write domain com.apple.universalaccess; exiting` when applying user defaults.
+1. I currently use macOS Sequoia 15.7.3.
+2. Full Disk Access has to be enabled for the terminal app via `System Settings > Privacy & Security > Full Disk Access` to overcome `Could not write domain com.apple.universalaccess; exiting` when applying user defaults.
 
 ```shell
 xcode-select --install
@@ -147,27 +154,19 @@ xcode-select --install
 mkdir $HOME/.config
 git clone https://github.com/birkhofflee/dotfiles $HOME/.config/dotfiles
 
-# Install nix
+# Install nix using the official beta intaller
+# The Lix installer could also be used: https://lix.systems/install/#on-any-other-linuxmacos-system
 # @see https://github.com/nix-darwin/nix-darwin/issues/1588
-curl --proto '=https' --tlsv1.2 -sSf -L https://artifacts.nixos.org/experimental-installer | \
-  sh -s -- install --no-confirm
+# @see https://github.com/NixOS/nix-installer?tab=readme-ov-file#installation-nix-installer-install
+curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install \
+  --explain --no-confirm --extra-conf "trusted-users = $USER"
 
 # Source the nix daemon so that the nix command is available immediately
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-# Add trusted users so the substituters work (faster initial build)
-sudo sh -c 'echo "trusted-users = ale" >> /etc/nix/nix.custom.conf'
-sudo launchctl kickstart -k system/org.nixos.nix-daemon
-
 # Temporarily mitigate 'too many open files' issue
 # @see https://github.com/NixOS/nix/issues/6557
 ulimit -n 4096
-
-# Build first instead of switching so nix-darwin doesn't complain about our nix settings above
-nix run nixpkgs#nh -- darwin build $HOME/.config/dotfiles --hostname AlexMBP --accept-flake-config
-
-# Remove the custom settings so we can activate using nix-darwin
-sudo mv /etc/nix/nix.custom.conf{,.before-nix-darwin}
 
 # Activate the configuration
 nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --accept-flake-config
@@ -286,8 +285,6 @@ sudo ./result/sw/bin/darwin-rebuild switch --flake "$HOME/.config/dotfiles#AlexM
 
 * File completion
   * When completing with fzf-tab, there's the slash in file names which i dont like
-* env check https://github.com/marlonrichert/zsh-launchpad/blob/main/.config/zsh/rc.d/04-env.zsh
-* check https://github.com/zhaofengli/nix-homebrew
 
 ## Articles
 
@@ -296,14 +293,7 @@ Here are some reads you might find interesting:
 * [Faster and enjoyable ZSH (maybe)](https://htr3n.github.io/2018/07/faster-zsh/)
 * [Comparison of ZSH frameworks and plugin managers](https://gist.github.com/laggardkernel/4a4c4986ccdcaf47b91e8227f9868ded)
 * [fzf examples (fzf wiki)](https://github.com/junegunn/fzf/wiki/examples)
-
-Some other dotfiles worth looking into:
-
-* https://github.com/malob/nixpkgs
-* https://github.com/ahmedelgabri/dotfiles
-* https://github.com/kornicameister/dotfiles/
-* https://github.com/Aloxaf/dotfiles/tree/master/zsh/.config/zsh
-* https://github.com/paulmillr/dotfiles
+* [A simple dotfiles template to kick-start/bootstrap your zsh config](https://github.com/marlonrichert/zsh-launchpad)
 
 Some completions setups:
 
@@ -315,6 +305,13 @@ Some completions setups:
 This project was heavily inspired by other open-source dotfiles. A non-exhaustive list:
 
 * https://github.com/mitchellh/nixos-config
+* https://github.com/malob/nixpkgs
+* https://github.com/ahmedelgabri/dotfiles
+* https://github.com/kornicameister/dotfiles/
+* https://github.com/Aloxaf/dotfiles/tree/master/zsh/.config/zsh
+* https://github.com/paulmillr/dotfiles
+* https://github.com/mashehu/dotfiles
+* https://github.com/finnurtorfa/zsh
 
 Credits are given in the source code where applicable.
 
