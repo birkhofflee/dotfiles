@@ -117,10 +117,10 @@
         "super+s=text:\\x1b[115;9u" # KKP encoding for Cmd+S (for Helix :write)
 
         # Moving around terminal buffer
-        "end=scroll_to_bottom"
-        "home=scroll_to_top"
-        "page_down=scroll_page_down"
-        "page_up=scroll_page_up"
+        "super+end=scroll_to_bottom"
+        "super+home=scroll_to_top"
+        "super+page_down=scroll_page_down"
+        "super+page_up=scroll_page_up"
 
         # Resizing splits
         "super+shift+0=equalize_splits"
@@ -148,6 +148,12 @@
         "super+3=goto_tab:3"
         "super+4=goto_tab:4"
         "super+5=goto_tab:5"
+
+        # Search
+        "performable:super+f=start_search"
+        "performable:escape=end_search"
+        "performable:super+g=navigate_search:next"
+        "performable:super+shift+g=navigate_search:previous"
 
         # Moving around in shell
         "super+left=text:\\x01"
@@ -197,6 +203,20 @@
       # QUICK TERMINAL
       # =========================
       quick-terminal-animation-duration = 0;
+
+      # =========================
+      # COMMAND FINISHED NOTIFICATIONS
+      # =========================
+      notify-on-command-finish = "unfocused";
+      notify-on-command-finish-action = "bell,notify";
+      notify-on-command-finish-after = "30s";
+
+      # =========================
+      # WORKING DIRECTORY INHERITANCE CONTROLS
+      # =========================
+      window-inherit-working-directory = false;
+      tab-inherit-working-directory = false;
+
     };
   };
 }
