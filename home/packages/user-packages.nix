@@ -320,6 +320,7 @@ in
       # Download & media
       lux
       yt-dlp
+      sox # used by Claude Code to record audio
 
       # ============================================================================
       # MEDIA PROCESSING
