@@ -131,6 +131,10 @@
           zj-quit = inputs.zj-quit.packages.${prev.stdenv.hostPlatform.system}.default;
         };
 
+        custom-packages = _: prev: {
+          age-with-plugins = prev.callPackage ./packages/age-with-plugins.nix { };
+        };
+
         # Temporary overlays
         tweaks = _: prev: {
           mactop = prev.mactop.overrideAttrs (_: {
