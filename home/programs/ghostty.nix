@@ -112,8 +112,8 @@
         "super+equal=increase_font_size:1"
         "super+-=decrease_font_size:1"
 
-        "super+c=copy_to_clipboard"
-        "super+v=paste_from_clipboard"
+        "performable:super+c=copy_to_clipboard"
+        "performable:super+v=paste_from_clipboard"
         "super+s=text:\\x1b[115;9u" # KKP encoding for Cmd+S (for Helix :write)
 
         # Moving around terminal buffer
@@ -123,11 +123,11 @@
         "super+page_up=scroll_page_up"
 
         # Resizing splits
-        "super+shift+0=equalize_splits"
-        "super+shift+arrow_down=resize_split:down,50"
-        "super+shift+arrow_left=resize_split:left,50"
-        "super+shift+arrow_right=resize_split:right,50"
-        "super+shift+arrow_up=resize_split:up,50"
+        "performable:super+shift+0=equalize_splits"
+        "performable:super+shift+arrow_down=resize_split:down,50"
+        "performable:super+shift+arrow_left=resize_split:left,50"
+        "performable:super+shift+arrow_right=resize_split:right,50"
+        "performable:super+shift+arrow_up=resize_split:up,50"
 
         # Moving around splits
         "super+shift+h=goto_split:left"
@@ -164,9 +164,13 @@
 
         "super+backspace=text:\\x15"
 
-        # Undo & Redo
+        # Undo & Redo in shell
         "super+z=text:\\x1f"
         "super+shift+z=text:\\x18\\x1f"
+
+        # @see https://ghostty.org/docs/config/keybind/reference#undo
+        # "super+z=undo"
+        # "super+shift+z=redo"
       ];
 
       # =========================
