@@ -211,9 +211,11 @@
         LESSQUIET = "1"; # Suppress lesspipe help messages in output
 
         # Editor
+        # EDITOR is the default command to use for launching a text editor inside the terminal
+        # VISUAL is the default command to use for launching a text editor with a GUI; not necessarily inside the terminal
         EDITOR = "hx"; # Managed by `programs.helix.defaultEditor`
         VISUAL = "hx";
-        PAGER = "less";
+        PAGER = "less"; # default command to use for browsing text inside the terminal
         MANPAGER = "bat -plman"; # https://github.com/sharkdp/bat?tab=readme-ov-file#man
 
         DO_NOT_TRACK = 1;

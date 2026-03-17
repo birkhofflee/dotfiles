@@ -39,6 +39,7 @@ rec {
   # However, since expressions like ~ or * are escaped,
   # they will end up in the PATH verbatim.
   #
+  # `tv path` is useful to inspect the binaries in PATHs.
   # @see https://nix-community.github.io/home-manager/options.xhtml#opt-home.sessionPath
   home.sessionPath = [
     # Rust

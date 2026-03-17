@@ -27,6 +27,8 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   ├── AlexMBP/          # macOS host (nix-darwin)
 │   │   ├── default.nix   # System configuration
 │   │   ├── os-settings.nix
+│   │   ├── age-identity.txt  # 1Password age plugin identity for decryption
+│   │   ├── ssh-config.nix    # agenix HM module config + secret declarations
 │   │   └── packages/
 │   ├── nixos-vm-aarch64/       # VMware Fusion NixOS VM
 │   │   └── default.nix   # System configuration
@@ -40,6 +42,13 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   ├── files/             # Config files (auto-imported)
 │   ├── packages/          # User packages
 │   └── libs/              # Helper libraries
+├── modules/               # Reusable NixOS modules
+│   └── specialization/    # NixOS desktop environment specializations (gnome-ibus, i3, plasma)
+├── packages/              # Custom Nix derivations (exposed via custom-packages overlay)
+│   └── age-with-plugins.nix  # age + age-plugin-1p wrapper with umask fix
+├── secrets/               # agenix-encrypted secrets
+│   ├── secrets.nix        # Public key declarations for each secret
+│   └── *.age              # Encrypted secret files
 └── justfiles/             # Modular just recipes
     ├── vm-vmware-fusion.just  # VMware Fusion VM management
     └── vm-orbstack.just       # OrbStack VM management
@@ -53,12 +62,12 @@ The repository uses a flake-based architecture defined in `flake.nix`:
 - **Overlays system**: Provides access to different package versions and custom packages
   - `pkgs-master`, `pkgs-stable`, `pkgs-unstable`: Different nixpkgs versions
   - `apple-silicon`: Provides x86_64 packages on aarch64-darwin via `pkgs-x86`
+  - `rust`: Rust toolchain overlay from `rust-overlay` (provides `pkgs.rust-bin.*`)
   - `zellij-plugins`: Custom Zellij plugins (zjstatus, zjstatus-hints, zj-quit)
-  - `fonts`: Custom fonts including Berkeley Mono (requires secrets) and Commit Mono NF
-  - `custom-packages`: Local derivations (e.g., `ocr` tool at `packages/ocr/ocr.nix`)
+  - `custom-packages`: Local derivations in `packages/` (e.g., `age-with-plugins` wrapping age with the 1Password plugin)
   - `tweaks`: Temporary per-package overrides (e.g., pinned `mactop` version)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
-- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `nixfmt-tree`, `nixos-rebuild-ng`, `claude-code`, and sets `NH_FLAKE="."`
+- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `nixfmt-tree`, `nixos-rebuild-ng`, `claude-code`, `ssh-copy-id`, and sets `NH_FLAKE="."`
 
 ### Configuration Philosophy
 
@@ -156,6 +165,8 @@ For NixOS (evaluation only from macOS):
 nix eval ".#nixosConfigurations.nixos-vm-aarch64.config.system.name"
 nix eval ".#nixosConfigurations.nixos-orbstack.config.system.name"
 ```
+
+> **Note:** `nix build "."` uses the git index (staged files only). If you have unstaged modifications, use `nix build "path:.#..."` to include working tree changes.
 
 After switching, verify services are running correctly and check for any activation errors.
 
@@ -297,6 +308,7 @@ When adding new VM-related or specialized commands, create a new `.just` file in
 - `nix-misc`: Nix store maintenance (optimize, repair)
 - `cache`: Cachix operations (cache-darwin)
 - `code-quality`: Code formatting (format)
+- `secrets`: Secret management (edit-secret)
 
 ### Overlay System
 
@@ -308,15 +320,20 @@ When adding packages from different nixpkgs versions, use the overlay system:
 
 ### Secrets Management
 
-A private `dotfiles.secret` repository is referenced in `flake.nix`:
-```nix
-secrets = {
-  url = "git+ssh://git@github.com/BirkhoffLee/dotfiles.secret.git?ref=main&shallow=1";
-  flake = false;
-};
+Secrets are managed with **agenix** (age-encrypted secrets checked into git).
+
+- **`secrets/secrets.nix`**: Declares which public keys can decrypt each `.age` file. The `ale` key is the SSH ed25519 public key corresponding to the 1Password identity.
+- **`secrets/*.age`**: Encrypted secret files (ssh-config, tailscale authkey, cloudflared credentials, etc.).
+- **`hosts/AlexMBP/age-identity.txt`**: The `AGE-PLUGIN-1P` identity used to decrypt secrets on AlexMBP. This is host-specific and lives alongside the agenix config.
+- **`hosts/AlexMBP/ssh-config.nix`**: Configures the agenix home-manager module — sets `age.package`, `age.identityPaths`, declares secrets, and overrides the launchd agent's `KeepAlive` (removing `Crashed = false` which would otherwise cause the agent to loop on every clean exit).
+- **`packages/age-with-plugins.nix`**: Custom `age` derivation that wraps `age-plugin-1p` with a `umask 077` reset before exec. Required because the agenix mount-secrets script sets `umask u=r,g=,o=` in a subshell, which would otherwise cause `op` to create its session file as `0400` (breaking subsequent invocations).
+
+To edit a secret (uses 1Password for the decryption identity):
+```bash
+just edit-secret <file.age>   # runs from secrets/ directory
 ```
 
-This is used for sensitive files like proprietary fonts (Berkeley Mono). Access requires proper SSH credentials.
+A private `dotfiles.secret` flake input is also referenced for sensitive files requiring SSH credentials to access.
 
 ### Homelab-Specific Architecture
 
