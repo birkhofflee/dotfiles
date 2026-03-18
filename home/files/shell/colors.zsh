@@ -12,8 +12,8 @@ export LS_COLORS="$(<$_vivid_cache)"
 unset _vivid_cache
 
 # grep colors
-export GREP_COLOR='37;45'           # BSD.
-export GREP_COLORS="mt=$GREP_COLOR" # GNU.
+export GREP_COLOR='1;32'                        # BSD — bold green (match text)
+export GREP_COLORS="mt=1;32:fn=35:ln=33:se=36"  # GNU — mt: match, fn: filename, ln: line number, se: separator
 
 # Colored man pages — hardcoded ANSI sequences (avoids 15 tput subprocess forks, saves ~29ms)
 # Equivalent tput commands are noted inline for reference
