@@ -49,7 +49,7 @@
       # theme = "TokyoNight Storm";
       # theme = "Snazzy Soft";
       theme = "Catppuccin Macchiato";
-      minimum-contrast = 1.1;
+      minimum-contrast = 1.3;
 
       # =========================
       # FONT SETTINGS
