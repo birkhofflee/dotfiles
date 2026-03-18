@@ -358,6 +358,7 @@ in
       commit-mono-nf
       noto-fonts-cjk-sans-static
       monaspace
+      sarasa-gothic
     ]
     # macOS-only packages
     ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [

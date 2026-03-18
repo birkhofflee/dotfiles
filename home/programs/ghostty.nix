@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   # This is an attempt to fix a rare bug where after we go into a new
   # zellij session, the shell is completely broken with the message
@@ -60,33 +60,44 @@
         # "SF Mono"
         # "IBM Plex Mono"
         # "JuliaMono" # For the glyph. https://juliamono.netlify.app/
-        "Noto Sans" # as fallback for CJK characters
+        # "Noto Sans"
+        "Sarasa Mono TC" # as fallback for CJK characters
       ];
-      # Font width (60 to 100)
-      #  60 = UltraCondensed
-      #  70 = ExtraCondensed
-      #  80 = Condensed
-      #  90 = SemiCondensed
-      # 100 = Normal
-      #
-      # Font weight (100 to 900)
-      # 100 = Thin
-      # 200 = ExtraLight
-      # 300 = Light
-      # 350 = SemiLight
-      # 400 = Regular
-      # 500 = Medium
-      # 600 = SemiBold
-      # 700 = Bold
-      # 800 = ExtraBold
-      # 900 = Black
+
+      # This requires the use of the variable font.
+      # @see https://usgraphics.com/catalog/FX-102
       font-variation = [
-        "wdth=100"
-        "wght=450"
+        "wdth=100" # it's fixed at 100. Purchase of "Master Fonts" is required for other options
+        # On macOS, font-thicken is used instead.
+        (if pkgs.stdenv.isDarwin then "wght=400" else "wght=450")
+      ];
+      # CJK character mapping
+      font-codepoint-map = [
+        # CJK Symbols & Punctuation (shared: 。「」…)
+        "U+3000-U+303F=Sarasa Mono TC"
+        # CJK Unified Ideographs (main block — TC glyphs)
+        "U+4E00-U+9FFF=Sarasa Mono TC"
+        # CJK Extension A
+        "U+3400-U+4DBF=Sarasa Mono TC"
+        # CJK Compatibility Ideographs
+        "U+F900-U+FAFF=Sarasa Mono TC"
+        # Japanese: Hiragana, Katakana, Katakana Phonetic Extensions
+        "U+3040-U+309F=Sarasa Mono J"
+        "U+30A0-U+30FF=Sarasa Mono J"
+        "U+31F0-U+31FF=Sarasa Mono J"
+        # Korean: Hangul Jamo, Compatibility Jamo, Syllables
+        "U+1100-U+11FF=Sarasa Mono K"
+        "U+3130-U+318F=Sarasa Mono K"
+        "U+AC00-U+D7AF=Sarasa Mono K"
       ];
       font-size = 15;
-      # bold-is-bright = true
-      # font-thicken = true
+      bold-color = "bright";
+      # Use Apple font smoothing to make texts look way clearer on macOS.
+      # This also apparently make texts brighter.
+      # @see https://developer.apple.com/documentation/coregraphics/cgcontext/setshouldsmoothfonts(_:)?changes=_3_11&language=objc
+      # @see https://github.com/ghostty-org/ghostty/blob/d3bd224081d3c7c5ee54df6815e44f0b5d25357b/src/font/face/coretext.zig#L478-L483
+      font-thicken = lib.mkIf pkgs.stdenv.isDarwin true;
+      font-thicken-strength = lib.mkIf pkgs.stdenv.isDarwin 64;
 
       # =========================
       # COMPATIBILITY
