@@ -94,6 +94,7 @@
 
           # Disable globbing
           curl = "noglob curl";
+          http = "xh";
           wget = "noglob wget";
           fc = "noglob fc";
           find = "noglob find";

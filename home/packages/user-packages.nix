@@ -135,12 +135,12 @@ in
       # NETWORKING & SECURITY
       # ============================================================================
 
-      curlie
-      curl
+      # curlie  # redundant: xh covers this
+      # curl  # redundant: use system curl or xh; aliases in zsh.nix still reference noglob curl
       xh
       mosh
       autossh
-      magic-wormhole # p2p file transfer
+      # magic-wormhole  # redundant: croc covers p2p file transfer
       croc # p2p file transfer
       # putty # FIXME: https://github.com/NixOS/nixpkgs/pull/449689
 
@@ -211,7 +211,7 @@ in
 
       # Web development
       # caddy
-      httpie
+      # httpie  # redundant: xh covers this
 
       # Code quality
       dprint
@@ -228,7 +228,7 @@ in
       # Shell enhancements
       zsh-completions
       zsh-fast-syntax-highlighting
-      emojify
+      # emojify
       atuin
       progress
       pv # progress bar for a pipe
@@ -238,8 +238,8 @@ in
       # Terminal utilities
       tmux
       htop
-      gotop
-      procs
+      # gotop  # redundant: htop/bottom cover this
+      # procs  # redundant: htop/bottom cover this
       viddy
       lesspipe
       glow # markdown in the terminal (https://github.com/charmbracelet/glow)
@@ -256,7 +256,7 @@ in
       coreutils-prefixed
       eza
       rsync
-      tree
+      # tree  # redundant: `tree` alias uses eza --tree
       dust # du in rust (https://github.com/bootandy/dust)
       qpdf
       html-tidy
@@ -275,7 +275,7 @@ in
       fd
       fzf
       ripgrep
-      silver-searcher
+      # silver-searcher  # redundant: use rg
       pdfgrep
 
       # Data Science
@@ -310,15 +310,15 @@ in
 
       # Recording & presentation
       asciinema
-      slides
+      # slides
 
       # Documentation & help
       cht-sh
       tldr
 
       # Fun & misc
-      cowsay
-      lolcat
+      # cowsay
+      # lolcat
       fastfetch
 
       # Notifications
@@ -350,7 +350,7 @@ in
       # GitHub CLI Tools
       # @see https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md#should-i-use-gh-or-hub
       gh
-      hub
+      # hub  # redundant: use gh
 
       # Nix Tools
       nh # https://github.com/nix-community/nh
@@ -359,7 +359,7 @@ in
       # ============================================================================
       # FONTS
       # ============================================================================
-      lcdf-typetools
+      # lcdf-typetools
       berkeley-mono
       berkeley-mono-variable
       commit-mono-nf
