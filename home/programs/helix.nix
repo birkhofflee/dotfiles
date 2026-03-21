@@ -14,6 +14,13 @@
           args = ["fmt" "--config" "${config.xdg.configHome}/dprint/dprint.jsonc" "--stdin" "md"];
         };
       }];
+      language-server = {
+        rust-analyzer = {
+          config = {
+            check.command = "clippy";
+          };
+        };
+      };
     };
 
     # Catppuccin Macchiato without Italics
@@ -154,7 +161,7 @@
       theme = "catppuccin_macchiato_no_italics";
 
       editor = {
-        mouse = false;
+        mouse = true;
         cursorline = true;
         cursor-shape.insert = "bar";
         line-number = "relative";
@@ -179,15 +186,16 @@
             "file-encoding"
           ];
         };
-        # Recommended default diagnostics settings
+
+        # Diagnostics settings
         # @see https://docs.helix-editor.com/editor.html#editorinline-diagnostics-section
-        end-of-line-diagnostics = "hint";
         inline-diagnostics = {
           cursor-line = "warning"; # show warnings and errors on the cursorline inline
+          other-lines = "hint";
         };
 
         # Show hidden files in File Picker
-        file-picker.hidden = false;
+        # file-picker.hidden = false;
 
         auto-save = {
           focus-lost = true;
@@ -200,6 +208,10 @@
         };
         soft-wrap = {
           enable = true;
+        };
+        lsp = {
+          display-inlay-hints = true;
+          display-progress-messages = true;
         };
       };
 
@@ -217,17 +229,21 @@
         "X" = "select_line_above"; # Shift-x undos the last X
 
         # Move line up/down
-        "A-down" = [
+        "A-j" = [
           "extend_to_line_bounds"
           "delete_selection"
           "paste_after"
         ];
-        "A-up" = [
+        "A-k" = [
           "extend_to_line_bounds"
           "delete_selection"
           "move_line_up"
           "paste_before"
         ];
+        # Copy line down
+        "C-A-j" = ["normal_mode" "extend_to_line_bounds" "yank" "open_below" "replace_with_yanked" "collapse_selection" "normal_mode"];
+        # Copy line up
+        "C-A-k" = ["normal_mode" "extend_to_line_bounds" "yank" "open_above" "replace_with_yanked" "collapse_selection" "normal_mode"];
 
         "space" = {
           # Print the current line's git blame information to the statusline.

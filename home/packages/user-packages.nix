@@ -18,6 +18,13 @@ in
       go
       golangci-lint
 
+      # Rust
+      # Not using overlay
+      # `rustup component add rust-analyzer` is required for LSP to work
+      # @see https://discourse.nixos.org/t/why-should-i-use-overlay-for-rust-devshell/57082/2
+      rustup
+      cargo-edit
+
       # Node.js
       nodejs
       yarn
@@ -61,7 +68,7 @@ in
       ruff # python
       R
       ruby-lsp # Ruby
-      # rust-bin.stable.latest.default # rust
+      lldb # rust debugging (provides lldb-dap for Helix DAP)
       solc # solidity
       svelte-language-server # svelte
       systemd-lsp # systemd

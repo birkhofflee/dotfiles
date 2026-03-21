@@ -40,9 +40,6 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
     flake-utils.url = "github:numtide/flake-utils";
 
     # _1password-shell-plugins.url = "github:1Password/shell-plugins";
@@ -122,8 +119,6 @@
           };
 
         # External flakes below
-
-        rust = inputs.rust-overlay.overlays.default;
 
         zellij-plugins = _: prev: {
           zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
