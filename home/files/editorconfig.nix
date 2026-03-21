@@ -8,16 +8,18 @@
         "end_of_line" = "lf";
         "insert_final_newline" = "true";
         "indent_style" = "space";
-        "indent_size" = 2;
       };
 
       "*.py" = {
-        "indent_style" = "space";
         "indent_size" = 4;
       };
 
       "*.go" = {
         "indent_style" = "tab";
+      };
+
+      "*.{js,ts,jsx,cjs}" = {
+        "indent_size" = 2;
       };
 
       "Makefile" = {
