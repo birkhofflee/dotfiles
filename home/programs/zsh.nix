@@ -4,7 +4,14 @@
   lib,
   ...
 }:
-
+let
+  catppuccinFsh = pkgs.fetchFromGitHub {
+    owner = "catppuccin";
+    repo = "zsh-fsh";
+    rev = "a9bdf479f8982c4b83b5c5005c8231c6b3352e2a";
+    sha256 = "sha256-WeqvsKXTO3Iham+2dI1QsNZWA8Yv9BHn1BgdlvR8zaw=";
+  };
+in
 {
   imports = [ ../files/shell.nix ];
 
@@ -440,4 +447,12 @@
       }
     ];
   };
+
+  xdg.configFile."fsh/catppuccin-macchiato.ini".source =
+    "${catppuccinFsh}/themes/catppuccin-macchiato.ini";
+
+  home.activation.fastSyntaxHighlightingTheme =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD ${pkgs.zsh}/bin/zsh -c 'source ${pkgs.zsh-fast-syntax-highlighting}/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh && XDG_CONFIG_HOME=${config.xdg.configHome} fast-theme XDG:catppuccin-macchiato 2>/dev/null || true'
+    '';
 }
