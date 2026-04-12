@@ -112,6 +112,7 @@
         ApplePerAppLanguageSelectionBundleIdentifiers = [
           "com.apple.Music"
           "com.nssurge.surge-mac"
+          "com.wuziqi.SenPlayer"
         ];
 
         AppleICUNumberSymbols = {
@@ -534,15 +535,13 @@
         shouldHideOnLaunch = 0;
       };
 
-      "com.jordanbaird.Ice" = {
-        ShowIceIcon = 0;
-        ShowOnClick = 1;
-        ShowOnHover = 1;
-        ShowOnScroll = 0;
-        ShowSectionDividers = 1;
+      "com.nssurge.surge-mac" = {
+        AppleLanguages = [
+          "zh-Hant-US"
+        ];
       };
 
-      "com.nssurge.surge-mac" = {
+      "com.wuziqi.SenPlayer" = {
         AppleLanguages = [
           "zh-Hant-US"
         ];

@@ -80,6 +80,5 @@
     # ── Documentation & misc ──────────────────────────────────────────────
     tldr cht-sh
     fastfetch # system info
-    httpie # http/https CLI (used in lip() function)
   ];
 }
