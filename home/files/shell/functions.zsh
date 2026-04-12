@@ -243,7 +243,7 @@ function pingu {
 
 # Lookup an IP address
 function lip {
-  http -b https://api.birkhoff.me/v3/ip/$1
+  xhs -b api.birkhoff.me/v3/ip/$1
 }
 
 # Lookup IP address of an A record of a domain
