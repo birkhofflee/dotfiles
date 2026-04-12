@@ -2,6 +2,15 @@
 
 # `functions.zsh` provides helper functions and utilities.
 
+function install_ssh_key {
+  # Add SSH pubkey and make sure pubkey auth is enabled
+  ssh-add -L | grep "id_ed25519" | ssh "$1" "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo >> ~/.ssh/authorized_keys && cat >> ~/.ssh/authorized_keys && chmod  600 ~/.ssh/authorized_keys && (grep -qE '^#?PubkeyAuthentication' /etc/ssh/sshd_config && sed -i 's/^#*PubkeyAuthentication.*/PubkeyAuthentication yes/'               /etc/ssh/sshd_config || echo 'PubkeyAuthentication yes' | tee -a /etc/ssh/sshd_config) && systemctl restart sshd"
+
+  # Add Ghostty terminfo
+  # @see https://ghostty.org/docs/help/terminfo#ssh
+  infocmp -x xterm-ghostty | ssh "$1" -- tic -x -
+}
+
 # Send a notification through the terminal app
 # using OSC 777
 function notify_osc777() {
