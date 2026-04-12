@@ -38,7 +38,6 @@
       "imageoptim"
       "imazing"
       "input-source-pro"
-      "jordanbaird-ice"
       "keka"
       "key-codes"
       "keycastr"
@@ -46,6 +45,7 @@
       "macfuse"
       "menuwhere"
       "mounty"
+      "netbirdio/tap/netbird-ui"
       "notion"
       "obs"
       "obsidian"
@@ -61,6 +61,7 @@
       "superwhisper"
       "suspicious-package"
       "teamviewer"
+      "thaw"
       "thebrowsercompany-dia"
       "telegram"
       "transmission"
@@ -86,7 +87,6 @@
       "Gifski" = 1351639930;
       "Goodnotes" = 1444383602;
       "Hyperduck" = 6444667067;
-      "Infuse" = 1136220934;
       "Keynote" = 361285480;
       "LINE" = 539883307;
       "Mactracker" = 430255202;
