@@ -24,6 +24,8 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     # For provisioning NixOS machines with nixos-anywhere
+    nixos-anywhere.url = "github:nix-community/nixos-anywhere";
+    nixos-anywhere.inputs.nixpkgs.follows = "nixpkgs-unstable";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
@@ -128,6 +130,9 @@
 
         custom-packages = _: prev: {
           age-with-plugins = prev.callPackage ./packages/age-with-plugins.nix { };
+          nixos-anywhere = prev.callPackage ./packages/nixos-anywhere-patched.nix {
+            nixos-anywhere = inputs.nixos-anywhere.packages.${prev.stdenv.hostPlatform.system}.nixos-anywhere;
+          };
         };
 
         # Temporary overlays
@@ -176,7 +181,7 @@
       let
         pkgs = import inputs.nixpkgs-unstable {
           inherit system;
-          inherit (nixpkgsDefaults) config;
+          inherit (nixpkgsDefaults) config overlays;
         };
       in
       {
@@ -187,6 +192,7 @@
             claude-code
             nh
             nixfmt-tree
+            nixos-anywhere
             nixos-rebuild-ng
             inputs.agenix.packages.${system}.default
           ];

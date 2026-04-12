@@ -1,0 +1,54 @@
+diff --git a/src/nixos-anywhere.sh b/src/nixos-anywhere.sh
+index bf62667..b0e8ca7 100755
+--- a/src/nixos-anywhere.sh
++++ b/src/nixos-anywhere.sh
+@@ -833,6 +833,42 @@
+   fi
+ }
+
++setupZram() {
++  step "Setting up zram swap and freeing memory for kexec on low-memory VPS"
++  runSsh bash <<'ZRAM'
++    # Enable zram swap so the running system can page out as much as possible
++    modprobe zram 2>/dev/null || true
++    if [ -b /dev/zram0 ]; then
++      mem_total=$(grep MemTotal /proc/meminfo | awk '{print $2}')
++      zram_size=$((mem_total * 1024))
++      echo zstd > /sys/block/zram0/comp_algorithm 2>/dev/null || echo lz4 > /sys/block/zram0/comp_algorithm 2>/dev/null || true
++      echo $zram_size > /sys/block/zram0/disksize
++      mkswap /dev/zram0
++      swapon -p 100 /dev/zram0
++      echo "zram swap enabled: $(cat /proc/swaps | grep zram)"
++    else
++      echo "zram module not available, skipping"
++    fi
++
++    # Stop non-essential services to reclaim RAM before kexec loads the kernel.
++    # kexec --load must pin the bzImage + initrd in physical RAM; swap cannot help.
++    for svc in fail2ban docker containerd podman crio snapd ModemManager avahi-daemon bluetooth; do
++      systemctl stop "$svc" 2>/dev/null || true
++    done
++
++    # Encourage the kernel to page out as much of the running system as possible
++    # before we lock down pages for the new kernel image.
++    sysctl -w vm.swappiness=100 2>/dev/null || true
++
++    # Drop dentries, inodes, and clean page cache to maximise free RAM.
++    sync
++    echo 3 > /proc/sys/vm/drop_caches
++
++    free_mb=$(awk '/MemAvailable/ {printf "%d", $2/1024}' /proc/meminfo)
++    echo "Available RAM before kexec load: ${free_mb} MB"
++ZRAM
++}
++
+ runDisko() {
+   local diskoScript=$1
+   for path in "${!diskEncryptionKeys[@]}"; do
+@@ -1000,6 +1036,7 @@
+   fi
+
+   if [[ ${phases[kexec]} == 1 ]]; then
++    setupZram
+     runKexec
+   fi

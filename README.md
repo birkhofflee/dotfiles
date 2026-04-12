@@ -180,15 +180,17 @@ nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --
 
 [nixos-anywhere](https://github.com/nix-community/nixos-anywhere/) is used to remotely setup NixOS host. The machine to provision should be running Linux with kexec support, or simply a minimal NixOS installer.
 
+A [patch](packages/patches/nixos-anywhere-zram.patch) is used to support use of the tool on machines with low amount of RAM.
+
 [nixos-facter](https://github.com/nix-community/nixos-facter) is used in conjunction to dynamically determine configurations from hardware.
 
 ```shell
 # CAUTION: This IMMEDIATELY erases target host, repartitions it, installs NixOS
 # and applies this flake configuration.
-nix run github:nix-community/nixos-anywhere -- \
+nixos-anywhere -- \
   --generate-hardware-config nixos-facter ./hosts/homelab-nuc/facter.json \
-  --flake .#homelab-nuc \
-  --target-host root@<machine-ip> \
+  --flake ".#homelab-nuc" \
+  --target-host root@[machine-ip] \
   --build-on remote
 ```
 
