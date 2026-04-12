@@ -228,6 +228,10 @@ in
 
         DO_NOT_TRACK = 1;
 
+        # Surpress direnv verbose logging
+        # @seehttps://github.com/direnv/direnv/issues/1418#issuecomment-2820125413
+        DIRENV_LOG_FORMAT = "";
+
         ## External Tools
 
         # bat

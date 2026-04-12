@@ -9,4 +9,7 @@
     # @see https://github.com/direnv/direnv/wiki/Nix
     nix-direnv.enable = true;
   };
+
+  # @see https://github.com/direnv/direnv/issues/1418#issuecomment-2820125413
+  xdg.configFile."direnv/direnv.toml".text = "";
 }
