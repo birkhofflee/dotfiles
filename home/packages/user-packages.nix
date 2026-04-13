@@ -377,8 +377,6 @@ in
       mactop
       osx-cpu-temp
 
-      ryubing
-
       pinentry_mac
       pam-reattach
       reattach-to-user-namespace
