@@ -174,7 +174,6 @@ in
           gist = "gh gist create";
 
           # Network
-          get = "curl --continue-at - --location --progress-bar --remote-name --remote-time";
           dig = "kdig";
           q = "ssh -v";
           testdown = "http https://mensura.cdn-apple.com/api/v1/gm/config | jq -r .urls.large_https_download_url | xargs wget -O /dev/null"; # Test download speed from Apple CDN

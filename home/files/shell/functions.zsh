@@ -297,6 +297,20 @@ function ns {
   eval "$cmd"
 }
 
+# Download a media (yt-dlp) or a generic file (wget/curl)
+function get {
+  local url="$1"
+
+  # Check if URL looks like a media site yt-dlp handles well
+  if command -v yt-dlp > /dev/null && [[ "$url" =~ (youtube\.com|youtu\.be|vimeo\.com|twitch\.tv|twitter\.com|instagram\.com|tiktok\.com) ]]; then
+    yt-dlp --continue --progress "$@"
+  elif command -v wget > /dev/null; then
+    wget --continue --progress=bar --timestamping "$@"
+  else
+    curl --continue-at - --location --progress-bar --remote-name --remote-time "$@"
+  fi
+}
+
 # Grep using ripgrep and run enhancements on outputs
 # using delta
 function s {
