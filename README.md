@@ -1,8 +1,16 @@
 # dotfiles
 
-My [nix-darwin](https://github.com/nix-darwin/nix-darwin) / NixOS configuration.
+> Acquiring good taste comes through using various things, discarding the ones you don't like and keeping the ones you do. if you never try various things, you will not acquire good taste.
+>
+> And what I mean by taste here is simply the honed ability to distinguish mediocrity from excellence. This will be highly subjective, and not everyone's taste will be the same, but that is the point, you should NOT have the same taste as someone else.
+>
+> Question the status quo, experiment, break things, do this several times, do this everyday and keep doing it.
+>
+> — *[If you don't tinker, you don't have taste](https://seated.ro/blog/tinkering-a-lost-art)*
 
-My daily driver is macOS. There are also a NixOS homelab setup and NixOS VM setups (for experiments).
+My [nix-darwin](https://github.com/nix-darwin/nix-darwin) and NixOS configuration.
+
+My daily driver is macOS because I prefer the Apple desktop environment. There are also a NixOS homelab setup and NixOS VM setups mainly for experiments.
 
 ![Screenshot of fastfetch on M1 Pro running macOS Sequoia](./assets/screenshot-alexmbp-fastfetch.png)
 
