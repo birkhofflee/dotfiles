@@ -21,6 +21,29 @@
         "type": "github"
       }
     },
+    "apex-discord-bot": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775712564,
+        "narHash": "sha256-Fd6j5RHMFF5BZ4nfWQ3vPQJr3Df0/DsPyFPZyVIRK2I=",
+        "owner": "birkhofflee",
+        "repo": "apex-discord-bot",
+        "rev": "3f0eb617f293f301157ad4a30c59bd0b59f85e7e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "birkhofflee",
+        "repo": "apex-discord-bot",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1731098351,
@@ -559,6 +582,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "apex-discord-bot": "apex-discord-bot",
         "disko": "disko",
         "flake-utils": "flake-utils",
         "helix": "helix",

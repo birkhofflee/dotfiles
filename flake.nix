@@ -56,6 +56,10 @@
       url = "git+ssh://git@github.com/BirkhoffLee/dotfiles.secret.git?ref=main&shallow=1";
       flake = false;
     };
+
+    apex-discord-bot.url = "github:birkhofflee/apex-discord-bot";
+    apex-discord-bot.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    apex-discord-bot.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs =

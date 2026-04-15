@@ -22,6 +22,7 @@ in
     ./services/rybbit
     ./services/caddy
     ./services/cloudflared
+    ./services/apex-discord-bot
   ];
 
   hardware.enableRedistributableFirmware = lib.mkDefault true;

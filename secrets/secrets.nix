@@ -17,6 +17,10 @@ in
     publicKeys = withHomelab;
     armor = true;
   };
+  "apex-discord-bot.age" = {
+    publicKeys = withHomelab;
+    armor = true;
+  };
   "ssh-config.age" = {
     publicKeys = [
       ale
