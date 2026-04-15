@@ -189,7 +189,6 @@
           packages = with pkgs; [
             just
             ssh-copy-id
-            claude-code
             nh
             nixfmt-tree
             nixos-anywhere

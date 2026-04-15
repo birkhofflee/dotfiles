@@ -204,6 +204,7 @@ in
       # ollama
       # aichat
       mods
+      claude-code
 
       # ============================================================================
       # DEVELOPMENT UTILITIES
