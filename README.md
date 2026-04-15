@@ -10,9 +10,9 @@
 
 My [nix-darwin](https://github.com/nix-darwin/nix-darwin) and NixOS configuration.
 
-My daily driver is macOS because I prefer the Apple desktop environment. There are also a NixOS homelab setup and NixOS VM setups mainly for experiments.
+My daily driver is macOS because I prefer the Apple desktop environment. There are also a NixOS homelab server (running as a Proxmox VM) and NixOS VM setups mainly for experiments.
 
-![Screenshot of fastfetch on M1 Pro running macOS Sequoia](./assets/screenshot-alexmbp-fastfetch.png)
+![Screenshot of fastfetch on M1 Pro running macOS Sequoia](./docs/screenshot-alexmbp-fastfetch.png)
 
 ## Overview
 
@@ -186,23 +186,14 @@ nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --
 
 <summary>NixOS Homelab provisioning instructions</summary>
 
-[nixos-anywhere](https://github.com/nix-community/nixos-anywhere/) is used to remotely setup NixOS host. The machine to provision should be running Linux with kexec support, or simply a minimal NixOS installer.
+[nixos-anywhere](https://github.com/nix-community/nixos-anywhere/) is used to remotely provision `nixos-server-01`, a Proxmox VM on the `homelab-nuc` PVE host. The target should be running a minimal NixOS installer ISO.
 
 A [patch](packages/patches/nixos-anywhere-zram.patch) is used to support use of the tool on machines with low amount of RAM.
 
 [nixos-facter](https://github.com/nix-community/nixos-facter) is used in conjunction to dynamically determine configurations from hardware.
+See [`docs/deployment-instructions-nixos-server.md`](docs/deployment-instructions-nixos-server.md) for the full step-by-step procedure.
 
-```shell
-# CAUTION: This IMMEDIATELY erases target host, repartitions it, installs NixOS
-# and applies this flake configuration.
-nixos-anywhere -- \
-  --generate-hardware-config nixos-facter ./hosts/homelab-nuc/facter.json \
-  --flake ".#homelab-nuc" \
-  --target-host root@[machine-ip] \
-  --build-on remote
-```
-
-To apply new flake config, use the just receipe:
+To apply new flake config after provisioning:
 
 ```shell
 just switch-homelab

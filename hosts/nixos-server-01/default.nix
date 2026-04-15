@@ -3,15 +3,17 @@
   pkgs,
   lib,
   inputs,
+  modulesPath,
   ...
 }:
 
 let
   username = "ale";
-  hostname = "homelab-nuc";
+  hostname = "nixos-server-01";
 in
 {
   imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
     ../shared-nix-settings.nix
     ./disk-config.nix
 
@@ -25,10 +27,15 @@ in
   hardware.enableRedistributableFirmware = lib.mkDefault true;
 
   boot.loader.grub = {
-    device = "nodev";
+    enable = lib.mkDefault true;
+    devices = lib.mkDefault [ "nodev" ];
     efiSupport = true;
     efiInstallAsRemovable = true;
   };
+
+  boot.growPartition = true;
+
+  services.qemuGuest.enable = true;
 
   # For a small server, disk swap is fine but slow; zram creates a compressed
   # swap space in RAM, trading a little CPU for much faster “swap.” It reduces SSD
@@ -49,6 +56,9 @@ in
     gitMinimal
     ghostty.terminfo
   ];
+
+  # Periodic TRIM for thin-provisioned PVE storage (pairs with discard=on on scsi0)
+  services.fstrim.enable = true;
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;

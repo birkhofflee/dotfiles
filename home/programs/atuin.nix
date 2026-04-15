@@ -31,7 +31,7 @@
 
       auto_sync = true;
       sync_frequency = "5m";
-      sync_address = "http://homelab-nuc:8010";
+      sync_address = "http://nixos-server-01:8010";
 
       theme.name = "catppuccin-macchiato-blue";
     };

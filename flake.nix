@@ -168,11 +168,11 @@
           user = "ale";
         };
 
-        homelab-nuc = mkSystem "homelab-nuc" {
+        nixos-server-01 = mkSystem "nixos-server-01" {
           system = "x86_64-linux";
           user = "ale";
           nixos-anywhere = true;
-          homeConfig = ./hosts/homelab-nuc/home.nix;
+          homeConfig = ./hosts/nixos-server-01/home.nix;
         };
       };
     }

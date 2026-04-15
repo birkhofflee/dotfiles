@@ -1,9 +1,8 @@
 let
   ale = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0762tms0QT6kCQ7tTgoOdm+ry29ImKgDk09hXurEfM";
-  # ssh-keyscan -t ed25519 homelab-nuc
-  homelab-nuc = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFD2LZIYz9eBmt3W+rALfdC3LEkyaYKUYO9Pkecxh4iN";
+  nixos-server-01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIORLVEJT3P3Vh92bUrZ/nBTewG+KBZFWu6O6T4uva+GM";
 
-  withHomelab = [ ale homelab-nuc ];
+  withHomelab = [ ale nixos-server-01 ];
 in
 {
   "rybbit-auth-secret.age" = {
