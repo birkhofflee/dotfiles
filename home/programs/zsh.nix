@@ -49,6 +49,7 @@ in
       desk = "$HOME/Desktop";
       docs = "$HOME/Documents";
       nix = "$HOME/.config/dotfiles";
+      dev = "$HOME/dev";
     };
 
     history = {
