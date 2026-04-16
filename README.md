@@ -129,7 +129,7 @@ A non-exhaustive list:
 
 <details>
 
-<summary>Commonly used commands baked into [justfile](justfile)</summary>
+<summary>Commonly used commands baked into justfile</summary>
 
 ```shell
 # Switch darwin configuration
