@@ -86,6 +86,7 @@ in
           brewery = "brew update && brew upgrade && brew cleanup";
           o = "open"; # Open with default app
           tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+          optimize_clipboard_image = "impaste | oxipng -o max - | impbcopy -";
         };
         generalAliases = {
           # Disable correction

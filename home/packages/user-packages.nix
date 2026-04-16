@@ -339,6 +339,7 @@ in
       exiftool
       imagemagickBig
       optipng
+      oxipng # Multithreaded PNG optimizer written in Rust (https://github.com/oxipng/oxipng)
 
       # ============================================================================
       # CLI TOOLS
