@@ -71,7 +71,6 @@
     gh # GitHub CLI
     nh # Nix helper
     uv # Python package manager
-    emojify # used in git log pager
 
     # ── Nix tooling ────────────────────────────────────────────────────────
     nil # Nix LSP

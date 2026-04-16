@@ -24,11 +24,6 @@ in
         signingkey = "${key}";
       };
 
-      pager = {
-        show = "delta";
-        diff = "delta";
-        log = "emojify";
-      };
 
       diff = {
         # Moved lines of code are colored differently

@@ -230,7 +230,7 @@ in
       # Shell enhancements
       zsh-completions
       zsh-fast-syntax-highlighting
-      # emojify
+      # emojify # https://github.com/mrowa44/emojify
       atuin
       progress
       pv # progress bar for a pipe
