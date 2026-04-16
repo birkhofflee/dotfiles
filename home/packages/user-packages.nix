@@ -264,6 +264,7 @@ in
       html-tidy
       gnutar
       gnused
+      xz
 
       # Diff
       difftastic
