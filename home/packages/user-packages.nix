@@ -5,6 +5,7 @@ let
   berkeley-mono-variable = pkgs.callPackage ./fonts/berkeley-mono-variable.nix { secrets = inputs.secrets; };
   commit-mono-nf = pkgs.callPackage ./fonts/commit-mono-nf.nix { };
   ocr = pkgs.callPackage ./ocr/ocr.nix { };
+  impbcopy = pkgs.callPackage ./impbcopy/impbcopy.nix { };
 in
 {
   home.packages =
@@ -383,6 +384,7 @@ in
       reattach-to-user-namespace
 
       ocr
+      impbcopy
       pngpaste
       create-dmg
       terminal-notifier
