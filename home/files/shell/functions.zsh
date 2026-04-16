@@ -311,6 +311,17 @@ function get {
   fi
 }
 
+# Copy a PDF page to clipboard as PNG
+# @example  `pdfcopypage document.pdf 0`
+function pdfcopypage {
+  if [[ $# -ne 2 || ! -f "$1" ]]; then
+    echo "Usage: pdfcopypage <file.pdf> <page>" >&2
+    return 1
+  fi
+  # https://stackoverflow.com/a/6605085
+  magick -density 150 "$1[$2]" -trim -quality 100 -flatten -sharpen 0x1.0 jpg:- | impbcopy -
+}
+
 # Grep using ripgrep and run enhancements on outputs
 # using delta
 function s {
