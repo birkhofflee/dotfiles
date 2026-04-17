@@ -14,5 +14,6 @@
     extraSetFlags = [
       "--advertise-exit-node"
     ];
+    serve.enable = true;
   };
 }
