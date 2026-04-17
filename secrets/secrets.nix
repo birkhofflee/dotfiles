@@ -21,6 +21,10 @@ in
     publicKeys = withHomelab;
     armor = true;
   };
+  "jupyter-token.age" = {
+    publicKeys = withHomelab;
+    armor = true;
+  };
   "ssh-config.age" = {
     publicKeys = [
       ale

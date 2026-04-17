@@ -23,6 +23,7 @@ in
     ./services/caddy
     ./services/cloudflared
     ./services/apex-discord-bot
+    ./services/jupyter
   ];
 
   hardware.enableRedistributableFirmware = lib.mkDefault true;
