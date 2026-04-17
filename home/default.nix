@@ -29,6 +29,8 @@ rec {
   # @see https://github.com/nix-community/home-manager/blob/master/modules/misc/xdg.nix
   xdg.enable = true;
 
+  manual.manpages.enable = false;
+
   imports = [
     ./packages/user-packages.nix
   ]

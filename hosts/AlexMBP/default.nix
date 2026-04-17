@@ -26,6 +26,8 @@ in
     ./ssh-config.nix
   ];
 
+  documentation.enable = false;
+
   networking = {
     applicationFirewall = {
       enable = true;
