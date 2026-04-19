@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  inputs,
   currentSystemUser,
   ...
 }:
@@ -26,6 +25,22 @@ in
     ./ssh-config.nix
   ];
 
+  determinateNix = {
+    # Enable Determinate Nix to handle the Nix configuration rather than nix-darwin
+    enable = true;
+
+    # Custom settings written to /etc/nix/nix.custom.conf
+    customSettings = {
+      # flake-registry = "/etc/nix/flake-registry.json";
+      # sandbox = true;
+      trusted-users = [
+        "@admin"
+        "${username}"
+        "root"
+      ];
+    };
+  };
+
   documentation.enable = false;
 
   networking = {
@@ -43,18 +58,14 @@ in
     zsh
   ];
 
-  nix = {
-    channel.enable = false;
+  nix.settings = {
+    # https://github.com/NixOS/nix/issues/7273
+    auto-optimise-store = false;
 
-    settings = {
-      # https://github.com/NixOS/nix/issues/7273
-      auto-optimise-store = false;
-
-      extra-platforms = lib.mkIf (pkgs.stdenv.hostPlatform.system == "aarch64-darwin") [
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-    };
+    extra-platforms = lib.mkIf (pkgs.stdenv.hostPlatform.system == "aarch64-darwin") [
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
   };
 
   # Load nix-darwin in /etc/zshrc.

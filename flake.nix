@@ -4,6 +4,7 @@
   nixConfig = {
     # Merged with the system-level substituters.
     # This config is included to speed up the initial build.
+    # trusted-user config is required
     extra-substituters = [
       "https://nix-community.cachix.org"
       "https://helix.cachix.org"
@@ -17,6 +18,8 @@
   };
 
   inputs = {
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -187,19 +190,29 @@
         };
       in
       {
-        devShells.default = pkgs.mkShellNoCC {
-          packages = with pkgs; [
-            just
-            ssh-copy-id
-            nh
-            nixfmt-tree
-            nixos-anywhere
-            nixos-rebuild-ng
-            inputs.agenix.packages.${system}.default
-          ];
+        devShells.default =
+          let
+            # Override agenix to use Determinate Nix instead of its bundled nix-2.28.4.
+            # Without this, agenix warns about eval-cores/lazy-trees being unknown settings.
+            nixDeterminate = pkgs.writeShellScriptBin "nix-instantiate" ''
+              exec /nix/var/nix/profiles/default/bin/nix-instantiate "$@"
+            '';
+            agenix = inputs.agenix.packages.${system}.default.override {
+              nix = nixDeterminate;
+            };
+          in
+          pkgs.mkShellNoCC {
+            packages = with pkgs; [
+              just
+              ssh-copy-id
+              nh
+              nixfmt-tree
+              nixos-anywhere
+              agenix
+            ];
 
-          NH_FLAKE = ".";
-        };
+            NH_FLAKE = ".";
+          };
       }
     );
 }

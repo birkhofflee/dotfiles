@@ -81,8 +81,8 @@ nix run github:nix-community/nixos-anywhere -- \
   --ssh-option "ProxyJump=homelab-nuc" \
   --build-on remote \
   --extra-files /tmp/nixos-server-01-host-keys \
-  --option extra-substituters "https://nix-community.cachix.org https://helix.cachix.org https://birkhoff.cachix.org" \
-  --option extra-trusted-public-keys "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs= birkhoff.cachix.org-1:m7WmdU7PKc6fsKedC278lhLtiqjz6ZUJ6v2nkVGyJjQ="
+  --option extra-substituters "https://nix-community.cachix.org https://helix.cachix.org https://birkhoff.cachix.org https://install.determinate.systems" \
+  --option extra-trusted-public-keys "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs= birkhoff.cachix.org-1:m7WmdU7PKc6fsKedC278lhLtiqjz6ZUJ6v2nkVGyJjQ= cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
 ```
 
 Wait for `### Done! ###`. The VM reboots automatically into the installed system.

@@ -76,6 +76,9 @@ systemFunc rec {
     # agenix integration
     (if isDarwin then inputs.agenix.darwinModules.default else inputs.agenix.nixosModules.default)
 
+    # Determinate Nix integration
+    (if isDarwin then inputs.determinate.darwinModules.default else inputs.determinate.nixosModules.default)
+
     # We expose some extra arguments so that our modules can parameterize
     # better based on these values.
     {

@@ -16,7 +16,7 @@ My daily driver is macOS because I prefer the Apple desktop environment. There a
 
 ## Overview
 
-* [Nix flakes](https://nixos.org/) provide a reproducible, pin-exact configuration shared across all machines.
+* [Nix flakes](https://determinate.systems/blog/nix-flakes-explained/) provide a reproducible, pin-exact configuration shared across all machines.
 * On macOS, [nix-darwin](https://github.com/LnL7/nix-darwin) manages system-level settings and packages declaratively.
 * [home-manager](https://github.com/nix-community/home-manager) manages the user environment (dotfiles, packages, shell) across both macOS and NixOS hosts.
 
@@ -129,7 +129,7 @@ A non-exhaustive list:
 
 <details>
 
-<summary>Commonly used commands baked into justfile</summary>
+<summary>Commonly used commands in justfile</summary>
 
 ```shell
 # Switch darwin configuration
@@ -150,10 +150,7 @@ just update-input <flake-input-name>
 
 <summary>Installation instructions on a new macOS machine without Nix installed</summary>
 
-Note:
-
-1. I currently use macOS Sequoia 15.7.3.
-2. Full Disk Access has to be enabled for the terminal app via `System Settings > Privacy & Security > Full Disk Access` to overcome `Could not write domain com.apple.universalaccess; exiting` when applying user defaults.
+Full Disk Access has to be enabled for the terminal app via `System Settings > Privacy & Security > Full Disk Access` to overcome `Could not write domain com.apple.universalaccess; exiting` when applying user defaults.
 
 ```shell
 xcode-select --install
@@ -161,17 +158,11 @@ xcode-select --install
 # Clone the dotfiles
 mkdir $HOME/.config
 git clone https://github.com/birkhofflee/dotfiles $HOME/.config/dotfiles
+```
 
-# Install nix using the official beta intaller
-# The Lix installer could also be used: https://lix.systems/install/#on-any-other-linuxmacos-system
-# @see https://github.com/nix-darwin/nix-darwin/issues/1588
-# @see https://github.com/NixOS/nix-installer?tab=readme-ov-file#installation-nix-installer-install
-curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install \
-  --explain --no-confirm --extra-conf "trusted-users = $USER"
+Install [Determinate Nix](https://determinate.systems/) using the [macOS package](https://install.determinate.systems/determinate-pkg/stable/Universal), then:
 
-# Source the nix daemon so that the nix command is available immediately
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-
+```shell
 # Temporarily mitigate 'too many open files' issue
 # @see https://github.com/NixOS/nix/issues/6557
 ulimit -n 4096
@@ -239,39 +230,6 @@ $ just orb-create
 
 # After that, simply run this to bootstrap it:
 $ just orb-configure
-```
-
-</details>
-
-<details>
-
-<summary>Repairing the Nix setup on macOS after a major update from Apple</summary>
-
-> The following steps were applicable to installations with upstream Nix installations.
-> It is unknown whether they are needed to follow for a Determinate Systems installation.
-
-1. Upgrade Xcode CLI tools
-2. Uninstall nix: https://nix.dev/manual/nix/2.18/installation/uninstall.html#macos
-3. A system restart may be required
-4. Review [CHANGELOG](https://github.com/LnL7/nix-darwin/blob/master/CHANGELOG) of nix-darwin
-
-```shell
-# Install nix
-bash <(curl -L https://nixos.org/nix/install) --daemon --yes --no-modify-profile
-
-# Propagate /run
-printf 'run\tprivate/var/run\n' | sudo tee -a /etc/synthetic.conf
-/System/Library/Filesystems/apfs.fs/Contents/Resources/apfs.util -t
-
-# Fix certs (the uninstallation of nix breaks a symbolic link)
-# https://github.com/NixOS/nix/issues/2899#issuecomment-1669501326
-# https://discourse.nixos.org/t/ssl-ca-cert-error-on-macos/31171/1
-sudo rm /etc/ssl/certs/ca-certificates.crt
-sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
-
-nix build "$HOME/.config/dotfiles#darwinConfigurations.AlexMBP.system" --extra-experimental-features "nix-command flakes"
-
-sudo ./result/sw/bin/darwin-rebuild switch --flake "$HOME/.config/dotfiles#AlexMBP"
 ```
 
 </details>
