@@ -20,7 +20,6 @@
   inputs = {
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -70,7 +69,7 @@
     }@inputs:
     # https://github.com/malob/nixpkgs/blob/61d4809925a523296278885ff8a75d3776a5c813/flake.nix#L34
     let
-      inherit (inputs.nixpkgs-unstable.lib) attrValues optionalAttrs;
+      inherit (inputs.nixpkgs-unstable.lib) attrValues;
 
       overlaysList = attrValues self.overlays;
 
@@ -90,43 +89,6 @@
     in
     {
       overlays = {
-        # Overlays to add different versions `nixpkgs` into package set
-        #
-        # After all overlays are applied, the following are available:
-        # - pkgs.pkgs-master.*     packages from nixpkgs master
-        # - pkgs.pkgs-stable.*     packages from nixpkgs 25.05
-        # - pkgs.pkgs-unstable.*   packages from nixpkgs unstable
-        # - pkgs.pkgs-x86.*        x86_64 packages (Apple Silicon only)
-        pkgs-master = _: prev: {
-          pkgs-master = import inputs.nixpkgs-master {
-            inherit (prev.stdenv) system;
-            inherit (nixpkgsDefaults) config;
-          };
-        };
-        pkgs-stable = _: prev: {
-          pkgs-stable = import inputs.nixpkgs-stable {
-            inherit (prev.stdenv) system;
-            inherit (nixpkgsDefaults) config;
-          };
-        };
-        pkgs-unstable = _: prev: {
-          pkgs-unstable = import inputs.nixpkgs-unstable {
-            inherit (prev.stdenv) system;
-            inherit (nixpkgsDefaults) config;
-          };
-        };
-        apple-silicon =
-          _: prev:
-          optionalAttrs (prev.stdenv.system == "aarch64-darwin") {
-            # Add access to x86 packages system is running Apple Silicon
-            pkgs-x86 = import inputs.nixpkgs-unstable {
-              system = "x86_64-darwin";
-              inherit (nixpkgsDefaults) config;
-            };
-          };
-
-        # External flakes below
-
         zellij-plugins = _: prev: {
           zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
           zjstatus-hints = inputs.zjstatus-hints.packages.${prev.stdenv.hostPlatform.system}.default;

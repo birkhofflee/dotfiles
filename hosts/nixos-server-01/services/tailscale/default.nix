@@ -27,7 +27,7 @@
 
   services.tailscale = {
     enable = true;
-    package = pkgs.pkgs-unstable.tailscale;
+    package = pkgs.tailscale;
     # Enable IP forwarding & set Reverse Path Filtering (RPF) to loose
     openFirewall = true;
     authKeyFile = config.age.secrets."tailscale-authkey".path;
