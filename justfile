@@ -79,6 +79,12 @@ update-input input:
 edit-secret secret_file:
   agenix -e {{secret_file}} --identity <(op read 'op://Personal/id_ed25519/private key?ssh-format=openssh')
 
+# Rekey all secrets.
+[group('secrets')]
+[working-directory: 'secrets']
+rekey:
+  op read 'op://Personal/id_ed25519/private key?ssh-format=openssh' > /tmp/k && agenix -r --identity /tmp/k && rm -f /tmp/k
+
 # Push darwin build artifacts to cachix
 [group('cache')]
 cache-darwin:
