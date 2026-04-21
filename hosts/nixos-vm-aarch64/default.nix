@@ -14,15 +14,25 @@ in
 {
   imports = [
     ./hardware-configuration.nix
-    ../gui-vm-shared.nix
+    ../shared-nix-settings.nix
   ];
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # VMware, Parallels both only support this being 0 otherwise you see
+  # "error switching console mode" on boot.
+  boot.loader.systemd-boot.consoleMode = "0";
 
   # Setup qemu so we can run x86_64 binaries
   boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
 
   # Networking
   networking.hostName = hostname;
-  # networking.networkmanager.enable = true;
+  networking.useDHCP = false;
 
   # Interface is this on M1
   # networking.interfaces.ens160.useDHCP = true;
@@ -44,11 +54,89 @@ in
     ];
   };
 
+  # Set your time zone.
+  time.timeZone = "Europe/Rome";
+
+  # Don't require password for sudo
+  security.sudo.wheelNeedsPassword = false;
+
+  # Virtualization settings
+  virtualisation.docker.enable = true;
+
+  # Select internationalisation properties.
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    inputMethod = {
+      enable = true;
+      type = "fcitx5";
+      fcitx5.addons = with pkgs; [
+        fcitx5-chinese-addons
+        fcitx5-gtk
+        fcitx5-hangul
+        fcitx5-mozc
+      ];
+    };
+  };
+
+  # Enable tailscale. We manually authenticate when we want with
+  # "sudo tailscale up". If you don't use tailscale, you should comment
+  # out or delete all of this.
+  services.tailscale.enable = true;
+
+  # Define a user account. Don't forget to set a password with 'passwd'.
+  users.mutableUsers = false;
+
+  # Manage fonts. We pull these from a secret directory since most of these
+  # fonts require a purchase.
+  fonts = {
+    fontDir.enable = true;
+
+    packages = [
+      pkgs.fira-code
+      pkgs.jetbrains-mono
+    ];
+  };
+
+  environment.systemPackages = with pkgs; [
+    git
+    cachix
+    gnumake
+    killall
+    xclip
+    ghostty.terminfo
+
+    # For hypervisors that support auto-resizing, this script forces it.
+    # I've noticed not everyone listens to the udev events so this is a hack.
+    (writeShellScriptBin "xrandr-auto" ''
+      xrandr --output Virtual-1 --auto
+    '')
+  ];
+
+  # Enable the GNOME Desktop Environment
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
+
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
+  };
+
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
+  services.openssh.settings.PasswordAuthentication = false;
+  services.openssh.settings.PermitRootLogin = "no";
+
+  # Disable the firewall since we're in a VM and we want to make it
+  # easy to visit stuff in here. We only use NAT networking anyways.
+  networking.firewall.enable = false;
+
   # User configuration
   users.users.${username} = {
     isNormalUser = true;
     home = "/home/${username}";
-    # extraGroups = [ "wheel" "networkmanager" ];
     extraGroups = [
       "wheel"
       "docker"
@@ -63,13 +151,9 @@ in
   # Enable zsh system-wide
   programs.zsh.enable = true;
 
-  # Install Firefox
-  # programs.firefox.enable = true;
-
   # Lots of stuff that uses aarch64 that claims doesn't work, but actually works.
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
 
-  # helix
-  # ghostty
+  system.stateVersion = "25.05";
 }
