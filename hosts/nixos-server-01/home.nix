@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, inputs, currentSystemUser, ... }:
 
 {
   imports = [
@@ -17,8 +17,8 @@
     ../../home/programs/zsh.nix
   ];
 
-  home.username = "ale";
-  home.homeDirectory = "/home/ale";
+  home.username = currentSystemUser;
+  home.homeDirectory = "/home/${currentSystemUser}";
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
