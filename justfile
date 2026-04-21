@@ -34,12 +34,6 @@ alias s := switch
 switch:
   nh darwin switch --show-trace -- --accept-flake-config
 
-alias sf := switch-fast
-# Switch darwin configuration with --offline flag
-[group('darwin')]
-switch-fast:
-  nh darwin switch --show-trace --offline -- --accept-flake-config
-
 # Switch homelab (NixOS) configuration with nixos-rebuild-ng
 # because neither nh or nixos-rebuild works.
 #
