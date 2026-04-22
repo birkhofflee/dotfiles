@@ -10,7 +10,8 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 - `AlexMBP`: macOS (M1 Pro, Sequoia) - nix-darwin
 - `nixos-vm-aarch64`: NixOS (aarch64-linux) - VMware Fusion VM
 - `nixos-orbstack`: NixOS (aarch64-linux) - OrbStack VM
-- `homelab-nuc`: NixOS (x86_64-linux) - Physical homelab server
+- `nixos-server-01`: NixOS (x86_64-linux) - Proxmox VM on homelab server (`homelab-nuc`)
+- `nixos-desktop-01`: NixOS (x86_64-linux) - Proxmox VM with GUI (GNOME default, Hyprland specialization)
 
 **Current user:** `ale`
 
@@ -34,18 +35,29 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   │   └── default.nix   # System configuration
 │   ├── nixos-orbstack/   # OrbStack NixOS VM
 │   │   └── default.nix   # System configuration
-│   ├── shared-nix-settings.nix  # Shared Nix daemon settings
-│   └── gui-vm-shared.nix        # Shared GUI VM configuration
+│   ├── nixos-server-01/  # Proxmox VM (homelab server)
+│   │   ├── default.nix
+│   │   ├── disk-config.nix   # disko BTRFS layout
+│   │   ├── facter.json       # nixos-facter hardware report (pre-committed)
+│   │   ├── home.nix          # Custom home config (not shared home/)
+│   │   └── services/         # tailscale, atuin, rybbit, caddy, cloudflared
+│   ├── nixos-desktop-01/ # Proxmox VM (GUI desktop)
+│   │   ├── default.nix   # Entry point: imports sub-modules + sets stateVersion
+│   │   ├── hardware.nix  # Boot, proxmox VM config, zramSwap, enableHardwareAccel option
+│   │   ├── networking.nix # Hostname, firewall, tailscale, openssh, SSH host key pre-seeding
+│   │   ├── desktop.nix   # GNOME/GDM, dconf HiDPI, GNOME Remote Desktop service, sleep targets
+│   │   ├── users.nix     # Users, fonts, system packages, timezone, sudo, i18n
+│   │   └── home.nix      # Custom home config (CLI/shell tools; not the shared home/)
+│   └── shared-nix-settings.nix  # Shared Nix daemon settings
 ├── home/                  # Shared home-manager configuration
 │   ├── default.nix        # Main home config (platform-agnostic)
 │   ├── programs/          # Program-specific configs (auto-imported)
 │   ├── files/             # Config files (auto-imported)
 │   ├── packages/          # User packages
 │   └── libs/              # Helper libraries
-├── modules/               # Reusable NixOS modules
-│   └── specialization/    # NixOS desktop environment specializations (gnome-ibus, i3, plasma)
 ├── packages/              # Custom Nix derivations (exposed via custom-packages overlay)
-│   └── age-with-plugins.nix  # age + age-plugin-1p wrapper with umask fix
+│   ├── age-with-plugins.nix           # age + age-plugin-1p wrapper with umask fix
+│   └── nixos-anywhere-patched.nix     # nixos-anywhere with local patches
 ├── secrets/               # agenix-encrypted secrets
 │   ├── secrets.nix        # Public key declarations for each secret
 │   └── *.age              # Encrypted secret files
@@ -58,16 +70,14 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 
 The repository uses a flake-based architecture defined in `flake.nix`:
 
-- **Multiple nixpkgs channels**: `nixpkgs-master`, `nixpkgs-stable` (25.05-darwin), and `nixpkgs-unstable`
+- **Multiple nixpkgs channels**: `nixpkgs-stable` (25.05-darwin) and `nixpkgs-unstable` (default)
 - **Overlays system**: Provides access to different package versions and custom packages
-  - `pkgs-master`, `pkgs-stable`, `pkgs-unstable`: Different nixpkgs versions
-  - `apple-silicon`: Provides x86_64 packages on aarch64-darwin via `pkgs-x86`
-  - `rust`: Rust toolchain overlay from `rust-overlay` (provides `pkgs.rust-bin.*`)
+  - `pkgs-stable`, `pkgs-unstable`: Different nixpkgs versions
   - `zellij-plugins`: Custom Zellij plugins (zjstatus, zjstatus-hints, zj-quit)
-  - `custom-packages`: Local derivations in `packages/` (e.g., `age-with-plugins` wrapping age with the 1Password plugin)
+  - `custom-packages`: Local derivations in `packages/` (`age-with-plugins`, `nixos-anywhere` patched)
   - `tweaks`: Temporary per-package overrides (e.g., pinned `mactop` version)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
-- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `nixfmt-tree`, `nixos-rebuild-ng`, `claude-code`, `ssh-copy-id`, and sets `NH_FLAKE="."`
+- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `nixfmt-tree`, `nixos-anywhere`, `ssh-copy-id`, and sets `NH_FLAKE="."`
 
 ### Configuration Philosophy
 
@@ -109,12 +119,22 @@ The home-manager configuration is **shared across all hosts** and platform-agnos
 - NixOS system configuration for OrbStack
 - Similar to nixos-vm-aarch64 but optimized for OrbStack environment
 
-**homelab-nuc** (`hosts/homelab-nuc/default.nix`):
-- NixOS system configuration for physical homelab server
+**nixos-server-01** (`hosts/nixos-server-01/default.nix`):
+- NixOS system configuration for a Proxmox VM running on the `homelab-nuc` PVE host
 - Uses `mkSystem` with `nixos-anywhere = true` (enables disko and nixos-facter modules)
-- Uses a custom home config at `hosts/homelab-nuc/home.nix` (not the shared `home/`)
-- Includes services: tailscale, atuin, docker
+- Uses a custom home config at `hosts/nixos-server-01/home.nix` (not the shared `home/`)
+- Services: tailscale, atuin, rybbit (analytics), caddy (reverse proxy), cloudflared (tunnel)
+- Containers (Podman): rybbit-backend, rybbit-client, rybbit-postgres, rybbit-clickhouse
 - Uses zramSwap for better memory management
+
+**nixos-desktop-01** (`hosts/nixos-desktop-01/default.nix`):
+- NixOS Proxmox VM with a full GUI desktop on `homelab-nuc`
+- Default desktop: GNOME with GDM and GNOME Remote Desktop (RDP on port 3389)
+- Hyprland specialization: selectable at boot; uses wayvnc (VNC on port 5900) for remote access
+- Built as a Proxmox VMA image via `packages.x86_64-linux.nixos-desktop-01-image`; use `just build-desktop-image` (builds remotely on nixos-server-01 then rsync to PVE)
+- Uses a custom home config at `hosts/nixos-desktop-01/home.nix` (CLI/shell tools; not the shared `home/`)
+- System config split into sub-modules: `hardware.nix`, `networking.nix`, `desktop.nix`, `users.nix`
+- SSH host key pre-seeded from `dotfiles.secret` input (required for agenix on first boot)
 
 ### Package Management Strategy
 
@@ -134,22 +154,23 @@ The home-manager configuration is **shared across all hosts** and platform-agnos
 
 Using `just` (preferred):
 ```bash
-just switch          # Build and switch to new configuration (alias: just s)
-just switch-fast     # Switch without network access (alias: just sf)
-just switch-homelab  # Switch homelab-nuc NixOS configuration remotely via nh os switch
-just update          # Update all flake inputs and commit lock file (alias: just u)
-just update-input <name>  # Update specific flake input (alias: just ui)
-just format          # Format all Nix files using treefmt
-just optimize        # Clean old generations and optimize store (alias: just o)
-just repair          # Verify and repair Nix store
-just cache-darwin    # Push darwin build artifacts to cachix
-just edit-secret <file.age>  # Edit an agenix secret (uses 1Password for identity)
+just switch                 # Build and switch to new configuration (alias: just s)
+just switch-nixos-server    # Switch nixos-server-01 remotely via nh os switch
+just switch-nixos-desktop   # Switch nixos-desktop-01 remotely via nh os switch
+just build-desktop-image    # Build Proxmox VMA for nixos-desktop-01 (runs on nixos-server-01)
+just update                 # Update all flake inputs and commit lock file (alias: just u)
+just update-input <name>    # Update specific flake input (alias: just ui)
+just format                 # Format all Nix files using treefmt
+just optimize               # Clean old generations and optimize store (alias: just o)
+just repair                 # Verify and repair Nix store
+just cache-darwin           # Push darwin build artifacts to cachix
+just edit-secret <file.age> # Edit an agenix secret (uses 1Password for identity)
+just rekey                  # Rekey all secrets with the 1Password identity
 ```
 
 Using `nh` directly (from repo root, NH_FLAKE="."):
 ```bash
 nh darwin switch --show-trace -- --accept-flake-config
-nh darwin switch --show-trace --offline -- --accept-flake-config
 nh clean all
 ```
 
@@ -164,6 +185,7 @@ For NixOS (evaluation only from macOS):
 ```bash
 nix eval ".#nixosConfigurations.nixos-vm-aarch64.config.system.name"
 nix eval ".#nixosConfigurations.nixos-orbstack.config.system.name"
+nix eval ".#nixosConfigurations.nixos-server-01.config.system.name"
 ```
 
 > **Note:** `nix build "."` uses the git index (staged files only). If you have unstaged modifications, use `nix build "path:.#..."` to include working tree changes.
@@ -209,16 +231,18 @@ Environment variables for VMware VM commands:
 - `NIXUSER`: SSH user (default: ale)
 
 **Homelab NixOS Provisioning** (using nixos-anywhere):
-```bash
-# CAUTION: This IMMEDIATELY erases target host, repartitions, and installs NixOS
-nix run github:nix-community/nixos-anywhere -- \
-  --generate-hardware-config nixos-facter ./hosts/homelab-nuc/facter.json \
-  --flake .#homelab-nuc \
-  --target-host root@<machine-ip> \
-  --build-on remote
 
-# After initial setup, apply new configurations with:
-just switch-homelab
+See `docs/deployment-instructions-nixos-server.md` for the full step-by-step procedure. Key points:
+
+- The PVE host (`homelab-nuc`) is used as a ProxyJump host to reach the VM at `192.168.1.8`
+- SSH host keys must be **pre-generated** and injected via `--extra-files` so agenix secrets can be encrypted to the new host before installation
+- The NixOS installer's `/etc/nix/nix.conf` is read-only; pass binary caches via `--option extra-substituters` and `--option extra-trusted-public-keys` directly to nixos-anywhere
+- New files must be `git add`-ed (staged) before running nixos-anywhere, since nix evaluates from the git index
+- After reinstall, the Tailscale auth key must be rotated (single-use keys are consumed on first boot) and deployed via `nh os switch`
+
+```bash
+# After initial provisioning or config changes:
+just switch-nixos-server
 ```
 
 ## File Organization Patterns
@@ -264,7 +288,6 @@ Example:
 3. Use `currentSystemUser` parameter (provided by mksystem.nix) instead of hardcoding username
 4. Consider importing shared configuration files:
    - `shared-nix-settings.nix`: Common Nix daemon settings
-   - `gui-vm-shared.nix`: Shared GUI VM configuration (for NixOS VMs with desktop)
 5. Add to `flake.nix`:
    ```nix
    # For macOS (darwin is auto-detected from system suffix)
@@ -289,6 +312,12 @@ Example:
    ```
    Note: `hosts/<hostname>/facter.json` must exist (generated by nixos-anywhere with `--generate-hardware-config nixos-facter`). `mksystem.nix` will throw an error if it's missing.
 
+   For Proxmox VM image builds (like `nixos-desktop-01`), no `nixos-anywhere = true` is needed — the host uses `proxmox-image.nix` and a VMA is built via:
+   ```nix
+   packages.x86_64-linux.<hostname>-image = self.nixosConfigurations.<hostname>.config.system.build.VMA;
+   ```
+   Use `just build-desktop-image` as a template for the remote-build workflow.
+
 ## Important Implementation Details
 
 ### Justfile Architecture
@@ -302,8 +331,8 @@ The repository uses a modular `justfile` system where the main `justfile` at the
 When adding new VM-related or specialized commands, create a new `.just` file in `justfiles/` and import it in the main `justfile` using `import 'justfiles/<name>.just'`.
 
 **Justfile groups** organize commands:
-- `darwin`: macOS-specific commands (switch, switch-fast)
-- `homelab`: Homelab server commands (switch-homelab)
+- `darwin`: macOS-specific commands (switch)
+- `homelab`: Homelab server commands (switch-nixos-server, switch-nixos-desktop, build-desktop-image)
 - `flake`: Flake management (update, update-input)
 - `nix-misc`: Nix store maintenance (optimize, repair)
 - `cache`: Cachix operations (cache-darwin)
@@ -313,10 +342,8 @@ When adding new VM-related or specialized commands, create a new `.just` file in
 ### Overlay System
 
 When adding packages from different nixpkgs versions, use the overlay system:
-- `pkgs-master.<package>` for bleeding-edge packages
 - `pkgs-stable.<package>` for stable releases
-- `pkgs-unstable.<package>` for unstable but tested packages
-- `pkgs-x86.<package>` for x86_64 packages on Apple Silicon
+- `pkgs-unstable.<package>` for unstable packages (this is the default `pkgs`)
 
 ### Secrets Management
 
@@ -337,12 +364,12 @@ A private `dotfiles.secret` flake input is also referenced for sensitive files r
 
 ### Homelab-Specific Architecture
 
-The `homelab-nuc` host uses `mkSystem` with `nixos-anywhere = true`:
-- **Custom home config**: Uses `hosts/homelab-nuc/home.nix` instead of the shared `home/`
+The `nixos-server-01` host is a Proxmox VM on the `homelab-nuc` PVE host. It uses `mkSystem` with `nixos-anywhere = true`:
+- **Custom home config**: Uses `hosts/nixos-server-01/home.nix` instead of the shared `home/`
 - **Uses nixos-anywhere**: Automated remote installation with disk partitioning (disko)
-- **Uses nixos-facter**: Hardware configuration auto-detection; `facter.json` must exist
-- **Remote deployment**: `just switch-homelab` uses `nh os switch` targeting `homelab-nuc` host
-- **Secrets**: Uses agenix for secret management (identity via 1Password: `just edit-secret <file.age>`)
+- **Uses nixos-facter**: Hardware config via `hosts/nixos-server-01/facter.json` (pre-committed; do not regenerate unless hardware changes)
+- **Remote deployment**: `just switch-nixos-server` uses `nh os switch` targeting `nixos-server-01` via Tailscale
+- **Secrets**: agenix secrets in `secrets/` are encrypted to both the `ale` key (1Password) and the server's SSH host key. When reinstalling, the host key changes — update `secrets/secrets.nix` and rekey with `just rekey` before running nixos-anywhere
 
 ### Activation Scripts
 

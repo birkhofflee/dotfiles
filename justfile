@@ -34,15 +34,34 @@ alias s := switch
 switch:
   nh darwin switch --show-trace -- --accept-flake-config
 
-# Switch homelab (NixOS) configuration with nixos-rebuild-ng
-# because neither nh or nixos-rebuild works.
-#
-# The binary name is `nixos-rebuild`
-#
-# @see https://github.com/NixOS/nixpkgs/issues/439945
 [group('homelab')]
-switch-homelab:
+switch-nixos-server:
   nh os switch -H nixos-server-01 --accept-flake-config --target-host nixos-server-01 --build-host nixos-server-01 -e passwordless
+
+[group('homelab')]
+switch-nixos-desktop:
+  nh os switch -H nixos-desktop-01 --accept-flake-config --target-host root@nixos-desktop-01 --build-host nixos-server-01 -e passwordless
+
+# Build proxmox VMA image for nixos-desktop-01 on nixos-server-01 (x86_64-linux).
+# Syncs the working tree (including uncommitted changes) then builds remotely.
+# The dotfiles.secret input is resolved locally (mac has GitHub SSH access) and
+# rsynced separately, then injected via --override-input on the remote build.
+[group('homelab')]
+build-desktop-image:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  echo "Syncing dotfiles to nixos-server-01:/tmp/dotfiles-build/ ..."
+  rsync -a --delete --exclude '.git' --exclude 'result' {{FLAKES_PATH}}/ ale@nixos-server-01:/tmp/dotfiles-build/
+  echo "Resolving secrets store path (requires GitHub SSH access) ..."
+  SECRETS_STORE=$(nix flake archive --json '{{FLAKES_PATH}}' | jq -r '.inputs.secrets.path')
+  echo "Syncing secrets ($SECRETS_STORE) to nixos-server-01:/tmp/dotfiles-secret/ ..."
+  rsync -a --delete "$SECRETS_STORE/" nixos-server-01:/tmp/dotfiles-secret/
+  echo "Building VMA image on nixos-server-01..."
+  ssh nixos-server-01 -- "cd /tmp/dotfiles-build && nix build 'path:.#packages.x86_64-linux.nixos-desktop-01-image' --override-input secrets 'path:/tmp/dotfiles-secret' --show-trace --accept-flake-config"
+  echo ""
+  echo "VMA is at /tmp/dotfiles-build/result/ on nixos-server-01."
+  echo "To upload to PVE, SSH into nixos-server-01 and run:"
+  echo "  rsync -avz /tmp/dotfiles-build/result/*.vma.zst root@homelab-nuc:/var/lib/vz/dump/"
 
 alias o := optimize
 # Frees up space by optimizing the Nix Store

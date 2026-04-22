@@ -60,6 +60,9 @@
     apex-discord-bot.url = "github:birkhofflee/apex-discord-bot";
     apex-discord-bot.inputs.nixpkgs.follows = "nixpkgs-unstable";
     apex-discord-bot.inputs.flake-utils.follows = "flake-utils";
+
+    i915-sriov-dkms.url = "github:strongtz/i915-sriov-dkms";
+    i915-sriov-dkms.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -141,7 +144,16 @@
           nixos-anywhere = true;
           homeConfig = ./hosts/nixos-server-01/home.nix;
         };
+
+        nixos-desktop-01 = mkSystem "nixos-desktop-01" {
+          system = "x86_64-linux";
+          user = "ale";
+          homeConfig = ./hosts/nixos-desktop-01/home.nix;
+        };
       };
+
+      packages.x86_64-linux.nixos-desktop-01-image =
+        self.nixosConfigurations.nixos-desktop-01.config.system.build.VMA;
     }
     // inputs.flake-utils.lib.eachDefaultSystem (
       system:

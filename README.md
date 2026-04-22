@@ -175,7 +175,7 @@ nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --
 
 <details>
 
-<summary>NixOS Homelab provisioning instructions</summary>
+<summary>Provisioning nixos-server-01 (NixOS VM running on Proxmox)</summary>
 
 [nixos-anywhere](https://github.com/nix-community/nixos-anywhere/) is used to remotely provision `nixos-server-01`, a Proxmox VM on the `homelab-nuc` PVE host. The target should be running a minimal NixOS installer ISO.
 
@@ -188,6 +188,63 @@ To apply new flake config after provisioning:
 
 ```shell
 just switch-homelab
+```
+
+</details>
+
+<details>
+
+<summary>Provisioning nixos-desktop-01 (NixOS desktop VM)</summary>
+
+`nixos-desktop-01` is a Proxmox KVM VM with GNOME DE. Remote desktop is provided by Gnome Remote Desktop on port 3389 (RDP).
+
+#### 1. Build the VMA image
+
+```shell
+# Syncs working tree to nixos-server-01 and builds there (x86_64-linux).
+just build-desktop-image
+```
+
+#### 2. Upload to PVE (run on nixos-server-01)
+
+```shell
+rsync -avz /tmp/dotfiles-build/result/vzdump-qemu-nixos-desktop-01.vma.zst root@homelab-nuc:/var/lib/vz/dump/
+```
+
+#### 3. Restore as VM on PVE
+
+```shell
+# SSH into homelab-nuc
+# Assuming VM ID 201
+
+# Stop the current VM
+qm stop 201
+
+# This creates (or replaces) VM 201 with our image.
+# QEMU config is baked in. Starts the VM afterwards.
+qmrestore /var/lib/vz/dump/vzdump-qemu-nixos-desktop-01.vma.zst 201 \
+  --unique true \
+  --storage local-lvm \
+  --force \
+  --start
+```
+
+`--unique true` is required — the image has a zeroed MAC address by default.
+
+#### 4. Connect via RDP
+
+Once the VM is up, it should be connected to Tailscale automatically (if the authkey given was valid).
+
+If RDP fails somehow:
+
+- RDP client-side config `use redirection server name:i:1` may be required to connect.
+- On macOS, try to use [Thincast Remote Desktop Client](https://thincast.com/en/products/client) instead.
+- SSH to the VM and check status using `sudo grdctl --system`, `ss -tlnp | grep 3389`, `sudo systemctl status gnome-rdp-setup gnome-remote-desktop`
+
+#### 6. Apply config changes after provisioning
+
+```shell
+just switch-nixos-desktop
 ```
 
 </details>

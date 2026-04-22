@@ -14,7 +14,8 @@
 
   programs.ghostty = {
     enable = true;
-    package = null; # broken on Darwin
+    package = lib.mkIf pkgs.stdenv.isDarwin null; # broken on Darwin; use real package on Linux
+    systemd.enable = pkgs.stdenv.isLinux; # D-Bus activation: ~20ms window open vs ~300ms
 
     # Clear the default keybinds so we have super
     # key (i.e. Command) key available to terminal

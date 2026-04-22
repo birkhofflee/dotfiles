@@ -27,13 +27,13 @@
 
   services.tailscale = {
     enable = true;
-    package = pkgs.tailscale;
     # Enable IP forwarding & set Reverse Path Filtering (RPF) to loose
     openFirewall = true;
     authKeyFile = config.age.secrets."tailscale-authkey".path;
     useRoutingFeatures = "both";
     extraUpFlags = [
       "--advertise-routes=192.168.1.0/24"
+      "--ssh"
     ];
     extraSetFlags = [
       "--advertise-exit-node"
