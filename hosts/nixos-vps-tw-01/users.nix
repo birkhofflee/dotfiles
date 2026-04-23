@@ -25,10 +25,4 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0762tms0QT6kCQ7tTgoOdm+ry29ImKgDk09hXurEfM"
     ];
   };
-
-  environment.systemPackages = with pkgs; [
-    curl
-    gitMinimal
-    ghostty.terminfo
-  ];
 }

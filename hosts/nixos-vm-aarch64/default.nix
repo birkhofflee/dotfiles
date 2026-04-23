@@ -14,7 +14,9 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+
     ../shared-nix-settings.nix
+    ../common-system-packages.nix
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -98,12 +100,9 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    git
-    cachix
     gnumake
     killall
     xclip
-    ghostty.terminfo
 
     # For hypervisors that support auto-resizing, this script forces it.
     # I've noticed not everyone listens to the udev events so this is a hack.

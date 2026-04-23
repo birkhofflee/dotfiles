@@ -1,7 +1,6 @@
 # OrbStack NixOS configuration
 # OrbStack manages the container lifecycle, we configure NixOS inside it
 {
-  config,
   pkgs,
   modulesPath,
   currentSystemUser,
@@ -15,6 +14,8 @@
     /etc/nixos/incus.nix
     # Include the OrbStack-specific configuration.
     /etc/nixos/orbstack.nix
+
+    ../common-system-packages.nix
   ];
 
   users.users.${currentSystemUser} = {
@@ -63,11 +64,6 @@
       linkConfig.RequiredForOnline = "routable";
     };
   };
-
-  # System packages
-  environment.systemPackages = with pkgs; [
-    ghostty.terminfo
-  ];
 
   system.stateVersion = "25.11";
 }

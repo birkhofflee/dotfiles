@@ -3,6 +3,8 @@
 {
   imports = [
     ../shared-nix-settings.nix
+    ../common-system-packages.nix
+
     ./hardware-configuration.nix
     ./hardware.nix
     ./networking.nix

@@ -6,6 +6,7 @@
     (modulesPath + "/virtualisation/proxmox-image.nix")
 
     ../shared-nix-settings.nix
+    ../common-system-packages.nix
 
     # For the GPU driver, we're using i915 SR-IOV (https://github.com/strongtz/i915-sriov-dkms).
     # This NixOS module adds pkgs.i915-sriov and pkgs.xe-sriov via a nixpkgs overlay via an overlay;

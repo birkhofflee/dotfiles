@@ -40,9 +40,6 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    curl
-    gitMinimal
-    ghostty
     xclip
   ] ++ lib.optionals cfg.enableHardwareAccel [
     libva-utils      # vainfo

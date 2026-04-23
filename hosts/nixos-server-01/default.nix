@@ -17,6 +17,8 @@ in
     ../shared-nix-settings.nix
     ./disk-config.nix
 
+    ../common-system-packages.nix
+
     ./services/tailscale
     ./services/atuin
     ./services/rybbit
@@ -53,12 +55,6 @@ in
 
   time.timeZone = "Europe/Rome";
 
-  environment.systemPackages = with pkgs; [
-    curl
-    gitMinimal
-    ghostty.terminfo
-  ];
-
   # Periodic TRIM for thin-provisioned PVE storage (pairs with discard=on on scsi0)
   services.fstrim.enable = true;
 
@@ -91,9 +87,6 @@ in
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnsupportedSystem = true;
-
-  # helix
-  # ghostty
 
   system.stateVersion = "24.05";
 }
