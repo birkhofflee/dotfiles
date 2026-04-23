@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   currentSystemUser,
   ...
 }:
@@ -42,32 +41,10 @@ in
     };
   };
 
-  documentation.enable = false;
-
-  networking = {
-    applicationFirewall = {
-      enable = true;
-      enableStealthMode = true;
-      # allowSigned = true; # Whether to enable built-in software to receive incoming connections.
-      # allowSignedApp = true; # Whether to enable downloaded signed software to receive incoming connections.
-      # blockAllIncoming = true; # Whether to enable blocking all incoming connections.
-    };
-  };
-
   environment.shells = with pkgs; [
     bashInteractive
     zsh
   ];
-
-  nix.settings = {
-    # https://github.com/NixOS/nix/issues/7273
-    auto-optimise-store = false;
-
-    extra-platforms = lib.mkIf (pkgs.stdenv.hostPlatform.system == "aarch64-darwin") [
-      "x86_64-darwin"
-      "aarch64-darwin"
-    ];
-  };
 
   # Load nix-darwin in /etc/zshrc.
   programs.zsh.enable = true;

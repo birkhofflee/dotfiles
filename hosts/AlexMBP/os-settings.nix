@@ -8,8 +8,18 @@
   # $ diff before after
 
   # Hostname
-  networking.computerName = "${hostname}";
-  networking.hostName = "${hostname}";
+  networking = {
+    computerName = "${hostname}";
+    hostName = "${hostname}";
+
+    applicationFirewall = {
+      enable = true;
+      enableStealthMode = true;
+      # allowSigned = true; # Whether to enable built-in software to receive incoming connections.
+      # allowSignedApp = true; # Whether to enable downloaded signed software to receive incoming connections.
+      # blockAllIncoming = true; # Whether to enable blocking all incoming connections.
+    };
+  };
   system.defaults.smb.NetBIOSName = "${hostname}";
 
   # Keyboard
