@@ -23,10 +23,10 @@ default:
   @echo ""
   @just --list
 
-# Formats the entire repo using nixfmt-tree
+# Formats the entire repo using treefmt-nix
 [group('code-quality')]
 format:
-  treefmt
+  nix fmt
 
 alias s := switch
 # Switch darwin configuration

@@ -44,6 +44,9 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
     nur.url = "github:nix-community/NUR";
 
     # _1password-shell-plugins.url = "github:1Password/shell-plugins";
@@ -176,8 +179,15 @@
           inherit system;
           inherit (nixpkgsDefaults) config overlays;
         };
+        treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
+          projectRootFile = "flake.nix";
+        };
       in
       {
+        formatter = treefmtEval.config.build.wrapper;
+
+        checks.formatting = treefmtEval.config.build.check self;
+
         devShells.default =
           let
             # Override agenix to use Determinate Nix instead of its bundled nix-2.28.4.
@@ -190,12 +200,12 @@
             };
           in
           pkgs.mkShellNoCC {
-            packages = with pkgs; [
-              just
-              ssh-copy-id
-              nh
-              nixfmt-tree
-              nixos-anywhere
+            packages = [
+              pkgs.just
+              pkgs.ssh-copy-id
+              pkgs.nh
+              treefmtEval.config.build.wrapper
+              pkgs.nixos-anywhere
               agenix
             ];
 
