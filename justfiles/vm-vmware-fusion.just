@@ -5,7 +5,7 @@ NIXUSER := env_var_or_default("NIXUSER", "ale")
 # Partition, format, generate config, enable SSH, install, reboot. Run on a fresh NixOS ISO with root password set to 'root'
 [group('vmware')]
 vm-bootstrap0 ip:
-  rsync -av -e 'ssh {{SSH_OPTIONS}} -p{{NIXPORT}}' "./vm-installer.sh" "root@{{ip}}:/installer.sh"
+  rsync -av -e 'ssh {{SSH_OPTIONS}} -p{{NIXPORT}}' "./scripts/vm-installer.sh" "root@{{ip}}:/installer.sh"
   @- NIXADDR={{ip}} NIXUSER=root just _vm-ssh "bash /installer.sh"
 
 # Finalize a freshly installed VM (copy, switch, secrets, reboot)
