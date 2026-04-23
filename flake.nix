@@ -124,6 +124,7 @@
         AlexMBP = mkSystem "AlexMBP" {
           system = "aarch64-darwin";
           user = "ale";
+          hasDesktop = true;
         };
       };
 
@@ -148,6 +149,7 @@
         nixos-desktop-01 = mkSystem "nixos-desktop-01" {
           system = "x86_64-linux";
           user = "ale";
+          hasDesktop = true;
           homeConfig = ./hosts/nixos-desktop-01/home.nix;
         };
 

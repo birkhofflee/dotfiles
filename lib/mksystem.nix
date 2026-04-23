@@ -9,6 +9,7 @@ name:
   system,
   user,
   nixos-anywhere ? false,
+  hasDesktop ? false,
   homeConfig ? ../home,
 }:
 
@@ -65,7 +66,7 @@ systemFunc rec {
     {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.extraSpecialArgs = { inherit inputs; currentSystemUser = user; };
+      home-manager.extraSpecialArgs = { inherit inputs; currentSystemUser = user; inherit hasDesktop; };
       home-manager.users.${user} = import homeConfig;
     }
 

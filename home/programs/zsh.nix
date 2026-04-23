@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  hasDesktop,
   ...
 }:
 let
@@ -350,25 +351,27 @@ in
             }
           fi
 
-          # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
-          # Note: `lg` is alias for `lazygit`
-          AUTO_NOTIFY_IGNORE=(
-            "vim" "nvim" "hx" "nano"
-            "tmux"
-            "zellij"
-            "bat"
-            "cat"
-            "less"
-            "more"
-            "watch"
-            "top"
-            "htop"
-            "ssh"
-            "man"
-            "zi"
-            "lazygit"
-            "lg"
-          );
+          ${lib.optionalString hasDesktop ''
+            # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
+            # Note: `lg` is alias for `lazygit`
+            AUTO_NOTIFY_IGNORE=(
+              "vim" "nvim" "hx" "nano"
+              "tmux"
+              "zellij"
+              "bat"
+              "cat"
+              "less"
+              "more"
+              "watch"
+              "top"
+              "htop"
+              "ssh"
+              "man"
+              "zi"
+              "lazygit"
+              "lg"
+            );
+          ''}
 
           # Empty the autosuggestion strategy array. Later atuin will
           # automatically add itself into this array, so we're sure
@@ -412,7 +415,7 @@ in
           sha256 = "sha256-u3abhv9ewq3m4QsnsxT017xdlPm3dYq5dqHNmQhhcpI=";
         };
       }
-      {
+    ] ++ lib.optional hasDesktop {
         name = "auto-notify";
         src = pkgs.fetchFromGitHub {
           # https://github.com/MichaelAquilina/zsh-auto-notify
@@ -421,7 +424,7 @@ in
           rev = "b51c934d88868e56c1d55d0a2a36d559f21cb2ee";
           sha256 = "sha256-s3TBAsXOpmiXMAQkbaS5de0t0hNC1EzUUb0ZG+p9keE=";
         };
-      }
+      } ++ [
       {
         name = "gnu-utility";
         file = "";
