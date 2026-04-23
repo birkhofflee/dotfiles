@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   age.secrets.tailscale-authkey.file = ../../../../secrets/tailscale-authkey.age;
 

@@ -1,4 +1,9 @@
-{ pkgs, inputs, config, ... }:
+{
+  pkgs,
+  inputs,
+  config,
+  ...
+}:
 
 {
   programs.helix = {
@@ -7,13 +12,21 @@
     package = inputs.helix.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     languages = {
-      language = [{
-        name = "markdown";
-        formatter = {
-          command = "${pkgs.dprint}/bin/dprint";
-          args = ["fmt" "--config" "${config.xdg.configHome}/dprint/dprint.jsonc" "--stdin" "md"];
-        };
-      }];
+      language = [
+        {
+          name = "markdown";
+          formatter = {
+            command = "${pkgs.dprint}/bin/dprint";
+            args = [
+              "fmt"
+              "--config"
+              "${config.xdg.configHome}/dprint/dprint.jsonc"
+              "--stdin"
+              "md"
+            ];
+          };
+        }
+      ];
       language-server = {
         rust-analyzer = {
           config = {
@@ -38,21 +51,29 @@
       "string.regexp" = "pink";
       "string.special" = "blue";
       "string.special.symbol" = "red";
-      "comment" = { fg = "overlay2"; };
+      "comment" = {
+        fg = "overlay2";
+      };
       "variable" = "text";
-      "variable.parameter" = { fg = "maroon"; };
+      "variable.parameter" = {
+        fg = "maroon";
+      };
       "variable.builtin" = "red";
       "variable.other.member" = "blue";
       "label" = "sapphire";
       "punctuation" = "overlay2";
       "punctuation.special" = "sky";
       "keyword" = "mauve";
-      "keyword.control.conditional" = { fg = "mauve"; };
+      "keyword.control.conditional" = {
+        fg = "mauve";
+      };
       "operator" = "sky";
       "function" = "blue";
       "function.macro" = "rosewater";
       "tag" = "blue";
-      "namespace" = { fg = "yellow"; };
+      "namespace" = {
+        fg = "yellow";
+      };
       "special" = "blue";
       "markup.heading.1" = "red";
       "markup.heading.2" = "peach";
@@ -63,10 +84,21 @@
       "markup.list" = "teal";
       "markup.list.unchecked" = "overlay2";
       "markup.list.checked" = "green";
-      "markup.bold" = { fg = "red"; modifiers = [ "bold" ]; };
-      "markup.italic" = { fg = "red"; modifiers = [ "italic" ]; };
-      "markup.strikethrough" = { modifiers = [ "crossed_out" ]; };
-      "markup.link.url" = { fg = "blue"; modifiers = [ "underlined" ]; };
+      "markup.bold" = {
+        fg = "red";
+        modifiers = [ "bold" ];
+      };
+      "markup.italic" = {
+        fg = "red";
+        modifiers = [ "italic" ];
+      };
+      "markup.strikethrough" = {
+        modifiers = [ "crossed_out" ];
+      };
+      "markup.link.url" = {
+        fg = "blue";
+        modifiers = [ "underlined" ];
+      };
       "markup.link.text" = "lavender";
       "markup.link.label" = "sapphire";
       "markup.raw" = "green";
@@ -74,54 +106,183 @@
       "diff.plus" = "green";
       "diff.minus" = "red";
       "diff.delta" = "blue";
-      "ui.background" = { fg = "text"; bg = "base"; };
-      "ui.linenr" = { fg = "surface1"; };
-      "ui.linenr.selected" = { fg = "lavender"; };
-      "ui.statusline" = { fg = "subtext1"; bg = "mantle"; };
-      "ui.statusline.inactive" = { fg = "surface2"; bg = "mantle"; };
-      "ui.statusline.normal" = { fg = "base"; bg = "lavender"; modifiers = [ "bold" ]; }; # customized: swapped from rosewater
-      "ui.statusline.insert" = { fg = "base"; bg = "green"; modifiers = [ "bold" ]; };
-      "ui.statusline.select" = { fg = "base"; bg = "rosewater"; modifiers = [ "bold" ]; }; # customized: swapped from lavender
-      "ui.popup" = { fg = "text"; bg = "surface0"; };
-      "ui.window" = { fg = "crust"; };
-      "ui.help" = { fg = "overlay2"; bg = "surface0"; };
-      "ui.bufferline" = { fg = "subtext0"; bg = "mantle"; };
-      "ui.bufferline.active" = { fg = "mauve"; bg = "base"; }; # customized: removed underline
-      "ui.bufferline.background" = { bg = "crust"; };
+      "ui.background" = {
+        fg = "text";
+        bg = "base";
+      };
+      "ui.linenr" = {
+        fg = "surface1";
+      };
+      "ui.linenr.selected" = {
+        fg = "lavender";
+      };
+      "ui.statusline" = {
+        fg = "subtext1";
+        bg = "mantle";
+      };
+      "ui.statusline.inactive" = {
+        fg = "surface2";
+        bg = "mantle";
+      };
+      "ui.statusline.normal" = {
+        fg = "base";
+        bg = "lavender";
+        modifiers = [ "bold" ];
+      }; # customized: swapped from rosewater
+      "ui.statusline.insert" = {
+        fg = "base";
+        bg = "green";
+        modifiers = [ "bold" ];
+      };
+      "ui.statusline.select" = {
+        fg = "base";
+        bg = "rosewater";
+        modifiers = [ "bold" ];
+      }; # customized: swapped from lavender
+      "ui.popup" = {
+        fg = "text";
+        bg = "surface0";
+      };
+      "ui.window" = {
+        fg = "crust";
+      };
+      "ui.help" = {
+        fg = "overlay2";
+        bg = "surface0";
+      };
+      "ui.bufferline" = {
+        fg = "subtext0";
+        bg = "mantle";
+      };
+      "ui.bufferline.active" = {
+        fg = "mauve";
+        bg = "base";
+      }; # customized: removed underline
+      "ui.bufferline.background" = {
+        bg = "crust";
+      };
       "ui.text" = "text";
-      "ui.text.focus" = { fg = "text"; bg = "surface0"; modifiers = [ "bold" ]; };
-      "ui.text.inactive" = { fg = "overlay1"; };
-      "ui.text.directory" = { fg = "blue"; };
+      "ui.text.focus" = {
+        fg = "text";
+        bg = "surface0";
+        modifiers = [ "bold" ];
+      };
+      "ui.text.inactive" = {
+        fg = "overlay1";
+      };
+      "ui.text.directory" = {
+        fg = "blue";
+      };
       "ui.virtual" = "overlay0";
-      "ui.virtual.ruler" = { bg = "surface0"; };
+      "ui.virtual.ruler" = {
+        bg = "surface0";
+      };
       "ui.virtual.indent-guide" = "surface0";
-      "ui.virtual.inlay-hint" = { fg = "surface1"; bg = "mantle"; };
-      "ui.virtual.jump-label" = { fg = "rosewater"; modifiers = [ "bold" ]; };
-      "ui.selection" = { bg = "surface1"; };
-      "ui.cursor" = { fg = "base"; bg = "secondary_cursor"; };
-      "ui.cursor.primary" = { fg = "base"; bg = "rosewater"; };
-      "ui.cursor.match" = { fg = "peach"; modifiers = [ "bold" ]; };
-      "ui.cursor.primary.normal" = { fg = "base"; bg = "rosewater"; };
-      "ui.cursor.primary.insert" = { fg = "base"; bg = "green"; };
-      "ui.cursor.primary.select" = { fg = "base"; bg = "lavender"; };
-      "ui.cursor.normal" = { fg = "base"; bg = "secondary_cursor_normal"; };
-      "ui.cursor.insert" = { fg = "base"; bg = "secondary_cursor_insert"; };
-      "ui.cursor.select" = { fg = "base"; bg = "secondary_cursor_select"; };
-      "ui.cursorline.primary" = { bg = "cursorline"; };
-      "ui.highlight" = { bg = "surface1"; modifiers = [ "bold" ]; };
-      "ui.menu" = { fg = "overlay2"; bg = "surface0"; };
-      "ui.menu.selected" = { fg = "text"; bg = "surface1"; modifiers = [ "bold" ]; };
-      "diagnostic.error" = { underline = { color = "red"; style = "curl"; }; };
-      "diagnostic.warning" = { underline = { color = "yellow"; style = "curl"; }; };
-      "diagnostic.info" = { underline = { color = "sky"; style = "curl"; }; };
-      "diagnostic.hint" = { underline = { color = "teal"; style = "curl"; }; };
-      "diagnostic.unnecessary" = { modifiers = [ "dim" ]; };
-      "diagnostic.deprecated" = { modifiers = [ "crossed_out" ]; };
+      "ui.virtual.inlay-hint" = {
+        fg = "surface1";
+        bg = "mantle";
+      };
+      "ui.virtual.jump-label" = {
+        fg = "rosewater";
+        modifiers = [ "bold" ];
+      };
+      "ui.selection" = {
+        bg = "surface1";
+      };
+      "ui.cursor" = {
+        fg = "base";
+        bg = "secondary_cursor";
+      };
+      "ui.cursor.primary" = {
+        fg = "base";
+        bg = "rosewater";
+      };
+      "ui.cursor.match" = {
+        fg = "peach";
+        modifiers = [ "bold" ];
+      };
+      "ui.cursor.primary.normal" = {
+        fg = "base";
+        bg = "rosewater";
+      };
+      "ui.cursor.primary.insert" = {
+        fg = "base";
+        bg = "green";
+      };
+      "ui.cursor.primary.select" = {
+        fg = "base";
+        bg = "lavender";
+      };
+      "ui.cursor.normal" = {
+        fg = "base";
+        bg = "secondary_cursor_normal";
+      };
+      "ui.cursor.insert" = {
+        fg = "base";
+        bg = "secondary_cursor_insert";
+      };
+      "ui.cursor.select" = {
+        fg = "base";
+        bg = "secondary_cursor_select";
+      };
+      "ui.cursorline.primary" = {
+        bg = "cursorline";
+      };
+      "ui.highlight" = {
+        bg = "surface1";
+        modifiers = [ "bold" ];
+      };
+      "ui.menu" = {
+        fg = "overlay2";
+        bg = "surface0";
+      };
+      "ui.menu.selected" = {
+        fg = "text";
+        bg = "surface1";
+        modifiers = [ "bold" ];
+      };
+      "diagnostic.error" = {
+        underline = {
+          color = "red";
+          style = "curl";
+        };
+      };
+      "diagnostic.warning" = {
+        underline = {
+          color = "yellow";
+          style = "curl";
+        };
+      };
+      "diagnostic.info" = {
+        underline = {
+          color = "sky";
+          style = "curl";
+        };
+      };
+      "diagnostic.hint" = {
+        underline = {
+          color = "teal";
+          style = "curl";
+        };
+      };
+      "diagnostic.unnecessary" = {
+        modifiers = [ "dim" ];
+      };
+      "diagnostic.deprecated" = {
+        modifiers = [ "crossed_out" ];
+      };
       error = "red";
       warning = "yellow";
       info = "sky";
       hint = "teal";
-      rainbow = [ "red" "peach" "yellow" "green" "sapphire" "lavender" ];
+      rainbow = [
+        "red"
+        "peach"
+        "yellow"
+        "green"
+        "sapphire"
+        "lavender"
+      ];
       palette = {
         rosewater = "#f4dbd6";
         flamingo = "#f0c6c6";
@@ -241,9 +402,25 @@
           "paste_before"
         ];
         # Copy line down
-        "C-A-j" = ["normal_mode" "extend_to_line_bounds" "yank" "open_below" "replace_with_yanked" "collapse_selection" "normal_mode"];
+        "C-A-j" = [
+          "normal_mode"
+          "extend_to_line_bounds"
+          "yank"
+          "open_below"
+          "replace_with_yanked"
+          "collapse_selection"
+          "normal_mode"
+        ];
         # Copy line up
-        "C-A-k" = ["normal_mode" "extend_to_line_bounds" "yank" "open_above" "replace_with_yanked" "collapse_selection" "normal_mode"];
+        "C-A-k" = [
+          "normal_mode"
+          "extend_to_line_bounds"
+          "yank"
+          "open_above"
+          "replace_with_yanked"
+          "collapse_selection"
+          "normal_mode"
+        ];
 
         "space" = {
           # Print the current line's git blame information to the statusline.

@@ -10,7 +10,10 @@
 
   systemd.services.cloudflared = {
     description = "Cloudflare Tunnel";
-    after = [ "network.target" "network-online.target" ];
+    after = [
+      "network.target"
+      "network-online.target"
+    ];
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {

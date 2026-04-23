@@ -1,4 +1,9 @@
-{ pkgs, lib, currentSystemUser, ... }:
+{
+  pkgs,
+  lib,
+  currentSystemUser,
+  ...
+}:
 
 {
   # Default desktop: GNOME with GDM
@@ -7,9 +12,11 @@
 
   # HiDPI: set 2x scaling for the GDM login screen and GNOME session
   # @see https://discourse.nixos.org/t/need-help-for-nixos-gnome-scaling-settings/24590/12
-  programs.dconf.profiles.gdm.databases = [{
-    settings."org/gnome/desktop/interface".scaling-factor = lib.gvariant.mkUint32 2;
-  }];
+  programs.dconf.profiles.gdm.databases = [
+    {
+      settings."org/gnome/desktop/interface".scaling-factor = lib.gvariant.mkUint32 2;
+    }
+  ];
 
   # Using Gnome Remote Desktop for RDP
   services.gnome.gnome-remote-desktop.enable = true;
@@ -25,7 +32,11 @@
   # existing one is near expiry.
   systemd.services.gnome-rdp-setup = {
     description = "Provision Tailscale TLS cert for GNOME Remote Desktop";
-    after = [ "gnome-remote-desktop.service" "tailscaled.service" "network-online.target" ];
+    after = [
+      "gnome-remote-desktop.service"
+      "tailscaled.service"
+      "network-online.target"
+    ];
     wants = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
@@ -33,7 +44,16 @@
       RemainAfterExit = true;
       Restart = "on-failure";
       RestartSec = 10;
-      Environment = "PATH=/run/wrappers/bin:${lib.makeBinPath [ pkgs.tailscale pkgs.gnome-remote-desktop pkgs.jq pkgs.coreutils pkgs.systemd pkgs.openssl ]}";
+      Environment = "PATH=/run/wrappers/bin:${
+        lib.makeBinPath [
+          pkgs.tailscale
+          pkgs.gnome-remote-desktop
+          pkgs.jq
+          pkgs.coreutils
+          pkgs.systemd
+          pkgs.openssl
+        ]
+      }";
       ExecStart = "${pkgs.writeShellScript "gnome-rdp-setup" ''
         set -euo pipefail
 

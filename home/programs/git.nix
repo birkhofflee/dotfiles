@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
 
@@ -23,7 +28,6 @@ in
         email = "${email}";
         signingkey = "${key}";
       };
-
 
       diff = {
         # Moved lines of code are colored differently

@@ -16,7 +16,10 @@
   systemd.services.configure-static-ip = {
     description = "Configure static IP from agenix secret";
     after = [ "network-pre.target" ];
-    before = [ "network.target" "network-online.target" ];
+    before = [
+      "network.target"
+      "network-online.target"
+    ];
     wantedBy = [ "network-pre.target" ];
     serviceConfig = {
       Type = "oneshot";
@@ -36,7 +39,10 @@
   ];
 
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 21825 ];
+  networking.firewall.allowedTCPPorts = [
+    22
+    21825
+  ];
   networking.firewall.allowedUDPPorts = [ 21825 ];
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 

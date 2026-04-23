@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.nixos-desktop-01;
@@ -42,7 +47,8 @@ in
       numa = 0;
       onboot = 1;
       rng0 = "source=/dev/urandom";
-    } // lib.optionalAttrs cfg.enableHardwareAccel {
+    }
+    // lib.optionalAttrs cfg.enableHardwareAccel {
       # For the VF device (virtualised GPU)
       hostpci0 = "0000:00:02.1,x-vga=1";
     };

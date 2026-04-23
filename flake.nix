@@ -108,7 +108,9 @@
             nixos-anywhere = inputs.nixos-anywhere.packages.${prev.stdenv.hostPlatform.system}.nixos-anywhere;
           };
           berkeley-mono = prev.callPackage ./packages/fonts/berkeley-mono.nix { secrets = inputs.secrets; };
-          berkeley-mono-variable = prev.callPackage ./packages/fonts/berkeley-mono-variable.nix { secrets = inputs.secrets; };
+          berkeley-mono-variable = prev.callPackage ./packages/fonts/berkeley-mono-variable.nix {
+            secrets = inputs.secrets;
+          };
           commit-mono-nf = prev.callPackage ./packages/fonts/commit-mono-nf.nix { };
         };
 

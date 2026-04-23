@@ -1,13 +1,13 @@
 { config, pkgs, ... }:
 
 let
-  clickhouseDb       = "analytics";
-  clickhouseUser     = "default";
+  clickhouseDb = "analytics";
+  clickhouseUser = "default";
   clickhousePassword = "frog";
-  postgresUser       = "frog";
-  postgresPassword   = "frog";
-  postgresDb         = "analytics";
-  baseUrl            = "https://analytics.birkhoff.me";
+  postgresUser = "frog";
+  postgresPassword = "frog";
+  postgresDb = "analytics";
+  baseUrl = "https://analytics.birkhoff.me";
 
   networkName = "rybbit";
 
@@ -102,8 +102,8 @@ in
         "${chUserLogging}:/etc/clickhouse-server/config.d/user_logging.xml:ro"
       ];
       environment = {
-        CLICKHOUSE_DB       = clickhouseDb;
-        CLICKHOUSE_USER     = clickhouseUser;
+        CLICKHOUSE_DB = clickhouseDb;
+        CLICKHOUSE_USER = clickhouseUser;
         CLICKHOUSE_PASSWORD = clickhousePassword;
       };
       extraOptions = [ "--network=${networkName}" ];
@@ -113,9 +113,9 @@ in
       image = "postgres:17.4";
       volumes = [ "rybbit-postgres-data:/var/lib/postgresql/data" ];
       environment = {
-        POSTGRES_USER     = postgresUser;
+        POSTGRES_USER = postgresUser;
         POSTGRES_PASSWORD = postgresPassword;
-        POSTGRES_DB       = postgresDb;
+        POSTGRES_DB = postgresDb;
       };
       extraOptions = [ "--network=${networkName}" ];
     };
@@ -126,29 +126,32 @@ in
       # rybbit-auth-secret.age must contain: BETTER_AUTH_SECRET=<value>
       environmentFiles = [ config.age.secrets.rybbit-auth-secret.path ];
       environment = {
-        NODE_ENV             = "production";
-        CLICKHOUSE_HOST      = "http://rybbit-clickhouse:8123";
-        CLICKHOUSE_DB        = clickhouseDb;
-        CLICKHOUSE_PASSWORD  = clickhousePassword;
-        POSTGRES_HOST        = "rybbit-postgres";
-        POSTGRES_PORT        = "5432";
-        POSTGRES_DB          = postgresDb;
-        POSTGRES_USER        = postgresUser;
-        POSTGRES_PASSWORD    = postgresPassword;
-        BASE_URL             = baseUrl;
-        DISABLE_SIGNUP       = "true";
-        DISABLE_TELEMETRY    = "true";
+        NODE_ENV = "production";
+        CLICKHOUSE_HOST = "http://rybbit-clickhouse:8123";
+        CLICKHOUSE_DB = clickhouseDb;
+        CLICKHOUSE_PASSWORD = clickhousePassword;
+        POSTGRES_HOST = "rybbit-postgres";
+        POSTGRES_PORT = "5432";
+        POSTGRES_DB = postgresDb;
+        POSTGRES_USER = postgresUser;
+        POSTGRES_PASSWORD = postgresPassword;
+        BASE_URL = baseUrl;
+        DISABLE_SIGNUP = "true";
+        DISABLE_TELEMETRY = "true";
       };
       extraOptions = [ "--network=${networkName}" ];
-      dependsOn = [ "rybbit-clickhouse" "rybbit-postgres" ];
+      dependsOn = [
+        "rybbit-clickhouse"
+        "rybbit-postgres"
+      ];
     };
 
     rybbit-client = {
       image = "ghcr.io/rybbit-io/rybbit-client:latest";
       ports = [ "127.0.0.1:3002:3002" ];
       environment = {
-        NODE_ENV                   = "production";
-        NEXT_PUBLIC_BACKEND_URL    = baseUrl;
+        NODE_ENV = "production";
+        NEXT_PUBLIC_BACKEND_URL = baseUrl;
         NEXT_PUBLIC_DISABLE_SIGNUP = "true";
       };
       extraOptions = [ "--network=${networkName}" ];

@@ -1,4 +1,9 @@
-{ pkgs, lib, currentSystemUser, ... }:
+{
+  pkgs,
+  lib,
+  currentSystemUser,
+  ...
+}:
 let
   username = currentSystemUser;
 in

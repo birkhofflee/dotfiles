@@ -66,7 +66,11 @@ systemFunc rec {
     {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.extraSpecialArgs = { inherit inputs; currentSystemUser = user; inherit hasDesktop; };
+      home-manager.extraSpecialArgs = {
+        inherit inputs;
+        currentSystemUser = user;
+        inherit hasDesktop;
+      };
       home-manager.users.${user} = import homeConfig;
     }
 
@@ -79,7 +83,12 @@ systemFunc rec {
     { home-manager.sharedModules = [ inputs.agenix.homeManagerModules.age ]; }
 
     # Determinate Nix integration
-    (if isDarwin then inputs.determinate.darwinModules.default else inputs.determinate.nixosModules.default)
+    (
+      if isDarwin then
+        inputs.determinate.darwinModules.default
+      else
+        inputs.determinate.nixosModules.default
+    )
 
     # We expose some extra arguments so that our modules can parameterize
     # better based on these values.

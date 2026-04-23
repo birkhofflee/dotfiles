@@ -5,7 +5,10 @@
   networking.networkmanager.enable = true; # DHCP
 
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 3389 ];
+  networking.firewall.allowedTCPPorts = [
+    22
+    3389
+  ];
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   age.secrets.tailscale-authkey.file = ../../secrets/tailscale-authkey.age;
@@ -26,7 +29,10 @@
     #
     # The private key lives in dotfiles.secret (private repo)
     hostKeys = [
-      { type = "ed25519"; path = "/etc/ssh/ssh_host_ed25519_key"; }
+      {
+        type = "ed25519";
+        path = "/etc/ssh/ssh_host_ed25519_key";
+      }
     ];
   };
 

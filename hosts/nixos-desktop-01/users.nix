@@ -1,4 +1,10 @@
-{ config, pkgs, lib, currentSystemUser, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  currentSystemUser,
+  ...
+}:
 
 let
   cfg = config.nixos-desktop-01;
@@ -23,7 +29,10 @@ in
   users.users.${currentSystemUser} = {
     isNormalUser = true;
     home = "/home/${currentSystemUser}";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
     shell = pkgs.zsh;
     hashedPassword = "$y$j9T$NyO3jDlhxZvG1xEfAZ21i.$K2iEBoqfPs009g1mFI1Td8t00gd8/m.BIUSyFo9QqX9";
     openssh.authorizedKeys.keys = [
@@ -39,11 +48,14 @@ in
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    xclip
-  ] ++ lib.optionals cfg.enableHardwareAccel [
-    libva-utils      # vainfo
-    pciutils         # lspci
-    intel-gpu-tools  # intel_gpu_top, etc.
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      xclip
+    ]
+    ++ lib.optionals cfg.enableHardwareAccel [
+      libva-utils # vainfo
+      pciutils # lspci
+      intel-gpu-tools # intel_gpu_top, etc.
+    ];
 }

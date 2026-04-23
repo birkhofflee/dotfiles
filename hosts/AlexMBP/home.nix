@@ -2,7 +2,12 @@
 # Imports the shared home base and adds macOS-specific programs, packages,
 # session paths, and activation scripts.
 
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   # List of all .nix files in home/files
@@ -14,14 +19,13 @@ let
   setWallpaperScript = import ../../home/libs/wallpaper.nix { inherit pkgs; };
 in
 {
-  imports =
-    [
-      ../../home
-      ../../home/programs/1password.nix
-      ../../home/programs/ghostty.nix
-      ./packages/user-packages.nix
-    ]
-    ++ fileImports;
+  imports = [
+    ../../home
+    ../../home/programs/1password.nix
+    ../../home/programs/ghostty.nix
+    ./packages/user-packages.nix
+  ]
+  ++ fileImports;
 
   # Expressions like $HOME are expanded by the shell.
   # However, since expressions like ~ or * are escaped,

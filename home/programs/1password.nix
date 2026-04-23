@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   # SSH agent socket — used by git, ssh, and other tools
   home.sessionVariables.SSH_AUTH_SOCK =

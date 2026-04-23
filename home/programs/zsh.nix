@@ -415,16 +415,18 @@ in
           sha256 = "sha256-u3abhv9ewq3m4QsnsxT017xdlPm3dYq5dqHNmQhhcpI=";
         };
       }
-    ] ++ lib.optional hasDesktop {
-        name = "auto-notify";
-        src = pkgs.fetchFromGitHub {
-          # https://github.com/MichaelAquilina/zsh-auto-notify
-          owner = "MichaelAquilina";
-          repo = "zsh-auto-notify";
-          rev = "b51c934d88868e56c1d55d0a2a36d559f21cb2ee";
-          sha256 = "sha256-s3TBAsXOpmiXMAQkbaS5de0t0hNC1EzUUb0ZG+p9keE=";
-        };
-      } ++ [
+    ]
+    ++ lib.optional hasDesktop {
+      name = "auto-notify";
+      src = pkgs.fetchFromGitHub {
+        # https://github.com/MichaelAquilina/zsh-auto-notify
+        owner = "MichaelAquilina";
+        repo = "zsh-auto-notify";
+        rev = "b51c934d88868e56c1d55d0a2a36d559f21cb2ee";
+        sha256 = "sha256-s3TBAsXOpmiXMAQkbaS5de0t0hNC1EzUUb0ZG+p9keE=";
+      };
+    }
+    ++ [
       {
         name = "gnu-utility";
         file = "";
@@ -459,8 +461,7 @@ in
   xdg.configFile."fsh/catppuccin-macchiato.ini".source =
     "${catppuccinFsh}/themes/catppuccin-macchiato.ini";
 
-  home.activation.fastSyntaxHighlightingTheme =
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD ${pkgs.zsh}/bin/zsh -c 'source ${pkgs.zsh-fast-syntax-highlighting}/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh && XDG_CONFIG_HOME=${config.xdg.configHome} fast-theme XDG:catppuccin-macchiato 2>/dev/null || true'
-    '';
+  home.activation.fastSyntaxHighlightingTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD ${pkgs.zsh}/bin/zsh -c 'source ${pkgs.zsh-fast-syntax-highlighting}/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh && XDG_CONFIG_HOME=${config.xdg.configHome} fast-theme XDG:catppuccin-macchiato 2>/dev/null || true'
+  '';
 }
