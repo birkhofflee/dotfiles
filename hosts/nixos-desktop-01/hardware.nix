@@ -30,6 +30,7 @@ in
     # OVMF (UEFI) boot: use systemd-boot. It auto-discovers all NixOS generations
     # and specialisations as separate entries, no manual GRUB entry management needed.
     boot.loader.systemd-boot.enable = true;
+    boot.loader.systemd-boot.configurationLimit = 5;
     boot.loader.efi.canTouchEfiVariables = true;
     boot.loader.timeout = lib.mkForce 3;
     boot.extraModulePackages = lib.mkIf cfg.enableHardwareAccel [ pkgs.i915-sriov ];
