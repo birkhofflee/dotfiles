@@ -228,13 +228,15 @@ in
         PAGER = "less"; # default command to use for browsing text inside the terminal
         MANPAGER = "bat -plman"; # https://github.com/sharkdp/bat?tab=readme-ov-file#man
 
+        ## External Tools
+
+        # Telemetry Opt-out
+        GH_TELEMETRY = "false"; # GitHub CLI
         DO_NOT_TRACK = 1;
 
         # Surpress direnv verbose logging
         # @seehttps://github.com/direnv/direnv/issues/1418#issuecomment-2820125413
         DIRENV_LOG_FORMAT = "";
-
-        ## External Tools
 
         # bat
         # @see https://github.com/sharkdp/bat?tab=readme-ov-file#highlighting-theme
