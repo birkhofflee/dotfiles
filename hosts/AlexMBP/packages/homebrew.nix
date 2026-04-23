@@ -28,6 +28,8 @@
       "figma"
       "ghostty"
       "linear-linear"
+      "blender"
+      "autodesk-fusion"
       "ogdesign-eagle"
       "google-chrome"
       "heptabase"
