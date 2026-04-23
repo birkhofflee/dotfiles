@@ -1,6 +1,14 @@
-# Manual one-time setup for sync is required:
-# $ atuin login
+{ config, ... }:
 {
+  age.secrets.atuin-session = {
+    file = ../../secrets/atuin-session.age;
+    path = "${config.home.homeDirectory}/.local/share/atuin/session";
+  };
+  age.secrets.atuin-key = {
+    file = ../../secrets/atuin-key.age;
+    path = "${config.home.homeDirectory}/.local/share/atuin/key";
+  };
+
   xdg.configFile."atuin/themes/catppuccin-macchiato-blue.toml".text = ''
     [theme]
     name = "catppuccin-macchiato-blue"
@@ -32,6 +40,8 @@
       auto_sync = true;
       sync_frequency = "5m";
       sync_address = "http://atuin"; # Tailscale Services
+      session_path = config.age.secrets."atuin-session".path;
+      key_path = config.age.secrets."atuin-key".path;
 
       theme.name = "catppuccin-macchiato-blue";
     };

@@ -1,10 +1,8 @@
-{ pkgs, lib, inputs, currentSystemUser, ... }:
+{ pkgs, lib, currentSystemUser, ... }:
 let
   username = currentSystemUser;
 in
 {
-  home-manager.sharedModules = [ inputs.agenix.homeManagerModules.age ];
-
   home-manager.users.${username} = {
     age.package = pkgs.age-with-plugins;
     age.identityPaths = [ "${./age-identity.txt}" ];

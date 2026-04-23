@@ -5,6 +5,7 @@ let
   nixos-vps-tw-01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHVD+LyFUS45DlWEzzniJsv2NQh0ro7GZ2bAdyDpAAad";
 
   withHomelab = [ ale nixos-server-01 ];
+  myHosts = [ ale nixos-server-01 nixos-desktop-01 nixos-vps-tw-01 ];
 in
 {
   "rybbit-auth-secret.age" = {
@@ -16,7 +17,15 @@ in
     armor = true;
   };
   "tailscale-authkey.age" = {
-    publicKeys = withHomelab ++ [ nixos-desktop-01 nixos-vps-tw-01 ];
+    publicKeys = myHosts;
+    armor = true;
+  };
+  "atuin-session.age" = {
+    publicKeys = myHosts;
+    armor = true;
+  };
+  "atuin-key.age" = {
+    publicKeys = myHosts;
     armor = true;
   };
   "apex-discord-bot.age" = {

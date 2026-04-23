@@ -132,15 +132,15 @@
       };
 
       nixosConfigurations = {
-        nixos-vm-aarch64 = mkSystem "nixos-vm-aarch64" {
-          system = "aarch64-linux";
-          user = "ale";
-        };
+        # nixos-vm-aarch64 = mkSystem "nixos-vm-aarch64" {
+        #   system = "aarch64-linux";
+        #   user = "ale";
+        # };
 
-        nixos-orbstack = mkSystem "nixos-orbstack" {
-          system = "aarch64-linux";
-          user = "ale";
-        };
+        # nixos-orbstack = mkSystem "nixos-orbstack" {
+        #   system = "aarch64-linux";
+        #   user = "ale";
+        # };
 
         nixos-server-01 = mkSystem "nixos-server-01" {
           system = "x86_64-linux";
