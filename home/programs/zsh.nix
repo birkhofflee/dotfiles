@@ -263,8 +263,6 @@ in
         ERL_AFLAGS = "-kernel shell_history enabled";
       }
       (lib.optionalAttrs pkgs.stdenv.isDarwin {
-        SSH_AUTH_SOCK = "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
-
         # Ansible (https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#running-on-macos-as-a-control-node)
         OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
 

@@ -4,9 +4,9 @@
 { pkgs, lib, ... }:
 
 let
-  # List of all .nix files in ./programs
+  # List of all .nix files in ./programs, excluding opt-in modules
   programImports = builtins.map (file: ./programs/${file}) (
-    builtins.filter (f: lib.hasSuffix ".nix" f) (builtins.attrNames (builtins.readDir ./programs))
+    builtins.filter (f: lib.hasSuffix ".nix" f && f != "1password.nix") (builtins.attrNames (builtins.readDir ./programs))
   );
 
   # List of all .nix files in ./files
@@ -35,7 +35,10 @@ rec {
     ./packages/user-packages.nix
   ]
   ++ programImports
-  ++ fileImports;
+  ++ fileImports
+  # 1Password is opt-in: imported here for macOS (always available), and
+  # explicitly imported in custom home configs (e.g. nixos-desktop-01).
+  ++ lib.optionals isDarwin [ ./programs/1password.nix ];
 
   # Expressions like $HOME are expanded by the shell.
   # However, since expressions like ~ or * are escaped,

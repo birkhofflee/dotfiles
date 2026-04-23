@@ -3,6 +3,7 @@
 {
   imports = [
     # Shell programs
+    ../../home/programs/1password.nix
     ../../home/programs/ghostty.nix
     ../../home/programs/atuin.nix
     ../../home/programs/delta.nix

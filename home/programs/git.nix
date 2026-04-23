@@ -57,16 +57,13 @@ in
       gpg = {
         format = "ssh";
 
-        ssh = lib.mkMerge [
-          { allowedSignersFile = "${config.xdg.configHome}/git/allowed_signers"; }
-          (lib.mkIf pkgs.stdenv.isDarwin {
-            program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
-          })
-        ];
+        ssh = {
+          allowedSignersFile = "${config.xdg.configHome}/git/allowed_signers";
+        };
       };
 
       commit = {
-        gpgsign = pkgs.stdenv.isDarwin;
+        gpgsign = false;
       };
 
       pull = {
