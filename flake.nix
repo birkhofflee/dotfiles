@@ -44,6 +44,8 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    nur.url = "github:nix-community/NUR";
+
     # _1password-shell-plugins.url = "github:1Password/shell-plugins";
     helix.url = "github:helix-editor/helix/master";
 
@@ -92,6 +94,8 @@
     in
     {
       overlays = {
+        nur = inputs.nur.overlays.default;
+
         zellij-plugins = _: prev: {
           zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
           zjstatus-hints = inputs.zjstatus-hints.packages.${prev.stdenv.hostPlatform.system}.default;
