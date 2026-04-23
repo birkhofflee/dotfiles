@@ -187,7 +187,7 @@ See [`docs/deployment-instructions-nixos-server.md`](docs/deployment-instruction
 To apply new flake config after provisioning:
 
 ```shell
-just switch-homelab
+just switch-nixos-server
 ```
 
 </details>

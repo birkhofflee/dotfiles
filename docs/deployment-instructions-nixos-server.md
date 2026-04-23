@@ -49,9 +49,7 @@ nixos-server-01 = "ssh-ed25519 AAAA...";
 Re-encrypt all secrets:
 
 ```bash
-op read 'op://Personal/id_ed25519/private key?ssh-format=openssh' > /tmp/age-identity.key && chmod 600 /tmp/age-identity.key
-cd secrets && agenix -r --identity /tmp/age-identity.key
-rm /tmp/age-identity.key
+just rekey
 ```
 
 Stage the changes so nix can find them:
