@@ -62,4 +62,6 @@ proxy_off() {
     unset ALL_PROXY
     unset ftp_proxy
     unset FTP_PROXY
+    unset NO_PROXY
+    unset no_proxy
 }
