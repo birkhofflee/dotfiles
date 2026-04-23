@@ -57,6 +57,19 @@ let
   '';
 in
 {
+  services.caddy.virtualHosts."http://analytics.birkhoff.me" = {
+    extraConfig = ''
+      encode zstd gzip
+      request_body max_size 10MB
+      handle /api/* {
+        reverse_proxy localhost:3001
+      }
+      handle {
+        reverse_proxy localhost:3002
+      }
+    '';
+  };
+
   age.secrets.rybbit-auth-secret = {
     file = ../../../../secrets/rybbit-auth-secret.age;
   };
