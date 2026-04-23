@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, currentSystemUser, ... }:
+{ config, pkgs, lib, currentSystemUser, ... }:
 
 let
   cfg = config.nixos-desktop-01;
@@ -34,8 +34,8 @@ in
   fonts = {
     fontDir.enable = true;
     packages = [
-      (pkgs.callPackage ../../home/packages/fonts/berkeley-mono.nix { secrets = inputs.secrets; })
-      (pkgs.callPackage ../../home/packages/fonts/berkeley-mono-variable.nix { secrets = inputs.secrets; })
+      pkgs.berkeley-mono
+      pkgs.berkeley-mono-variable
     ];
   };
 

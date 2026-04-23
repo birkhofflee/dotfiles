@@ -10,7 +10,6 @@ name:
   user,
   nixos-anywhere ? false,
   hasDesktop ? false,
-  homeConfig ? ../home,
 }:
 
 let
@@ -19,6 +18,7 @@ let
   # The config files for this system.
   # Host configs are in hosts/${name}/ and will auto-import default.nix
   machineConfig = ../hosts/${name};
+  homeConfig = ../hosts/${name}/home.nix;
 
   # NixOS vs nix-darwin functions
   systemFunc = if isDarwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;

@@ -103,6 +103,9 @@
           nixos-anywhere = prev.callPackage ./packages/nixos-anywhere-patched.nix {
             nixos-anywhere = inputs.nixos-anywhere.packages.${prev.stdenv.hostPlatform.system}.nixos-anywhere;
           };
+          berkeley-mono = prev.callPackage ./packages/fonts/berkeley-mono.nix { secrets = inputs.secrets; };
+          berkeley-mono-variable = prev.callPackage ./packages/fonts/berkeley-mono-variable.nix { secrets = inputs.secrets; };
+          commit-mono-nf = prev.callPackage ./packages/fonts/commit-mono-nf.nix { };
         };
 
         # Temporary overlays
@@ -143,20 +146,17 @@
           system = "x86_64-linux";
           user = "ale";
           nixos-anywhere = true;
-          homeConfig = ./hosts/nixos-server-01/home.nix;
         };
 
         nixos-desktop-01 = mkSystem "nixos-desktop-01" {
           system = "x86_64-linux";
           user = "ale";
           hasDesktop = true;
-          homeConfig = ./hosts/nixos-desktop-01/home.nix;
         };
 
         nixos-vps-tw-01 = mkSystem "nixos-vps-tw-01" {
           system = "x86_64-linux";
           user = "ale";
-          homeConfig = ./hosts/nixos-vps-tw-01/home.nix;
         };
       };
 

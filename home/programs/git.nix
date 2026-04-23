@@ -55,7 +55,7 @@ in
       };
 
       gpg = {
-        format = "ssh";
+        format = lib.mkDefault "ssh";
 
         ssh = {
           allowedSignersFile = "${config.xdg.configHome}/git/allowed_signers";
@@ -63,7 +63,7 @@ in
       };
 
       commit = {
-        gpgsign = false;
+        gpgsign = lib.mkDefault false;
       };
 
       pull = {

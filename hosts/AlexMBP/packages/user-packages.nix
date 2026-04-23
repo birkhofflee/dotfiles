@@ -1,11 +1,8 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 let
-  berkeley-mono = pkgs.callPackage ./fonts/berkeley-mono.nix { secrets = inputs.secrets; };
-  berkeley-mono-variable = pkgs.callPackage ./fonts/berkeley-mono-variable.nix { secrets = inputs.secrets; };
-  commit-mono-nf = pkgs.callPackage ./fonts/commit-mono-nf.nix { };
-  ocr = pkgs.callPackage ./ocr/ocr.nix { };
-  impbcopy = pkgs.callPackage ./impbcopy/impbcopy.nix { };
+  ocr = pkgs.callPackage ../../../packages/ocr/ocr.nix { };
+  impbcopy = pkgs.callPackage ../../../packages/impbcopy/impbcopy.nix { };
 in
 {
   home.packages =
@@ -229,7 +226,6 @@ in
 
       # Shell enhancements
       zsh-completions
-      zsh-fast-syntax-highlighting
       # emojify # https://github.com/mrowa44/emojify
       atuin
       progress
