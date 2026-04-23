@@ -87,7 +87,7 @@ in
           brewery = "brew update && brew upgrade && brew cleanup";
           o = "open"; # Open with default app
           tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
-          optimize_clipboard_image = "impaste | oxipng -o max - | impbcopy -";
+          optimize_clipboard_image = "impaste | ${pkgs.oxipng}/bin/oxipng -o max - | impbcopy -";
         };
         generalAliases = {
           # Disable correction
@@ -162,19 +162,19 @@ in
           diffu = "diff --unified"; # diff
 
           # Utilities
-          http-serve = "nr simple-http-server --cors";
+          http-serve = "${pkgs.simple-http-server}/bin/simple-http-server --cors";
           urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))'";
           urlencode = "python3 -c 'import sys, urllib.parse as ul; print (ul.quote_plus(sys.argv[1]))'";
-          lg = "lazygit";
+          lg = "${pkgs.lazygit}/bin/lazygit";
           pop = "with_resend POP_FROM='Alex <alex@birkhoff.me>' pop"; # https://github.com/charmbracelet/pop
           scratch = "$EDITOR $(mktemp)";
           rn = "date; echo && cal";
           oggi = "echo -n \"$(date '+%Y-%m-%d')\"";
-          ds-destroy = "find . -name .DS_Store -delete"; # https://codeberg.org/EvanHahn/dotfiles/src/commit/843b9ee13d949d346a4a73ccee2a99351aed285b/home/bin/bin/ds-destroy
+          ds-destroy = "${pkgs.fd}/bin/fd -H '^\.DS_Store$' -tf -X rm";
           clear_history = "> $ZDOTDIR/.zsh_history ; exec $SHELL -l";
-          help = "cht.sh";
-          du = "ncdu --color dark -rr -x --exclude .git --exclude node_modules";
-          gist = "gh gist create";
+          help = "${pkgs.cht-sh}/bin/cht.sh";
+          du = "${pkgs.ncdu}/bin/ncdu --color dark -rr -x --exclude .git --exclude node_modules";
+          gist = "${pkgs.gh}/bin/gh gist create";
 
           # Network
           dig = "kdig";
@@ -276,7 +276,7 @@ in
     profileExtra = ''
       ${lib.optionalString pkgs.stdenv.isDarwin ''
         # Hardcoded from: /opt/homebrew/bin/brew shellenv (saves ~44ms per login shell)
-        # PATH is handled via home.sessionPath in home/default.nix
+        # PATH is handled via `home.sessionPath` instead
         export HOMEBREW_PREFIX="/opt/homebrew"
         export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
         export HOMEBREW_REPOSITORY="/opt/homebrew"
