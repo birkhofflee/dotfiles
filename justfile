@@ -42,6 +42,9 @@ switch-nixos-server:
 switch-nixos-desktop:
   nh os switch -H nixos-desktop-01 --accept-flake-config --target-host root@nixos-desktop-01 --build-host nixos-server-01 -e passwordless
 
+switch-nixos-vps-tw:
+  nh os switch -H nixos-vps-tw-01 --accept-flake-config --target-host root@nixos-vps-tw-01 --build-host nixos-server-01 -e passwordless
+
 # Build proxmox VMA image for nixos-desktop-01 on nixos-server-01 (x86_64-linux).
 # Syncs the working tree (including uncommitted changes) then builds remotely.
 # The dotfiles.secret input is resolved locally (mac has GitHub SSH access) and

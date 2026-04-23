@@ -18,6 +18,7 @@
     # Trusted users can use extra-substituters from flakes without warnings
     trusted-users = [
       "@admin"
+      "@wheel"
       "root"
     ];
 

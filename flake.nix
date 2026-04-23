@@ -150,6 +150,12 @@
           user = "ale";
           homeConfig = ./hosts/nixos-desktop-01/home.nix;
         };
+
+        nixos-vps-tw-01 = mkSystem "nixos-vps-tw-01" {
+          system = "x86_64-linux";
+          user = "ale";
+          homeConfig = ./hosts/nixos-vps-tw-01/home.nix;
+        };
       };
 
       packages.x86_64-linux.nixos-desktop-01-image =
