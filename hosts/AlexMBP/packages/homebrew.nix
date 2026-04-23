@@ -39,6 +39,7 @@
       "imazing"
       "input-source-pro"
       "keka"
+      "jurplel/tap/instant-space-switcher"
       "key-codes"
       "keycastr"
       "knockknock"
