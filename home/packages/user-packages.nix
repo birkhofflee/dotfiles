@@ -278,7 +278,6 @@ in
       fd
       fzf
       ripgrep
-      # silver-searcher  # redundant: use rg
       pdfgrep
 
       # Data Science

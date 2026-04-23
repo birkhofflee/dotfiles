@@ -36,7 +36,7 @@
 
     # ── File operations ────────────────────────────────────────────────────
     bat eza rsync
-    fd ripgrep silver-searcher # file/content search
+    fd ripgrep # file/content search
     vivid # LS_COLORS (colors.zsh)
     dust # du in Rust
     hexyl # hex viewer
