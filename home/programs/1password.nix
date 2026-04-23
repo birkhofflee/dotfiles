@@ -1,11 +1,5 @@
 { pkgs, lib, config, ... }:
 {
-  # Linux: install 1Password packages (on macOS it's a Homebrew cask)
-  home.packages = lib.mkIf pkgs.stdenv.isLinux [
-    pkgs._1password-cli
-    pkgs._1password-gui
-  ];
-
   # SSH agent socket — used by git, ssh, and other tools
   home.sessionVariables.SSH_AUTH_SOCK =
     if pkgs.stdenv.isDarwin then
@@ -21,7 +15,7 @@
         if pkgs.stdenv.isDarwin then
           "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
         else
-          "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+          "/run/current-system/sw/bin/op-ssh-sign";
     };
     commit.gpgsign = lib.mkForce true;
   };

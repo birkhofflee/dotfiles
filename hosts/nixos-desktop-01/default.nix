@@ -24,6 +24,7 @@
     ./networking.nix
     ./desktop.nix
     ./users.nix
+    ./programs/1password.nix
   ];
 
   system.stateVersion = "25.05";
