@@ -292,7 +292,7 @@ Example:
    ```nix
    # For macOS (darwin is auto-detected from system suffix)
    darwinConfigurations.<hostname> = mkSystem "<hostname>" {
-     system = "aarch64-darwin";  # or "x86_64-darwin"
+     system = "aarch64-darwin";
      user = "ale";
    };
 

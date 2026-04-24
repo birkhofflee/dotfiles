@@ -172,7 +172,11 @@
       packages.x86_64-linux.nixos-desktop-01-image =
         self.nixosConfigurations.nixos-desktop-01.config.system.build.VMA;
     }
-    // inputs.flake-utils.lib.eachDefaultSystem (
+    // inputs.flake-utils.lib.eachSystem [
+      "aarch64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ] (
       system:
       let
         pkgs = import inputs.nixpkgs-unstable {
