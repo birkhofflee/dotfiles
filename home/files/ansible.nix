@@ -1,11 +1,7 @@
-{ config, ... }:
-
 {
-  # TODO: inventory
   home.file.".ansible.cfg" = {
     text = ''
       [defaults]
-      inventory = ${config.xdg.configHome}/ansible/inventory.yaml
       nocows = 1
       timeout = 25
       forks = 25

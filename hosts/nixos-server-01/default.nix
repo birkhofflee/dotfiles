@@ -1,22 +1,23 @@
 {
-  config,
   pkgs,
   lib,
-  inputs,
   modulesPath,
+  currentSystemUser,
   ...
 }:
 
 let
-  username = "ale";
+  username = "${currentSystemUser}";
   hostname = "nixos-server-01";
 in
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ../shared-nix-settings.nix
+    # TODO: put this on next time when rebuilding the VM entirely
+    # (modulesPath + "/virtualisation/proxmox-image.nix")
     ./disk-config.nix
 
+    ../shared-nix-settings.nix
     ../common-system-packages.nix
 
     ./services/tailscale
