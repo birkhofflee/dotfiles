@@ -1,7 +1,10 @@
 { pkgs, ... }:
 
 {
-  imports = [ ../../home ];
+  imports = [
+    ../../home
+    ../../home/programs/uv.nix
+  ];
 
   home.packages = with pkgs; [
     # ── Shell & terminal ───────────────────────────────────────────────────

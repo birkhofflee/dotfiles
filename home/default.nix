@@ -18,6 +18,7 @@
     ./programs/zoxide.nix
     ./programs/trippy.nix
     ./programs/zsh.nix
+    ./programs/uv.nix
   ];
 
   xdg.enable = true;
@@ -91,7 +92,6 @@
 
     # ── Developer tools ────────────────────────────────────────────────────
     nh # Nix helper
-    uv # Python package manager
 
     # ── Documentation & misc ──────────────────────────────────────────────
     tldr

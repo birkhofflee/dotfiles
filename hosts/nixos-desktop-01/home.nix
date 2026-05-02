@@ -5,6 +5,7 @@
     ../../home
     ../../home/programs/1password.nix
     ../../home/programs/ghostty.nix
+    ../../home/programs/uv.nix
   ];
 
   xdg.mimeApps = {
