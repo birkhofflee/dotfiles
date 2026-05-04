@@ -198,6 +198,8 @@ just switch-nixos-server
 
 `nixos-desktop-01` is a Proxmox KVM VM with GNOME DE. Remote desktop is provided by Gnome Remote Desktop on port 3389 (RDP).
 
+[List of RDP clients available on macOS](https://github.com/FreeRDP/FreeRDP/discussions/8578#discussioncomment-10800266)
+
 #### 1. Build the VMA image
 
 ```shell
