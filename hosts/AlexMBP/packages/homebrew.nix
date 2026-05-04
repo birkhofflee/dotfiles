@@ -74,6 +74,7 @@
       "utm"
       "virtualbuddy"
       "vorta"
+      "darrylmorley/whatcable/whatcable"
       "wechat"
       "wifi-explorer"
       "winbox"
@@ -84,13 +85,16 @@
 
     masApps = {
       "1Password for Safari" = 1569813296;
+      "Acidity" = 6472630023;
       "Actions" = 1586435171;
+      "AdGuard Mini" = 1440147259;
       "AmorphousDiskMark" = 1168254295;
       "BrightIntosh" = 6452471855;
       "CrystalFetch" = 6454431289;
       "DaisyDisk" = 411643860;
       "Gifski" = 1351639930;
       "Goodnotes" = 1444383602;
+      "Hush" = 1544743900;
       "Hyperduck" = 6444667067;
       "Keynote" = 361285480;
       "LINE" = 539883307;
