@@ -28,6 +28,7 @@
       "discord"
       "dropbox"
       "figma"
+      "font-sf-pro"
       "ghostty"
       "google-chrome"
       "handbrake-app"
