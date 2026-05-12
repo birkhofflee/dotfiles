@@ -380,6 +380,7 @@
       # @ see https://docs.helix-editor.com/editor.html#editorsmart-tab-section
       keys.normal = {
         "A-w" = ":buffer-close";
+        "C-r" = ":reload-all";
         "tab" = "move_parent_node_end";
         "S-tab" = "move_parent_node_start";
         "Cmd-s" = ":write";
