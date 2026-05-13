@@ -5,6 +5,13 @@
   ...
 }:
 
+let
+  treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
+    projectRootFile = "flake.nix";
+    programs.nixfmt.enable = true;
+  };
+in
+
 {
   programs.helix = {
     enable = true;
@@ -13,6 +20,11 @@
 
     languages = {
       language = [
+        {
+          name = "nix";
+          auto-format = true;
+          formatter.command = "${treefmtEval.config.programs.nixfmt.package}/bin/nixfmt";
+        }
         {
           name = "markdown";
           formatter = {
