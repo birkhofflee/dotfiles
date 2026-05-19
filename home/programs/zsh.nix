@@ -79,6 +79,7 @@ in
           htop = "sudo htop";
           pbc = "pbcopy"; # Copy to clipboard
           pbp = "pbpaste"; # Paste from clipboard
+          ec = "pbpaste | hx -";
           cpwd = "pwd | pbcopy";
           yoink = "open -a Yoink";
           a = "terminal-notifier -sound default -message 'Command complete' -title 'Shell'";
