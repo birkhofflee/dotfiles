@@ -354,12 +354,12 @@
 
       # System Keyboard Shortcuts
       com.apple.symbolichotkeys = {
-        # Record Screen (⇧⌘5)
+        # Record Screen (Shift+Cmd+5)
         "184" = {
           enabled = 1;
         };
 
-        # Default screenshot shortcuts - disable so we can use Shottr
+        # Disable default screenshot shortcuts to use Shottr
         "28" = {
           enabled = 0;
         };
@@ -392,6 +392,88 @@
 
         # Disable Finder search window shortcut
         "65" = {
+          enabled = 0;
+        };
+
+        # Disable toggle Dock hiding (⌥⌘D)
+        "52" = {
+          enabled = 0;
+        };
+
+        # Disable Mission Control: Move left/right a space (^← / ^→)
+        # Using Raycast's counterparts so there are no animations
+        "79" = {
+          enabled = 0;
+        };
+
+        "81" = {
+          enabled = 0;
+        };
+
+        # Not sure
+        "59" = {
+          enabled = 0;
+        };
+
+        "162" = {
+          enabled = 0;
+        };
+
+        # Disable Accessibility shortcuts (zoom, contrast, invert colors, etc.)
+        "215" = {
+          enabled = 0;
+        };
+
+        "216" = {
+          enabled = 0;
+        };
+
+        "217" = {
+          enabled = 0;
+        };
+
+        "218" = {
+          enabled = 0;
+        };
+
+        "219" = {
+          enabled = 0;
+        };
+
+        "225" = {
+          enabled = 0;
+        };
+
+        "226" = {
+          enabled = 0;
+        };
+
+        "227" = {
+          enabled = 0;
+        };
+
+        "228" = {
+          enabled = 0;
+        };
+
+        "229" = {
+          enabled = 0;
+        };
+
+        "230" = {
+          enabled = 0;
+        };
+
+        "231" = {
+          enabled = 0;
+        };
+
+        "232" = {
+          enabled = 0;
+        };
+
+        # Disable Game Overlay (⌘⎋) - used for Ghostty quick terminal
+        "260" = {
           enabled = 0;
         };
       };
