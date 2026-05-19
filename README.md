@@ -317,14 +317,14 @@ Some completions setups:
 
 This project was heavily inspired by other open-source dotfiles. A non-exhaustive list:
 
-* https://github.com/mitchellh/nixos-config
-* https://github.com/malob/nixpkgs
-* https://github.com/ahmedelgabri/dotfiles
-* https://github.com/kornicameister/dotfiles/
-* https://github.com/Aloxaf/dotfiles/tree/master/zsh/.config/zsh
-* https://github.com/paulmillr/dotfiles
-* https://github.com/mashehu/dotfiles
-* https://github.com/finnurtorfa/zsh
+* [mitchellh/nixos-config](https://github.com/mitchellh/nixos-config)
+* [malob/nixpkgs](https://github.com/malob/nixpkgs)
+* [ahmedelgabri/dotfiles](https://github.com/ahmedelgabri/dotfiles)
+* [kornicameister/dotfiles](https://github.com/kornicameister/dotfiles)
+* [Aloxaf/dotfiles](https://github.com/Aloxaf/dotfiles/tree/master/zsh/.config/zsh)
+* [paulmillr/dotfiles](https://github.com/paulmillr/dotfiles)
+* [mashehu/dotfiles](https://github.com/mashehu/dotfiles)
+* [finnurtorfa/zsh](https://github.com/finnurtorfa/zsh)
 
 Credits are given in the source code where applicable.
 
