@@ -62,7 +62,6 @@
       "spotify"
       "steam"
       "sublime-text"
-      "superwhisper"
       "suspicious-package"
       "teamviewer"
       "telegram"
