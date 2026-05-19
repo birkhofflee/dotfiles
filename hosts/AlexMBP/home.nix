@@ -15,8 +15,6 @@ let
   fileImports = builtins.map (file: ../../home/files/${file}) (
     builtins.filter (f: lib.hasSuffix ".nix" f) (builtins.attrNames (builtins.readDir ../../home/files))
   );
-
-  setWallpaperScript = import ../../home/libs/wallpaper.nix { inherit pkgs; };
 in
 {
   imports = [
@@ -56,12 +54,7 @@ in
       /usr/bin/chflags nohidden "$HOME/Library"
     '';
 
-    "setWallpaper" = lib.hm.dag.entryAfter [ "revealHomeLibraryDirectory" ] ''
-      echo "[+] Setting wallpaper"
-      ${setWallpaperScript}/bin/set-wallpaper-script
-    '';
-
-    "activateUserSettings" = lib.hm.dag.entryAfter [ "setWallpaper" ] ''
+    "activateUserSettings" = lib.hm.dag.entryAfter [ "revealHomeLibraryDirectory" ] ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
       for app in \
