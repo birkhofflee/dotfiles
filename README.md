@@ -12,7 +12,7 @@ My [nix-darwin](https://github.com/nix-darwin/nix-darwin) and NixOS configuratio
 
 My daily driver is macOS because I prefer the Apple desktop environment. There are also a NixOS homelab server (running as a Proxmox VM) and NixOS VM setups mainly for experiments.
 
-![Screenshot of fastfetch on M1 Pro running macOS Sequoia](./docs/screenshot-alexmbp-fastfetch.png)
+![Screenshot of fastfetch on M1 Pro running macOS Tahoe](./docs/screenshot-alexmbp-fastfetch.png)
 
 ## Overview
 
@@ -255,7 +255,7 @@ just switch-nixos-desktop
 
 <summary>NixOS VM bootstrap instructions on macOS (VMware Fusion)</summary>
 
-During my test, it appears that NAT DHCP in VMWare Fusion 13.6.4 doesn't work; use 13.6.3 instead (on macOS Sequoia 15.6.1).
+During my test, it appears that NAT DHCP in VMWare Fusion 13.6.4 doesn't work; use 13.6.3 instead (on macOS Tahoe 26.5).
 
 Note that a desktop environment is yet to be properly implemented.
 

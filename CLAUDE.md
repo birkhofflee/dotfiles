@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a cross-platform Nix configuration repository supporting both **macOS** (via nix-darwin) and **NixOS**, using Nix flakes for reproducible system configuration. The setup uses a shared home-manager configuration that works across all systems.
 
 **Current hosts:**
-- `AlexMBP`: macOS (M1 Pro, Sequoia) - nix-darwin
+- `AlexMBP`: macOS (M1 Pro, Tahoe) - nix-darwin
 - `nixos-vm-aarch64`: NixOS (aarch64-linux) - VMware Fusion VM
 - `nixos-orbstack`: NixOS (aarch64-linux) - OrbStack VM
 - `nixos-server-01`: NixOS (x86_64-linux) - Proxmox VM on homelab server (`homelab-nuc`)
