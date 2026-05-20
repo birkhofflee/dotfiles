@@ -2,9 +2,11 @@
   description = "birkhoff's dotfiles";
 
   nixConfig = {
-    # Merged with the system-level substituters.
-    # This config is included to speed up the initial build.
-    # trusted-user config is required
+    # Merged with the system-level substituters to speed up the initial build.
+    # Requires the invoking user to be in trusted-users (see installation instructions).
+    #
+    # Once the user is in trusted-users, --accept-flake-config will pick up the
+    # substituters from the flake's nixConfig without any manual pre-seeding.
     extra-substituters = [
       "https://nix-community.cachix.org"
       "https://helix.cachix.org"

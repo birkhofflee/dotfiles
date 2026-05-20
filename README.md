@@ -179,6 +179,10 @@ ulimit -n 4096
 mkdir ~/.ssh
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
+# Add the current user to trusted-users so --accept-flake-config is honoured,
+# allowing Nix to use the binary caches declared in the flake's nixConfig.
+echo "trusted-users = $USER" | sudo tee -a /etc/nix/nix.custom.conf
+
 # Activate the configuration
 nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --accept-flake-config
 ```

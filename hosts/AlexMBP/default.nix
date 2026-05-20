@@ -30,6 +30,7 @@ in
     enable = true;
 
     # Custom settings written to /etc/nix/nix.custom.conf
+    # Note: nix.settings is ignored when determinateNix.enable = true; use customSettings instead.
     customSettings = {
       # flake-registry = "/etc/nix/flake-registry.json";
       # sandbox = true;
@@ -37,6 +38,16 @@ in
         "@admin"
         "${username}"
         "root"
+      ];
+      extra-substituters = [
+        "https://nix-community.cachix.org"
+        "https://helix.cachix.org"
+        "https://birkhoff.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+        "birkhoff.cachix.org-1:m7WmdU7PKc6fsKedC278lhLtiqjz6ZUJ6v2nkVGyJjQ="
       ];
     };
   };
