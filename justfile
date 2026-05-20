@@ -101,8 +101,10 @@ edit-secret secret_file:
 rekey:
   op read 'op://Personal/id_ed25519/private key?ssh-format=openssh' > /tmp/k && agenix -r --identity /tmp/k && rm -f /tmp/k
 
-# Push darwin build artifacts to cachix
+# Push darwin build artifacts to cachix (pushes full closure, not just newly-built paths)
 [group('cache')]
 cache-darwin:
-  {{CACHIX_COMMAND}} watch-exec birkhoff -- nix build '.#darwinConfigurations.AlexMBP.config.system.build.toplevel'
+  nix build '.#darwinConfigurations.AlexMBP.config.system.build.toplevel' --print-out-paths --no-link \
+    | xargs nix path-info --recursive \
+    | {{CACHIX_COMMAND}} push birkhoff
 
