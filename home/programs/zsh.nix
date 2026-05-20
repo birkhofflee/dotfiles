@@ -356,7 +356,7 @@ in
           ${lib.optionalString hasDesktop ''
             # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
             # Note: `lg` is alias for `lazygit`
-            AUTO_NOTIFY_IGNORE=(
+            export AUTO_NOTIFY_IGNORE=(
               "vim" "nvim" "hx" "nano"
               "tmux"
               "zellij"
