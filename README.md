@@ -150,10 +150,18 @@ just update-input <flake-input-name>
 
 <summary>Installation instructions on a new macOS machine without Nix installed</summary>
 
+Make sure the username aligns to the one specified in [flake.nix](flake.nix) (`ale`).
+
 Full Disk Access has to be enabled for the terminal app via `System Settings > Privacy & Security > Full Disk Access` to overcome `Could not write domain com.apple.universalaccess; exiting` when applying user defaults.
 
 ```shell
 xcode-select --install
+
+# Install Homebrew (manages GUI apps)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install 1Password and login manually so credentials are present
+brew install --cask 1password
 
 # Clone the dotfiles
 mkdir $HOME/.config
@@ -166,6 +174,10 @@ Install [Determinate Nix](https://determinate.systems/) using the [macOS package
 # Temporarily mitigate 'too many open files' issue
 # @see https://github.com/NixOS/nix/issues/6557
 ulimit -n 4096
+
+# Pre-seed GitHub's SSH host key so the private secrets input doesn't stall
+mkdir ~/.ssh
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
 # Activate the configuration
 nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --accept-flake-config

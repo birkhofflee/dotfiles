@@ -58,8 +58,8 @@ in
       fi
 
       if ! [[ -f "/opt/homebrew/bin/brew" ]] && ! [[ -f "/usr/local/bin/brew" ]]; then
-        echo "[+] Installing Homebrew"
-        su -l ${username} -c '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+        echo '[!] Homebrew not found - install manually by running `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`'
+        exit 1
       fi
     '';
 

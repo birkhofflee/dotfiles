@@ -108,7 +108,6 @@ The home-manager configuration is **shared across all hosts** and platform-agnos
 - nix-darwin system configuration
 - System packages and Homebrew integration
 - macOS-specific OS settings and network configuration
-- Activation scripts (Rosetta installation, Homebrew setup, locate database)
 
 **nixos-vm-aarch64** (`hosts/nixos-vm-aarch64/default.nix`):
 - NixOS system configuration for VMware Fusion
@@ -376,7 +375,7 @@ The `nixos-server-01` host is a Proxmox VM on the `homelab-nuc` PVE host. It use
 The system uses activation scripts at multiple levels:
 
 **System-level** (e.g., `hosts/AlexMBP/default.nix` for macOS):
-- `preActivation`: Rosetta installation, Homebrew installation
+- `preActivation`: Homebrew check
 - `postActivation`: Enable locate database, reveal /Volumes
 
 **Home-level** (`home/default.nix`):
