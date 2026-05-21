@@ -76,7 +76,6 @@ in
         macAliases = lib.mkIf (pkgs.stdenv.isDarwin) {
           aws = "op plugin run -- aws";
           mtr = "sudo mtr";
-          htop = "sudo htop";
           pbc = "pbcopy"; # Copy to clipboard
           pbp = "pbpaste"; # Paste from clipboard
           ec = "pbpaste | hx -";
