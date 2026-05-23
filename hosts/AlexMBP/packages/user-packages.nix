@@ -23,10 +23,6 @@ in
       rustup
       cargo-edit
 
-      # Node.js
-      nodejs
-      yarn
-
       # Ruby
       rbenv
 

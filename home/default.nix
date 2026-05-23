@@ -19,6 +19,7 @@
     ./programs/trippy.nix
     ./programs/zsh.nix
     ./programs/uv.nix
+    ./programs/nodejs.nix
   ];
 
   xdg.enable = true;
