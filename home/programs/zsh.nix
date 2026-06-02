@@ -348,15 +348,6 @@ in
             source "${config.home.homeDirectory}/.shell/proxy.zsh"
           ''}
 
-          # Lazy-load rbenv: only initialize on the first ruby/gem/bundle/rbenv call
-          if command -v rbenv > /dev/null; then
-            rbenv() {
-              unfunction rbenv
-              eval "$(command rbenv init - zsh)"
-              rbenv "$@"
-            }
-          fi
-
           # Empty the autosuggestion strategy array. Later atuin will
           # automatically add itself into this array, so we're sure
           # that it's the only source where autosuggestions are fetched

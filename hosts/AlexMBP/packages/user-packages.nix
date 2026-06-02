@@ -23,9 +23,6 @@ in
       rustup
       cargo-edit
 
-      # Ruby
-      rbenv
-
       # Build tools/libraries
       autoconf
       automake
