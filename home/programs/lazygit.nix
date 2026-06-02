@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   programs.lazygit = {
     enable = true;
@@ -10,6 +11,8 @@
             pager = "delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format=\"lazygit-edit://{path}:{line}\"";
             colorArg = "always";
           }
+          { externalDiffCommand = "${pkgs.difftastic}/bin/difft --color=always"; }
+          { pager = "${pkgs.diff-so-fancy}/bin/diff-so-fancy"; }
         ];
 
         commit = {
