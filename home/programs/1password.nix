@@ -25,21 +25,10 @@
     commit.gpgsign = lib.mkForce true;
   };
 
-  # SSH agent key configuration
-  # https://developer.1password.com/docs/ssh/agent/config
-  home.file.".config/1Password/ssh/agent.toml".text = ''
-    # Managed by home-manager
+  # SSH agent
+  # https://www.1password.dev/ssh/agent#configuration
+  #
+  # By default, the 1Password SSH agent will make every eligible key in the built-in Personal, Private, or Employee vault of your 1Password accounts available to offer to SSH servers. This configuration is automatically set up when you turn on the SSH agent.
+  # If you need to use the SSH agent with keys saved in shared or custom vaults, you can create and customize an SSH agent config file (~/.config/1Password/ssh/agent.toml) to override the default agent configuration.
 
-    [[ssh-keys]]
-    item = "2mjyhu76qqmeex23n35wzpj4ri"
-
-    [[ssh-keys]]
-    item = "xoa6h6kmwwlcznc26euhrqke3q"
-
-    [[ssh-keys]]
-    item = "lgpo25nfmotwf2inm67a7nboeu"
-
-    [[ssh-keys]]
-    item = "4rd5wm4adrtnmpnkxzi6baozh4"
-  '';
 }
