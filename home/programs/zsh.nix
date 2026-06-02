@@ -271,6 +271,10 @@ in
 
         # https://docs.brew.sh/Analytics
         HOMEBREW_NO_ANALYTICS = "1";
+
+        # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
+        # Note: `lg` is alias for `lazygit`
+        AUTO_NOTIFY_IGNORE = "vim nvim hx nano tmux zellij bat cat less more watch top htop ssh man zi lazygit lg e ssh claude";
       })
     ];
 
@@ -332,6 +336,7 @@ in
           source "${config.home.homeDirectory}/.shell/colors.zsh"
           source "${config.home.homeDirectory}/.shell/completions.zsh"
           source "${config.home.homeDirectory}/.shell/fzf.zsh"
+
         '';
 
         # General configuration
@@ -351,28 +356,6 @@ in
               rbenv "$@"
             }
           fi
-
-          ${lib.optionalString hasDesktop ''
-            # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
-            # Note: `lg` is alias for `lazygit`
-            export AUTO_NOTIFY_IGNORE=(
-              "vim" "nvim" "hx" "nano"
-              "tmux"
-              "zellij"
-              "bat"
-              "cat"
-              "less"
-              "more"
-              "watch"
-              "top"
-              "htop"
-              "ssh"
-              "man"
-              "zi"
-              "lazygit"
-              "lg"
-            );
-          ''}
 
           # Empty the autosuggestion strategy array. Later atuin will
           # automatically add itself into this array, so we're sure
