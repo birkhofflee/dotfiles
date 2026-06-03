@@ -14,7 +14,9 @@ let
   };
 in
 {
-  imports = [ ../files/shell.nix ];
+  imports = [ ./shell.nix ];
+
+  home.packages = [ pkgs.zsh-completions ];
 
   # https://github.com/jnunyez/home-manager/blob/master/modules/programs/zsh.nix
   programs.zsh = {

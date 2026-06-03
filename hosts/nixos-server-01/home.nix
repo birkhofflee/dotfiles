@@ -3,7 +3,7 @@
 {
   imports = [
     ../../home
-    ../../home/programs/uv.nix
+    ../../home/modules/uv.nix
   ];
 
   home.packages = with pkgs; [

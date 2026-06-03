@@ -8,6 +8,8 @@ let
   };
 in
 {
+  home.packages = [ pkgs.television ];
+
   xdg.configFile."television/themes/catppuccin-macchiato-blue.toml".source =
     "${catppuccinTelevision}/themes/catppuccin-macchiato-blue.toml";
 

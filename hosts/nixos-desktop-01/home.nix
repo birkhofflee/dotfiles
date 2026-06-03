@@ -3,9 +3,9 @@
 {
   imports = [
     ../../home
-    ../../home/programs/1password.nix
-    ../../home/programs/ghostty.nix
-    ../../home/programs/uv.nix
+    ../../home/modules/1password.nix
+    ../../home/modules/ghostty.nix
+    ../../home/modules/uv.nix
   ];
 
   xdg.mimeApps = {

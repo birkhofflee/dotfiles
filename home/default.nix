@@ -1,25 +1,44 @@
 # Shared home base used by all hosts (macOS and NixOS).
 # Hosts import this and add their own packages/programs on top.
 
-{ pkgs, lib, currentSystemUser, ... }:
+{
+  pkgs,
+  lib,
+  currentSystemUser,
+  ...
+}:
 
 {
   imports = [
-    ./programs/atuin.nix
-    ./programs/delta.nix
-    ./programs/direnv.nix
-    ./programs/fzf.nix
-    ./programs/git.nix
-    ./programs/helix.nix
-    ./programs/htop.nix
-    ./programs/lazygit.nix
-    ./programs/starship.nix
-    ./programs/yazi.nix
-    ./programs/zoxide.nix
-    ./programs/trippy.nix
-    ./programs/zsh.nix
-    ./programs/uv.nix
-    ./programs/nodejs.nix
+    ./modules/ansible.nix
+    ./modules/atuin.nix
+    ./modules/bat.nix
+    ./modules/bottom.nix
+    ./modules/claude.nix
+    ./modules/delta.nix
+    ./modules/direnv.nix
+    ./modules/dprint.nix
+    ./modules/editorconfig.nix
+    ./modules/fzf.nix
+    ./modules/git.nix
+    ./modules/gpg.nix
+    ./modules/helix.nix
+    ./modules/htop.nix
+    ./modules/hushlogin.nix
+    ./modules/lazygit.nix
+    ./modules/llm.nix
+    ./modules/nano.nix
+    ./modules/nodejs.nix
+    ./modules/scripts.nix
+    ./modules/ssh.nix
+    ./modules/starship.nix
+    ./modules/television.nix
+    ./modules/trippy.nix
+    ./modules/uv.nix
+    ./modules/yazi.nix
+    # ./modules/zellij.nix
+    ./modules/zoxide.nix
+    ./modules/zsh.nix
   ];
 
   xdg.enable = true;
@@ -41,14 +60,12 @@
     nmap
     socat
     iperf
-    trippy # traceroute TUI (t/tu functions)
     wireguard-tools
     testssl
     sslscan
     tcping-go
 
     # ── File operations ────────────────────────────────────────────────────
-    bat
     eza
     rsync
     fd
@@ -57,14 +74,12 @@
     dust # du in Rust
     hexyl # hex viewer
     difftastic
-    delta # better diffs
     moreutils # ts, sponge, etc.
     lesspipe # LESSOPEN handler
     entr # run commands on file change
     ncdu # disk usage TUI
 
     # ── System monitoring ──────────────────────────────────────────────────
-    bottom # btm
     duf # disk usage/free
     procs # modern ps
     glances # system monitor
@@ -73,7 +88,6 @@
     tmux
     progress
     pv # progress bars
-    zsh-completions
 
     # ── Data & text ────────────────────────────────────────────────────────
     jq
@@ -86,11 +100,6 @@
     gnugrep # grep (for zsh alias)
     jo # generate JSON
 
-    # ── Version control ────────────────────────────────────────────────────
-    git
-    git-lfs
-    git-extras
-
     # ── Developer tools ────────────────────────────────────────────────────
     nh # Nix helper
 
@@ -100,16 +109,19 @@
     fastfetch # system info
 
     # ── LLM ───────────────────────────────────────────────────────────────
-    (llm.withPlugins ({
-      llm-anthropic = true;
-      llm-gemini = true;
-      llm-openrouter = true;
-      llm-gguf = true;
-      llm-jq = true;
-      llm-cmd-comp = true;
-      socksio = true;
-    } // lib.optionalAttrs pkgs.stdenv.isDarwin {
-      llm-mlx = true;
-    }))
+    (llm.withPlugins (
+      {
+        llm-anthropic = true;
+        llm-gemini = true;
+        llm-openrouter = true;
+        llm-gguf = true;
+        llm-jq = true;
+        llm-cmd-comp = true;
+        socksio = true;
+      }
+      // lib.optionalAttrs pkgs.stdenv.isDarwin {
+        llm-mlx = true;
+      }
+    ))
   ];
 }

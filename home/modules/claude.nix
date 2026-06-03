@@ -1,5 +1,7 @@
-{ ... }:
+{ pkgs, ... }:
 {
+  home.packages = [ pkgs.claude-code ];
+
   # GitHub MCP Setup:
   # claude mcp add-json github '{"type":"http","url":"https://api.githubcopilot.com/mcp","headers":{"Authorization":"Bearer YOUR_GITHUB_PAT"}}'
 
@@ -11,4 +13,11 @@
 
   # alphaXiv
   # claude mcp add --transport http alphaxiv https://api.alphaxiv.org/mcp/v1
+  #
+  # or consensus
+  # claude mcp add --transport http consensus https://mcp.consensus.app/mcp
+  #
+  # and /spark
+  # npx skills add wishworldbetter/seedex-skills --skill spark
+
 }

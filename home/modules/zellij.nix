@@ -477,7 +477,7 @@
   # xdg.configFile."zellij/layouts".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/dotfiles/hosts/AlexMBP/home/files/zellij/layouts";
   # xdg.configFile."zellij/layouts".recursive = true;
 
-  xdg.configFile."zellij/layouts/default.swap.kdl".source = ../files/zellij/layouts/default.swap.kdl;
+  xdg.configFile."zellij/layouts/default.swap.kdl".source = ./zellij/layouts/default.swap.kdl;
   xdg.configFile."zellij/layouts/default.kdl".text = ''
     layout {
         default_tab_template {

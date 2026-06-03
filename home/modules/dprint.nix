@@ -1,4 +1,7 @@
+{ pkgs, ... }:
 {
+  home.packages = [ pkgs.dprint ];
+
   xdg.configFile."dprint/dprint.jsonc" = {
     text = ''
       {

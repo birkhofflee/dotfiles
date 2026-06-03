@@ -32,9 +32,6 @@ in
       wasm-pack
       icu77
 
-      # Package managers
-      uv
-
       # Language Servers (and/or its toolchains)
       bash-language-server
       cmake-language-server
@@ -74,12 +71,8 @@ in
       # ============================================================================
 
       # Git
-      git
-      git-lfs
-      git-extras # https://github.com/tj/git-extras/blob/main/Commands.md
       git-open # `git open` to open the GitHub page or website for a repo
       git-recent # `git recent` to browse latest local git branches interactively
-      lazygit
 
       # Git tools
       bfg-repo-cleaner
@@ -166,7 +159,6 @@ in
       tcping-go
       tcpreplay
       tcptraceroute
-      trippy
       wakeonlan
       dns2tcp
       dnslookup
@@ -182,7 +174,6 @@ in
       # AUTHENTICATION & SECURITY
       # ============================================================================
 
-      gnupg
       # yubico-piv-tool
 
       # ============================================================================
@@ -196,7 +187,6 @@ in
       # ollama
       # aichat
       mods
-      claude-code
 
       # ============================================================================
       # DEVELOPMENT UTILITIES
@@ -207,7 +197,6 @@ in
       # httpie  # redundant: xh covers this
 
       # Code quality
-      dprint
       yamllint
 
       # Databases
@@ -219,17 +208,12 @@ in
       # ============================================================================
 
       # Shell enhancements
-      zsh-completions
       # emojify # https://github.com/mrowa44/emojify
-      atuin
       progress
       pv # progress bar for a pipe
-      television
-      yazi
 
       # Terminal utilities
       tmux
-      htop
       # gotop  # redundant: htop/bottom cover this
       # procs  # redundant: htop/bottom cover this
       viddy
@@ -258,15 +242,12 @@ in
 
       # Diff
       difftastic
-      delta
       vbindiff # Visual Binary Diff compares files in hex & ASCII formats
 
       vivid # LS_COLORS generator (https://github.com/sharkdp/vivid)
-      zoxide
 
       # Searcher
       fd
-      fzf
       ripgrep
       pdfgrep
 
@@ -293,7 +274,6 @@ in
       # System monitoring
       duf
       jc
-      bottom # btm (https://github.com/ClementTsang/bottom)
       glances
 
       # ============================================================================

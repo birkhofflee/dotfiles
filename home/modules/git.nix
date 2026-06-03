@@ -13,6 +13,8 @@ let
 
 in
 {
+  home.packages = [ pkgs.git-extras ];
+
   xdg.configFile."git/allowed_signers".text = "${email} namespaces=\"git\" ${key}";
 
   programs.git = {

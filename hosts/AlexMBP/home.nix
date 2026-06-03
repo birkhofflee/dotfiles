@@ -9,21 +9,13 @@
   ...
 }:
 
-let
-  # List of all .nix files in home/files
-  # TODO: refactor this pattern
-  fileImports = builtins.map (file: ../../home/files/${file}) (
-    builtins.filter (f: lib.hasSuffix ".nix" f) (builtins.attrNames (builtins.readDir ../../home/files))
-  );
-in
 {
   imports = [
     ../../home
-    ../../home/programs/1password.nix
-    ../../home/programs/ghostty.nix
+    ../../home/modules/1password.nix
+    ../../home/modules/ghostty.nix
     ./packages/user-packages.nix
-  ]
-  ++ fileImports;
+  ];
 
   # Expressions like $HOME are expanded by the shell.
   # However, since expressions like ~ or * are escaped,

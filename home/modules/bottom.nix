@@ -1,4 +1,5 @@
 { pkgs, ... }:
 {
+  home.packages = [ pkgs.bottom ];
   xdg.configFile."bottom/bottom.toml".source = "${pkgs.catppuccin}/bottom/macchiato.toml";
 }
