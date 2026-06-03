@@ -51,6 +51,7 @@ in
       vscode-json-languageserver # json
       kotlin-language-server
       texlab # latex
+      typst
       lua-language-server # lua
       marksman # markdown
       nil # nix
@@ -242,7 +243,7 @@ in
       getopt
 
       # File operations
-      entr # run arbitrary commands when files change
+      entr # watch files and run arbitrary commands when files change
       hexyl # modern hex viewer
       coreutils-prefixed
       eza

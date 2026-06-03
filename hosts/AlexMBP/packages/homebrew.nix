@@ -10,12 +10,12 @@
       "displayplacer"
       "hopenpgp-tools"
       "screenresolution"
+      "apfel"
     ];
 
     casks = [
       "1password"
       "anki"
-      "arc"
       "autodesk-fusion"
       "balenaetcher"
       "betterdisplay"
