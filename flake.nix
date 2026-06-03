@@ -34,6 +34,9 @@
     disko.inputs.nixpkgs.follows = "nixpkgs-stable";
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
     nix-darwin.url = "github:nix-darwin/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
@@ -171,6 +174,25 @@
 
       packages.x86_64-linux.nixos-desktop-01-image =
         self.nixosConfigurations.nixos-desktop-01.config.system.build.VMA;
+
+      deploy.nodes =
+        let
+          mkNode = hostname: {
+            inherit hostname;
+            profiles.system = {
+              sshUser = "root";
+              user = "root";
+              remoteBuild = true;
+              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos
+                self.nixosConfigurations.${hostname};
+            };
+          };
+        in
+        {
+          nixos-server-01 = mkNode "nixos-server-01";
+          nixos-desktop-01 = mkNode "nixos-desktop-01";
+          nixos-vps-tw-01 = mkNode "nixos-vps-tw-01";
+        };
     }
     //
       inputs.flake-utils.lib.eachSystem
@@ -214,6 +236,7 @@
                   treefmtEval.config.build.wrapper
                   pkgs.nixos-anywhere
                   agenix
+                  pkgs.deploy-rs
                 ];
 
                 NH_FLAKE = ".";

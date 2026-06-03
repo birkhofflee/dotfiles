@@ -42,8 +42,29 @@ switch-nixos-server:
 switch-nixos-desktop:
   nh os switch -H nixos-desktop-01 --accept-flake-config --target-host root@nixos-desktop-01 --build-host nixos-server-01 -e passwordless
 
+[group('homelab')]
 switch-nixos-vps-tw:
   nh os switch -H nixos-vps-tw-01 --accept-flake-config --target-host root@nixos-vps-tw-01 --build-host nixos-server-01 -e passwordless
+
+# Deploy nixos-server-01 via deploy-rs (remote build, magic rollback)
+[group('homelab')]
+deploy-server:
+  deploy .#nixos-server-01
+
+# Deploy nixos-desktop-01 via deploy-rs (remote build, magic rollback)
+[group('homelab')]
+deploy-desktop:
+  deploy .#nixos-desktop-01
+
+# Deploy nixos-vps-tw-01 via deploy-rs (remote build, magic rollback)
+[group('homelab')]
+deploy-vps-tw:
+  deploy .#nixos-vps-tw-01
+
+# Deploy all NixOS hosts via deploy-rs
+[group('homelab')]
+deploy-all:
+  deploy .
 
 # Build proxmox VMA image for nixos-desktop-01 on nixos-server-01 (x86_64-linux).
 # Syncs the working tree (including uncommitted changes) then builds remotely.
