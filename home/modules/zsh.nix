@@ -220,53 +220,22 @@ in
         # Use lesspipe to read non-text files
         # @see https://github.com/wofr06/lesspipe?tab=readme-ov-file#4-supported-file-formats
         LESSOPEN = "| ${pkgs.lesspipe}/bin/lesspipe.sh %s";
-        LESSCOLORIZER = "bat";
         LESSQUIET = "1"; # Suppress lesspipe help messages in output
 
-        # Editor
-        # EDITOR is the default command to use for launching a text editor inside the terminal
-        # VISUAL is the default command to use for launching a text editor with a GUI; not necessarily inside the terminal
-        EDITOR = "hx"; # Managed by `programs.helix.defaultEditor`
-        VISUAL = "hx";
-        PAGER = "less"; # default command to use for browsing text inside the terminal
-        MANPAGER = "bat -plman"; # https://github.com/sharkdp/bat?tab=readme-ov-file#man
+        PAGER = "less";
 
-        ## External Tools
-
-        # Telemetry Opt-out
+        # Telemetry opt-out
         GH_TELEMETRY = "false"; # GitHub CLI
         DO_NOT_TRACK = 1;
-
-        # Surpress direnv verbose logging
-        # @seehttps://github.com/direnv/direnv/issues/1418#issuecomment-2820125413
-        DIRENV_LOG_FORMAT = "";
-
-        # bat
-        # @see https://github.com/sharkdp/bat?tab=readme-ov-file#highlighting-theme
-        BAT_THEME = "Catppuccin Macchiato";
-
-        # Zoxide (https://github.com/ajeetdsouza/zoxide/blob/main/README.md#environment-variables)
-        _ZO_ECHO = 1;
-
-        # dotnet
         DOTNET_CLI_TELEMETRY_OPTOUT = 1;
 
         # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
         PYTHONIOENCODING = "utf-8";
 
-        # Enable persistent REPL history for `node`.
-        NODE_REPL_HISTORY = "${config.xdg.dataHome}/node_repl_history";
-
-        # Use sloppy mode by default, matching web browsers.
-        NODE_REPL_MODE = "sloppy";
-
-        # Erlang and Elixir shell history:
+        # Erlang and Elixir shell history
         ERL_AFLAGS = "-kernel shell_history enabled";
       }
       (lib.optionalAttrs pkgs.stdenv.isDarwin {
-        # Ansible (https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#running-on-macos-as-a-control-node)
-        OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
-
         # https://docs.brew.sh/Analytics
         HOMEBREW_NO_ANALYTICS = "1";
 

@@ -9,4 +9,10 @@
       };
     };
   };
+
+  home.sessionVariables = {
+    BAT_THEME = "Catppuccin Macchiato";
+    LESSCOLORIZER = "bat";
+    MANPAGER = "bat -plman";
+  };
 }

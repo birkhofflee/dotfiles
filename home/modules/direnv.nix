@@ -12,4 +12,6 @@
 
   # @see https://github.com/direnv/direnv/issues/1418#issuecomment-2820125413
   xdg.configFile."direnv/direnv.toml".text = "";
+
+  home.sessionVariables.DIRENV_LOG_FORMAT = "";
 }
