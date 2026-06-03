@@ -11,11 +11,13 @@
       "https://nix-community.cachix.org"
       "https://helix.cachix.org"
       "https://birkhoff.cachix.org"
+      "https://claude-code.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       "birkhoff.cachix.org-1:m7WmdU7PKc6fsKedC278lhLtiqjz6ZUJ6v2nkVGyJjQ="
+      "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
     ];
   };
 
@@ -64,6 +66,10 @@
       flake = false;
     };
 
+    claude-code-nix.url = "github:sadjow/claude-code-nix";
+    claude-code-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    claude-code-nix.inputs.flake-utils.follows = "flake-utils";
+
     apex-discord-bot.url = "github:birkhofflee/apex-discord-bot";
     apex-discord-bot.inputs.nixpkgs.follows = "nixpkgs-unstable";
     apex-discord-bot.inputs.flake-utils.follows = "flake-utils";
@@ -100,6 +106,8 @@
     {
       overlays = {
         nur = inputs.nur.overlays.default;
+
+        claude-code = inputs.claude-code-nix.overlays.default;
 
         zellij-plugins = _: prev: {
           zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
@@ -164,49 +172,52 @@
       packages.x86_64-linux.nixos-desktop-01-image =
         self.nixosConfigurations.nixos-desktop-01.config.system.build.VMA;
     }
-    // inputs.flake-utils.lib.eachSystem [
-      "aarch64-darwin"
-      "aarch64-linux"
-      "x86_64-linux"
-    ] (
-      system:
-      let
-        pkgs = import inputs.nixpkgs-unstable {
-          inherit system;
-          inherit (nixpkgsDefaults) config overlays;
-        };
-        treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
-          projectRootFile = "flake.nix";
-        };
-      in
-      {
-        formatter = treefmtEval.config.build.wrapper;
-
-        checks.formatting = treefmtEval.config.build.check self;
-
-        devShells.default =
+    //
+      inputs.flake-utils.lib.eachSystem
+        [
+          "aarch64-darwin"
+          "aarch64-linux"
+          "x86_64-linux"
+        ]
+        (
+          system:
           let
-            # Override agenix to use Determinate Nix instead of its bundled nix-2.28.4.
-            # Without this, agenix warns about eval-cores/lazy-trees being unknown settings.
-            nixDeterminate = pkgs.writeShellScriptBin "nix-instantiate" ''
-              exec /nix/var/nix/profiles/default/bin/nix-instantiate "$@"
-            '';
-            agenix = inputs.agenix.packages.${system}.default.override {
-              nix = nixDeterminate;
+            pkgs = import inputs.nixpkgs-unstable {
+              inherit system;
+              inherit (nixpkgsDefaults) config overlays;
+            };
+            treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
+              projectRootFile = "flake.nix";
             };
           in
-          pkgs.mkShellNoCC {
-            packages = [
-              pkgs.just
-              pkgs.ssh-copy-id
-              pkgs.nh
-              treefmtEval.config.build.wrapper
-              pkgs.nixos-anywhere
-              agenix
-            ];
+          {
+            formatter = treefmtEval.config.build.wrapper;
 
-            NH_FLAKE = ".";
-          };
-      }
-    );
+            checks.formatting = treefmtEval.config.build.check self;
+
+            devShells.default =
+              let
+                # Override agenix to use Determinate Nix instead of its bundled nix-2.28.4.
+                # Without this, agenix warns about eval-cores/lazy-trees being unknown settings.
+                nixDeterminate = pkgs.writeShellScriptBin "nix-instantiate" ''
+                  exec /nix/var/nix/profiles/default/bin/nix-instantiate "$@"
+                '';
+                agenix = inputs.agenix.packages.${system}.default.override {
+                  nix = nixDeterminate;
+                };
+              in
+              pkgs.mkShellNoCC {
+                packages = [
+                  pkgs.just
+                  pkgs.ssh-copy-id
+                  pkgs.nh
+                  treefmtEval.config.build.wrapper
+                  pkgs.nixos-anywhere
+                  agenix
+                ];
+
+                NH_FLAKE = ".";
+              };
+          }
+        );
 }
