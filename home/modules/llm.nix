@@ -1,4 +1,7 @@
 { pkgs, lib, ... }:
+let
+  defaultModel = "openrouter/google/gemini-3.5-flash";
+in
 {
   home.packages = [
     (pkgs.llm.withPlugins (
@@ -17,8 +20,13 @@
     ))
   ];
 
+  home.sessionVariables.LLM_MODEL = defaultModel;
+
   # disable logging
   xdg.configFile."llm/logs-off".text = "";
+
+  # default model for llm CLI
+  xdg.configFile."llm/default_model.txt".text = defaultModel;
 
   # convert image to markdown
   xdg.configFile."llm/templates/md.yaml".source = ./llm/templates/md.yaml;

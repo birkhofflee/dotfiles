@@ -247,7 +247,6 @@ in
 
         # LLM (https://llm.datasette.io/en/stable/setup.html#configuration)
         LLM_USER_PATH = "${config.xdg.configHome}/llm";
-        LLM_MODEL = "openrouter/google/gemini-2.5-flash";
 
         # Zoxide (https://github.com/ajeetdsouza/zoxide/blob/main/README.md#environment-variables)
         _ZO_ECHO = 1;
