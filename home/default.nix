@@ -3,7 +3,6 @@
 
 {
   pkgs,
-  lib,
   currentSystemUser,
   ...
 }:
@@ -107,21 +106,5 @@
     tldr
     cht-sh
     fastfetch # system info
-
-    # ── LLM ───────────────────────────────────────────────────────────────
-    (llm.withPlugins (
-      {
-        llm-anthropic = true;
-        llm-gemini = true;
-        llm-openrouter = true;
-        llm-gguf = true;
-        llm-jq = true;
-        llm-cmd-comp = true;
-        socksio = true;
-      }
-      // lib.optionalAttrs pkgs.stdenv.isDarwin {
-        llm-mlx = true;
-      }
-    ))
   ];
 }
