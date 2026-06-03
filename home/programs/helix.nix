@@ -392,6 +392,8 @@ in
       # @ see https://docs.helix-editor.com/editor.html#editorsmart-tab-section
       keys.normal = {
         "A-w" = ":buffer-close";
+        "H" = "goto_previous_buffer";
+        "L" = "goto_next_buffer";
         "C-r" = ":reload-all";
         "tab" = "move_parent_node_end";
         "S-tab" = "move_parent_node_start";
