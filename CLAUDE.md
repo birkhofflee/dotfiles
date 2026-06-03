@@ -12,6 +12,7 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 - `nixos-orbstack`: NixOS (aarch64-linux) - OrbStack VM
 - `nixos-server-01`: NixOS (x86_64-linux) - Proxmox VM on homelab server (`homelab-nuc`)
 - `nixos-desktop-01`: NixOS (x86_64-linux) - Proxmox VM with GUI (GNOME default, Hyprland specialization)
+- `nixos-vps-tw-01`: NixOS (x86_64-linux) - VPS (Taiwan)
 
 **Current user:** `ale`
 
@@ -27,19 +28,22 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 ├── hosts/                 # System-specific configurations
 │   ├── AlexMBP/          # macOS host (nix-darwin)
 │   │   ├── default.nix   # System configuration
+│   │   ├── home.nix      # macOS-specific home: imports shared home + 1password, ghostty
 │   │   ├── os-settings.nix
 │   │   ├── age-identity.txt  # 1Password age plugin identity for decryption
 │   │   ├── ssh-config.nix    # agenix HM module config + secret declarations
-│   │   └── packages/
-│   ├── nixos-vm-aarch64/       # VMware Fusion NixOS VM
-│   │   └── default.nix   # System configuration
+│   │   └── packages/     # homebrew.nix + user-packages.nix
+│   ├── nixos-vm-aarch64/ # VMware Fusion NixOS VM
+│   │   ├── default.nix   # System configuration
+│   │   └── home.nix      # Host-specific home config
 │   ├── nixos-orbstack/   # OrbStack NixOS VM
-│   │   └── default.nix   # System configuration
+│   │   ├── default.nix
+│   │   └── home.nix
 │   ├── nixos-server-01/  # Proxmox VM (homelab server)
 │   │   ├── default.nix
 │   │   ├── disk-config.nix   # disko BTRFS layout
 │   │   ├── facter.json       # nixos-facter hardware report (pre-committed)
-│   │   ├── home.nix          # Custom home config (not shared home/)
+│   │   ├── home.nix          # Host-specific home config
 │   │   └── services/         # tailscale, atuin, rybbit, caddy, cloudflared
 │   ├── nixos-desktop-01/ # Proxmox VM (GUI desktop)
 │   │   ├── default.nix   # Entry point: imports sub-modules + sets stateVersion
@@ -47,14 +51,17 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   │   ├── networking.nix # Hostname, firewall, tailscale, openssh, SSH host key pre-seeding
 │   │   ├── desktop.nix   # GNOME/GDM, dconf HiDPI, GNOME Remote Desktop service, sleep targets
 │   │   ├── users.nix     # Users, fonts, system packages, timezone, sudo, i18n
-│   │   └── home.nix      # Custom home config (CLI/shell tools; not the shared home/)
-│   └── shared-nix-settings.nix  # Shared Nix daemon settings
-├── home/                  # Shared home-manager configuration
-│   ├── default.nix        # Main home config (platform-agnostic)
-│   ├── programs/          # Program-specific configs (auto-imported)
-│   ├── files/             # Config files (auto-imported)
-│   ├── packages/          # User packages
-│   └── libs/              # Helper libraries
+│   │   └── home.nix      # Host-specific home config (CLI/shell tools + 1password, ghostty)
+│   ├── nixos-vps-tw-01/  # VPS (Taiwan)
+│   │   ├── default.nix
+│   │   └── home.nix
+│   ├── common-system-packages.nix  # System packages shared across all hosts
+│   └── shared-nix-settings.nix     # Shared Nix daemon settings
+├── home/                  # Shared home-manager base (imported by every host's home.nix)
+│   ├── default.nix        # Explicit imports of all shared modules + common packages
+│   └── modules/           # All home-manager modules (programs + config files)
+│       ├── shell/         # Zsh shell scripts (functions.zsh, keys.zsh, fzf.zsh, etc.)
+│       └── *.nix          # Per-program configs (git, helix, zsh, atuin, etc.)
 ├── packages/              # Custom Nix derivations (exposed via custom-packages overlay)
 │   ├── age-with-plugins.nix           # age + age-plugin-1p wrapper with umask fix
 │   └── nixos-anywhere-patched.nix     # nixos-anywhere with local patches
@@ -88,19 +95,21 @@ The repository uses a flake-based architecture defined in `flake.nix`:
 The `lib/mksystem.nix` helper abstracts away the differences between Darwin and NixOS configurations, automatically:
 - Selecting the correct system function (darwinSystem vs nixosSystem)
 - Applying overlays and nixpkgs configuration
-- Integrating home-manager with correct modules (default: `home/`, overridable via `homeConfig` parameter)
-- Integrating nix-index-database and agenix
-- Passing special arguments to modules (`currentSystem`, `currentSystemName`, `currentSystemUser`, `inputs`)
+- Loading home-manager from `hosts/<hostname>/home.nix` (auto-derived; not configurable)
+- Integrating nix-index-database, agenix, and Determinate Nix
+- Passing special arguments to modules (`currentSystem`, `currentSystemName`, `currentSystemUser`, `inputs`, `hasDesktop`)
 - Optionally including disko and nixos-facter modules when `nixos-anywhere = true`
 
 ### Home Configuration (`home/`)
 
-The home-manager configuration is **shared across all hosts** and platform-agnostic:
-- Automatically imports all `.nix` files from `./programs/` and `./files/`
-- Uses `pkgs.stdenv.isDarwin` to conditionally enable macOS-specific features
-- Session PATH configuration for Rust, Go, Python (uv), and platform-specific paths
-- Platform-specific activation scripts (e.g., macOS wallpaper, Library visibility)
-- `home/libs/wallpaper.nix`: Helper library for downloading and setting the Raycast wallpaper (used by activation scripts)
+The `home/` directory provides a **shared base** that every host's `home.nix` imports via `../../home`. It is not used directly by mksystem — each host has its own `hosts/<hostname>/home.nix` which imports this shared base plus any host-specific modules (e.g., `1password.nix`, `ghostty.nix`).
+
+- `home/default.nix`: Explicitly imports each shared module from `home/modules/` (not auto-scanned)
+- `home/modules/`: All home-manager modules — program configs (e.g., `zsh.nix`, `helix.nix`) and config files live here (previously split between `home/programs/` and `home/files/`)
+- `home/modules/shell/`: Zsh shell scripts sourced by `zsh.nix`
+- Platform-specific settings use `pkgs.stdenv.isDarwin` / `pkgs.stdenv.isLinux` within modules
+- macOS activation scripts (Library visibility, restart system services) live in `hosts/AlexMBP/home.nix`
+- `hasDesktop` is passed as an extra arg to home-manager (use it to gate GUI-specific config)
 
 ### Host Configurations
 
@@ -131,9 +140,12 @@ The home-manager configuration is **shared across all hosts** and platform-agnos
 - Default desktop: GNOME with GDM and GNOME Remote Desktop (RDP on port 3389)
 - Hyprland specialization: selectable at boot; uses wayvnc (VNC on port 5900) for remote access
 - Built as a Proxmox VMA image via `packages.x86_64-linux.nixos-desktop-01-image`; use `just build-desktop-image` (builds remotely on nixos-server-01 then rsync to PVE)
-- Uses a custom home config at `hosts/nixos-desktop-01/home.nix` (CLI/shell tools; not the shared `home/`)
 - System config split into sub-modules: `hardware.nix`, `networking.nix`, `desktop.nix`, `users.nix`
 - SSH host key pre-seeded from `dotfiles.secret` input (required for agenix on first boot)
+
+**nixos-vps-tw-01** (`hosts/nixos-vps-tw-01/default.nix`):
+- NixOS x86_64-linux VPS (Taiwan)
+- Deployed via deploy-rs (`just deploy-vps-tw`) or nh (`just switch-nixos-vps-tw`)
 
 ### Package Management Strategy
 
@@ -156,16 +168,23 @@ Using `just` (preferred):
 just switch                 # Build and switch to new configuration (alias: just s)
 just switch-nixos-server    # Switch nixos-server-01 remotely via nh os switch
 just switch-nixos-desktop   # Switch nixos-desktop-01 remotely via nh os switch
+just switch-nixos-vps-tw    # Switch nixos-vps-tw-01 remotely via nh os switch
+just deploy-server          # Deploy nixos-server-01 via deploy-rs (with magic rollback)
+just deploy-desktop         # Deploy nixos-desktop-01 via deploy-rs (with magic rollback)
+just deploy-vps-tw          # Deploy nixos-vps-tw-01 via deploy-rs (with magic rollback)
+just deploy-all             # Deploy all NixOS hosts via deploy-rs
 just build-desktop-image    # Build Proxmox VMA for nixos-desktop-01 (runs on nixos-server-01)
 just update                 # Update all flake inputs and commit lock file (alias: just u)
 just update-input <name>    # Update specific flake input (alias: just ui)
-just format                 # Format all Nix files using treefmt
+just format                 # Format all Nix files using nix fmt
 just optimize               # Clean old generations and optimize store (alias: just o)
 just repair                 # Verify and repair Nix store
 just cache-darwin           # Push darwin build artifacts to cachix
 just edit-secret <file.age> # Edit an agenix secret (uses 1Password for identity)
 just rekey                  # Rekey all secrets with the 1Password identity
 ```
+
+**deploy-rs vs nh**: `deploy-*` commands use deploy-rs (remote builds, magic rollback on failure). `switch-nixos-*` commands use `nh os switch` (simpler, no rollback). Prefer `deploy-*` for production homelab hosts.
 
 Using `nh` directly (from repo root, NH_FLAKE="."):
 ```bash
@@ -248,19 +267,17 @@ just switch-nixos-server
 
 ### Adding New Programs to Home Configuration
 
-1. Create `home/programs/<program>.nix`
-2. The file is automatically imported by `home/default.nix`
-3. Configure using home-manager options
-4. Use `lib.mkIf pkgs.stdenv.isDarwin { ... }` for macOS-specific settings
-5. Use `lib.mkIf pkgs.stdenv.isLinux { ... }` for Linux-specific settings
+1. Create `home/modules/<program>.nix`
+2. Add the import explicitly to `home/default.nix` (imports are not auto-scanned)
+3. For programs that only belong on specific hosts (e.g., GUI apps), add the import to `hosts/<hostname>/home.nix` instead of the shared `home/default.nix`
+4. Use `pkgs.stdenv.isDarwin` / `pkgs.stdenv.isLinux` within the module for platform-specific settings, or use `hasDesktop` (passed as `extraSpecialArgs`) to gate desktop-only config
 
-Example:
+Example shared module:
 ```nix
 { pkgs, lib, ... }:
 {
   programs.myprogram = {
     enable = true;
-    # Shared settings
   } // lib.optionalAttrs pkgs.stdenv.isDarwin {
     # macOS-specific settings
   };
@@ -269,30 +286,34 @@ Example:
 
 ### Adding Shell Configuration
 
-1. Create `home/files/<config>.nix` for static files
-2. Create `home/files/shell/<name>.zsh` for shell scripts
-3. Files are automatically imported by `home/default.nix`
+1. Add a new `.zsh` file to `home/modules/shell/` for shell scripts
+2. It will be symlinked to `~/.shell/` automatically (see `home.file.".shell".source = ./shell` in `zsh.nix`)
+3. Source it explicitly in `home/modules/zsh.nix` if needed, or drop it alongside other scripts that are sourced via glob
 
 ### Adding Custom Packages
 
-1. **System packages** (OS-specific): Edit `hosts/<hostname>/packages/system-packages.nix`
-2. **User packages** (shared): Edit `home/packages/user-packages.nix`
-3. **Homebrew apps** (macOS only): Edit `hosts/AlexMBP/packages/homebrew.nix`
-4. **Custom derivations**: Create in `packages/` directory and add to overlays in `flake.nix`
+1. **System packages** (shared across hosts): Edit `hosts/common-system-packages.nix`
+2. **System packages** (OS-specific): Edit `hosts/<hostname>/default.nix` or a sub-module
+3. **User packages** (shared home): Add inline to `home.packages` in `home/default.nix`
+4. **User packages** (host-specific): Edit `hosts/<hostname>/packages/user-packages.nix`
+5. **Homebrew apps** (macOS only): Edit `hosts/AlexMBP/packages/homebrew.nix`
+6. **Custom derivations**: Create in `packages/` directory and add to overlays in `flake.nix`
 
 ### Adding a New Host
 
-1. Create `hosts/<hostname>/default.nix`
-2. Add system-specific configuration (Darwin or NixOS)
+1. Create `hosts/<hostname>/default.nix` with system configuration
+2. Create `hosts/<hostname>/home.nix` — **required** by mksystem.nix (auto-derived, not configurable). It should import `../../home` for the shared base plus any host-specific modules
 3. Use `currentSystemUser` parameter (provided by mksystem.nix) instead of hardcoding username
-4. Consider importing shared configuration files:
-   - `shared-nix-settings.nix`: Common Nix daemon settings
+4. Import shared configuration files as needed:
+   - `../shared-nix-settings.nix`: Common Nix daemon settings
+   - `../common-system-packages.nix`: Common system packages
 5. Add to `flake.nix`:
    ```nix
    # For macOS (darwin is auto-detected from system suffix)
    darwinConfigurations.<hostname> = mkSystem "<hostname>" {
      system = "aarch64-darwin";
      user = "ale";
+     hasDesktop = true;  # optional: passed to home-manager as extraSpecialArgs
    };
 
    # For NixOS (standard)
@@ -301,15 +322,14 @@ Example:
      user = "ale";
    };
 
-   # For NixOS with nixos-anywhere (disko + nixos-facter, custom home config)
+   # For NixOS with nixos-anywhere (disko + nixos-facter)
    nixosConfigurations.<hostname> = mkSystem "<hostname>" {
      system = "x86_64-linux";
      user = "ale";
      nixos-anywhere = true;
-     homeConfig = ./hosts/<hostname>/home.nix;  # optional, defaults to ./home
    };
    ```
-   Note: `hosts/<hostname>/facter.json` must exist (generated by nixos-anywhere with `--generate-hardware-config nixos-facter`). `mksystem.nix` will throw an error if it's missing.
+   Note: when `nixos-anywhere = true`, `hosts/<hostname>/facter.json` must exist (generated with `--generate-hardware-config nixos-facter`). mksystem.nix throws if it's missing.
 
    For Proxmox VM image builds (like `nixos-desktop-01`), no `nixos-anywhere = true` is needed — the host uses `proxmox-image.nix` and a VMA is built via:
    ```nix
@@ -331,7 +351,7 @@ When adding new VM-related or specialized commands, create a new `.just` file in
 
 **Justfile groups** organize commands:
 - `darwin`: macOS-specific commands (switch)
-- `homelab`: Homelab server commands (switch-nixos-server, switch-nixos-desktop, build-desktop-image)
+- `homelab`: Homelab server commands (switch-nixos-*, deploy-*, build-desktop-image)
 - `flake`: Flake management (update, update-input)
 - `nix-misc`: Nix store maintenance (optimize, repair)
 - `cache`: Cachix operations (cache-darwin)
@@ -378,17 +398,15 @@ The system uses activation scripts at multiple levels:
 - `preActivation`: Homebrew check
 - `postActivation`: Enable locate database, reveal /Volumes
 
-**Home-level** (`home/default.nix`):
-- macOS-specific (wrapped in `lib.mkIf isDarwin`):
-  - `revealHomeLibraryDirectory`: Make ~/Library visible
-  - `setWallpaper`: Download and set Raycast wallpaper
-  - `activateUserSettings`: Restart macOS services to apply settings
+**Home-level** (`hosts/AlexMBP/home.nix`):
+- `revealHomeLibraryDirectory`: Make ~/Library visible
+- `activateUserSettings`: Restart macOS system services to apply settings
 
 Order matters: home-manager activation scripts use `lib.hm.dag.entryAfter` to ensure correct sequencing.
 
 ### Shell Configuration
 
-The shell setup uses several specialized files (all under `home/files/shell/`):
+The shell setup uses several specialized files (all under `home/modules/shell/`):
 - `functions.zsh`: Custom functions (shrinkvid, impaste, timer, aic, gg, s, nr, ns)
 - `keys.zsh`: Custom Zsh keybindings (Ctrl+U, Alt+Q, Alt+Shift+S, etc.)
 - `fzf.zsh`: fzf-tab configuration with smart previews
@@ -399,7 +417,7 @@ The shell setup uses several specialized files (all under `home/files/shell/`):
 - `op.zsh`: 1Password shell integration
 - `utilities/`: Additional shell utility scripts
 
-These are sourced in `home/programs/zsh.nix`.
+These are symlinked to `~/.shell/` and sourced in `home/modules/zsh.nix`.
 
 ### Development Environments
 
