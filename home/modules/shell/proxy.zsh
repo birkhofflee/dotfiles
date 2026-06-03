@@ -44,6 +44,16 @@ proxy_on() {
         local -A raw_scutil_noproxy=(${=${(M)${(f)scutil_output}:#  [0-9 ]# : [^ ]#}/:})
         local _noproxy=${(j:, :)${(o)raw_scutil_noproxy}}
 
+        # Strip IPv6 entries (any entry with 2+ colons, e.g. ::1/128, fc00::/7).
+        # httpx and most Python HTTP libs don't support IPv6 in NO_PROXY and crash
+        # trying to parse them as URLs. IPv4 CIDRs are kept (they don't crash parsers).
+        local -a _noproxy_normalized=()
+        for _entry in ${(s:, :)_noproxy}; do
+            [[ $_entry == *:*:* ]] && continue
+            _noproxy_normalized+=("$_entry")
+        done
+        _noproxy="${(j:, :)_noproxy_normalized}"
+
         export NO_PROXY=$_noproxy
         export no_proxy=$_noproxy
     fi
