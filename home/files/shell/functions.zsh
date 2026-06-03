@@ -82,11 +82,8 @@ function gg {
 }
 
 # Wrapper around https://github.com/simonw/llm
+# Plugins are packaged together with Nix (see home/default.nix)
 function _llm {
-  # uvx --with llm-anthropic llm -m claude-3.5-haiku 'fun facts about skunks'
-  # with_llm uvx --with llm-openrouter llm
-  #
-  # $ uv tool install --with llm-openrouter llm
   with_llm command llm "$@"
 }
 

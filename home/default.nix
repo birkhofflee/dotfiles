@@ -1,7 +1,7 @@
 # Shared home base used by all hosts (macOS and NixOS).
 # Hosts import this and add their own packages/programs on top.
 
-{ pkgs, currentSystemUser, ... }:
+{ pkgs, lib, currentSystemUser, ... }:
 
 {
   imports = [
@@ -98,5 +98,18 @@
     tldr
     cht-sh
     fastfetch # system info
+
+    # ── LLM ───────────────────────────────────────────────────────────────
+    (llm.withPlugins ({
+      llm-anthropic = true;
+      llm-gemini = true;
+      llm-openrouter = true;
+      llm-gguf = true;
+      llm-jq = true;
+      llm-cmd-comp = true;
+      socksio = true;
+    } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      llm-mlx = true;
+    }))
   ];
 }

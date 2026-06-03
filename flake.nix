@@ -130,6 +130,16 @@
           commit-mono-nf = prev.callPackage ./packages/fonts/commit-mono-nf.nix { };
         };
 
+        python-llm-plugins = _: prev: {
+          pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+            (python-final: _: {
+              llm-cmd-comp = python-final.callPackage ./packages/llm-cmd-comp.nix { };
+            } // prev.lib.optionalAttrs prev.stdenv.isDarwin {
+              llm-mlx = python-final.callPackage ./packages/llm-mlx.nix { };
+            })
+          ];
+        };
+
         # Temporary overlays
         tweaks = _: prev: {
         };
