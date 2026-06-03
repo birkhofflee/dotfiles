@@ -653,6 +653,8 @@
       };
 
       "cc.ffitch.shottr" = {
+        # Custom typeface in text annotations
+        typeface = "Helvetica";
         # OCR (⇧⌘2)
         KeyboardShortcuts_ocr = "{\"carbonKeyCode\":19,\"carbonModifiers\":768}";
         # Fullscreen screenshot (⇧⌘3)
