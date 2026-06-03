@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 let
   defaultModel = "openrouter/google/gemini-3.5-flash";
 in
@@ -20,7 +20,10 @@ in
     ))
   ];
 
-  home.sessionVariables.LLM_MODEL = defaultModel;
+  home.sessionVariables = {
+    LLM_USER_PATH = "${config.xdg.configHome}/llm";
+    LLM_MODEL = defaultModel;
+  };
 
   # disable logging
   xdg.configFile."llm/logs-off".text = "";

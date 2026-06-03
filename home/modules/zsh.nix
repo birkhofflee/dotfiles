@@ -245,9 +245,6 @@ in
         # @see https://github.com/sharkdp/bat?tab=readme-ov-file#highlighting-theme
         BAT_THEME = "Catppuccin Macchiato";
 
-        # LLM (https://llm.datasette.io/en/stable/setup.html#configuration)
-        LLM_USER_PATH = "${config.xdg.configHome}/llm";
-
         # Zoxide (https://github.com/ajeetdsouza/zoxide/blob/main/README.md#environment-variables)
         _ZO_ECHO = 1;
 
