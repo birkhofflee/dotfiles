@@ -21,25 +21,9 @@ function notify_osc777() {
 
 # Output the image data in clipboard to stdout.
 # @example impaste > /tmp/image.png
-# @see https://til.simonwillison.net/macos/impaste
 function impaste {
   if [[ "$OSTYPE" == darwin* ]]; then
-    # macOS: use osascript
-    local tempfile=$(mktemp -t clipboard.XXXXXXXXXX.png)
-    {
-      if osascript -e 'set theImage to the clipboard as «class PNGf»' \
-        -e "set theFile to open for access POSIX file \"$tempfile\" with write permission" \
-        -e 'write theImage to theFile' \
-        -e 'close access theFile' 2>/dev/null; then
-        cat "$tempfile"
-        return 0
-      else
-        echo "image read failed" >&2
-        return 1
-      fi
-    } always {
-      rm -f "$tempfile"
-    }
+    pngpaste -
   elif command -v xclip &> /dev/null; then
     # Linux with X11: use xclip
     if xclip -selection clipboard -t image/png -o 2>/dev/null; then
