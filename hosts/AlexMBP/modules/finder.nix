@@ -61,11 +61,15 @@
         FinderSpawnTab = false;
 
         # Expand some File Info panes
-        # "FXInfoPanesExpanded" = {
-        #   "General" = true;
-        #   "OpenWith" = true;
-        #   "Privileges" = true;
-        # };
+        "FXInfoPanesExpanded" = {
+          Comments = false;
+          General = true;
+          MetaData = true;
+          Name = true;
+          OpenWith = true;
+          Preview = true;
+          Privileges = true;
+        };
       };
 
       "com.apple.desktopservices" = {
