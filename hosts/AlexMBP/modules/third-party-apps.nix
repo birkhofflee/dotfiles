@@ -9,6 +9,9 @@
       forceTouchAction = 2;
       setappDontShowAgain = 1;
       shouldHideOnLaunch = 0;
+
+      # Hide the Yoink menu bar icon (the shelf window is the interaction point)
+      showMenuBarIcon = 0;
     };
 
     "com.nssurge.surge-mac" = {
@@ -59,6 +62,30 @@
       colorFormat = "HEX";
       contrastType = "wcag2";
       copyOnEsc = 1;
+
+      # Filename template for saved screenshots (%Y=year, %m=month, %d=day, %t=timestamp)
+      fileNameTemplate = "SCR-%Y%m%d-%t";
+
+      # Primary language used by the OCR engine
+      primaryOCRLang = "en-US";
+
+      # Strip line breaks from OCR output (useful when copying column text)
+      ocrRemoveBreaks = 1;
+
+      # Let Shottr pick the best format per image (PNG for graphics, JPEG for photos)
+      saveFormat = "Auto";
+
+      # Use custom (in-app) notification instead of macOS banners
+      notificationType = "custom";
+
+      # Render annotation text without a visible canvas pass (sharper output)
+      headlessTextRendering = 1;
+
+      # Open the annotation editor in a large window by default
+      preferLargeWindow = 1;
+
+      # Allow the canvas to grow when annotations extend beyond the screenshot bounds
+      expandableCanvas = 1;
     };
 
     "com.colliderli.iina" = {
@@ -109,6 +136,15 @@
 
       # Unminimize windows when app becomes active
       unminimizeWindowsOnAppActivationMode = "allWindowsOnlyIfAllMinimized";
+
+      # Hide the Supercharge menu bar icon
+      showMenuBarIcon = 0;
+
+      # Play a poof animation when closing a window via the red traffic-light button
+      redTrafficLightButtonPoofIsEnabled = 1;
+
+      # Keep the system Sound menu bar icon always visible (not hidden in Control Center)
+      soundMenuBarIconVisibility = "always";
     };
   };
 }

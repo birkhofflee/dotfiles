@@ -79,6 +79,14 @@
         # Avoid creating .DS_Store files on USB volumes
         "DSDontWriteUSBStores" = true;
       };
+
+      "NSGlobalDomain" = {
+        # Open a folder automatically when hovering over it while dragging a file
+        "com.apple.springing.enabled" = 1;
+
+        # Seconds to wait before spring-loading activates (0.5 s feels responsive without being hair-trigger)
+        "com.apple.springing.delay" = "0.5";
+      };
     };
   };
 }
