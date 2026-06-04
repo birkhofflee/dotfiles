@@ -33,6 +33,19 @@
           "3" = "yyyy-MM-dd";
           "4" = "yyyy-MM-dd";
         };
+
+        # No screen flash on alert sound (visual bell off)
+        "com.apple.sound.beep.flash" = 0;
+      };
+
+      "com.apple.menuextra.clock" = {
+        # Show abbreviated day of week before the time (Mon 10:30)
+        ShowDayOfWeek = 1;
+      };
+
+      "com.apple.WindowManager" = {
+        # No gap between windows when using window tiling
+        EnableTiledWindowMargins = 0;
       };
     };
   };

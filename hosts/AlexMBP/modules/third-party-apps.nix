@@ -61,6 +61,23 @@
       copyOnEsc = 1;
     };
 
+    "com.colliderli.iina" = {
+      # Use hardware video decoder; falls back to software if unsupported
+      hardwareDecoder = 2;
+
+      # Automatically check for app updates via Sparkle
+      SUEnableAutomaticChecks = 1;
+
+      # Do not send anonymous hardware profile to the Sparkle update service
+      SUSendProfileInfo = 0;
+
+      # Subtitle font size in points
+      subTextSize = 27;
+
+      # When auto-loading subtitles, prefer files with this suffix (e.g. ".processed")
+      subAutoLoadPriorityString = ".processed";
+    };
+
     "com.sindresorhus.Supercharge" = {
       # Disable the ⌘Q prevention
       accidentalQuitPreventionMode = "disabled";

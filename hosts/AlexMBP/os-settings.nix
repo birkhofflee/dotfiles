@@ -15,6 +15,7 @@
     ./modules/finder.nix
     ./modules/dock.nix
     ./modules/appearance.nix
+    ./modules/screensaver.nix
     ./modules/safari.nix
     ./modules/system-apps.nix
     ./modules/third-party-apps.nix

@@ -6,6 +6,32 @@
   system.keyboard.remapCapsLockToControl = true;
 
   system.defaults = {
+    NSGlobalDomain = {
+      # Disable autocapitalization at sentence starts
+      NSAutomaticCapitalizationEnabled = false;
+
+      # Disable smart dashes (-- → —)
+      NSAutomaticDashSubstitutionEnabled = false;
+
+      # Disable double-space to period substitution
+      NSAutomaticPeriodSubstitutionEnabled = false;
+
+      # Disable smart quotes (' ' " " → straight apostrophes/quotes)
+      NSAutomaticQuoteSubstitutionEnabled = false;
+
+      # Disable inline autocorrect
+      NSAutomaticSpellingCorrectionEnabled = false;
+
+      # Keep press-and-hold accent picker enabled (needed for Italian accents on ABC layout)
+      ApplePressAndHoldEnabled = true;
+
+      # Delay before key repeat begins (units of 16.67 ms; 15 ≈ 225 ms)
+      InitialKeyRepeat = 15;
+
+      # Key repeat interval once repeating starts (units of 16.67 ms; 2 ≈ 30 ms)
+      KeyRepeat = 2;
+    };
+
     CustomSystemPreferences = {
       NSGlobalDomain = {
         # Set system languages
