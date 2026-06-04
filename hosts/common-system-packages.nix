@@ -19,6 +19,6 @@
       zsh
     ]
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-      ghostty.terminfo
+      ghostty.terminfo # TODO https://github.com/nix-darwin/nix-darwin/issues/1790
     ];
 }

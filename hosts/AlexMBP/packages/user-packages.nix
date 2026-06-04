@@ -9,80 +9,86 @@ in
     with pkgs;
     [
       # ============================================================================
-      # DEVELOPMENT TOOLS AND LIBRARIES
+      # DEVELOPMENT
       # ============================================================================
 
       # Go
-      go
-      golangci-lint
+      go # https://go.dev
+      golangci-lint # https://github.com/golangci/golangci-lint
 
       # Rust
       # Not using overlay
       # `rustup component add rust-analyzer` is required for LSP to work
       # @see https://discourse.nixos.org/t/why-should-i-use-overlay-for-rust-devshell/57082/2
-      rustup
-      cargo-edit
+      rustup # https://rustup.rs
+      cargo-edit # https://github.com/killercup/cargo-edit
 
-      # Build tools/libraries
-      autoconf
-      automake
+      # Build tools
+      autoconf # https://www.gnu.org/software/autoconf
+      automake # https://www.gnu.org/software/automake
       # gcc
-      just
-      pkg-config
-      wasm-pack
-      icu77
+      just # https://github.com/casey/just
+      pkg-config # https://www.freedesktop.org/wiki/Software/pkg-config
+      wasm-pack # https://github.com/rustwasm/wasm-pack
+      icu77 # https://icu.unicode.org
 
-      # Language Servers (and/or its toolchains)
-      bash-language-server
-      cmake-language-server
-      vscode-css-languageserver # css, scss
-      beam28Packages.elixir-ls
-      gopls # go
-      graphql-language-service-cli # graphql
-      docker-language-server # dockerfile, compose files, bake
-      terraform-ls # hcl
-      superhtml # html
-      jdt-language-server # java
-      typescript-language-server # js, ts, tsx
-      jq-lsp # jq
-      vscode-json-languageserver # json
-      kotlin-language-server
-      texlab # latex
-      typst
-      lua-language-server # lua
-      marksman # markdown
-      nil # nix
-      perlnavigator # perl
-      intelephense # php
-      ruff # python
-      R
-      ruby-lsp # Ruby
-      lldb # rust debugging (provides lldb-dap for Helix DAP)
-      solc # solidity
-      svelte-language-server # svelte
-      systemd-lsp # systemd
-      taplo # TOML
-      vue-language-server
-      yaml-language-server
-      zls # zig
+      # Code quality
+      yamllint # https://github.com/adrienverge/yamllint
+
+      # ============================================================================
+      # LANGUAGE SERVERS
+      # ============================================================================
+
+      bash-language-server # https://github.com/bash-lsp/bash-language-server
+      cmake-language-server # https://github.com/regen100/cmake-language-server
+      vscode-css-languageserver # https://github.com/microsoft/vscode (css, scss)
+      beam28Packages.elixir-ls # https://github.com/elixir-lsp/elixir-ls
+      gopls # https://pkg.go.dev/golang.org/x/tools/gopls (go)
+      graphql-language-service-cli # https://github.com/graphql/graphiql
+      docker-language-server # https://github.com/microsoft/compose-language-service (dockerfile, compose)
+      terraform-ls # https://github.com/hashicorp/terraform-ls (hcl)
+      superhtml # https://github.com/kristoff-it/superhtml (html)
+      jdt-language-server # https://projects.eclipse.org/projects/eclipse.jdt.ls (java)
+      typescript-language-server # https://github.com/typescript-language-server/typescript-language-server (js, ts, tsx)
+      jq-lsp # https://github.com/wader/jq-lsp
+      vscode-json-languageserver # https://github.com/microsoft/vscode (json)
+      kotlin-language-server # https://github.com/fwcd/kotlin-language-server
+      texlab # https://github.com/latex-lsp/texlab (latex)
+      typst # https://github.com/typst/typst
+      lua-language-server # https://github.com/LuaLS/lua-language-server
+      marksman # https://github.com/artempyanykh/marksman (markdown)
+      nil # https://github.com/oxalica/nil (nix)
+      perlnavigator # https://github.com/bscan/PerlNavigator
+      intelephense # https://intelephense.com (php)
+      ruff # https://github.com/astral-sh/ruff (python linter/formatter)
+      R # https://www.r-project.org
+      ruby-lsp # https://github.com/Shopify/ruby-lsp
+      lldb # https://lldb.llvm.org (rust debugging, provides lldb-dap for Helix DAP)
+      solc # https://github.com/ethereum/solidity
+      svelte-language-server # https://github.com/sveltejs/language-tools
+      systemd-lsp # https://github.com/psacawa/systemd-language-server
+      taplo # https://github.com/tamasfe/taplo (toml)
+      vue-language-server # https://github.com/vuejs/language-tools
+      yaml-language-server # https://github.com/redhat-developer/yaml-language-server
+      zls # https://github.com/zigtools/zls (zig)
 
       # ============================================================================
       # VERSION CONTROL
       # ============================================================================
 
-      # Git
-      git-open # `git open` to open the GitHub page or website for a repo
-      git-recent # `git recent` to browse latest local git branches interactively
-
-      # Git tools
-      bfg-repo-cleaner
+      git-open # https://github.com/paulirish/git-open (`git open` — open GitHub page for repo)
+      git-recent # https://github.com/paulirish/git-recent (`git recent` — browse local branches)
+      bfg-repo-cleaner # https://rtyley.github.io/bfg-repo-cleaner
 
       # ============================================================================
       # INFRASTRUCTURE & DEVOPS
       # ============================================================================
 
-      # Utilities
-      # lnav # log file navigator (https://github.com/tstack/lnav)
+      # Backup
+      restic # https://restic.net
+
+      # SSH
+      ssh-copy-id # https://www.openssh.com
 
       # Cloud providers
       # awscli2
@@ -100,270 +106,250 @@ in
       # nomad
       # packer
       # skaffold
-      # ctop # top for containers
+      # ctop
 
       # Infrastructure as code
       # terraform
       # terraformer
       # vagrant
-
-      # DNS & networking
       # dnscontrol
 
-      # Backup & storage
-      restic
-
-      # SSH
-      ssh-copy-id
+      # Log analysis
+      # lnav # https://github.com/tstack/lnav
 
       # ============================================================================
       # NETWORKING & SECURITY
       # ============================================================================
 
+      # HTTP clients & file transfer
+      xh # https://github.com/ducaale/xh (modern curl/httpie)
+      croc # https://github.com/schollz/croc (p2p file transfer)
       # curlie  # redundant: xh covers this
-      # curl  # redundant: use system curl or xh; aliases in zsh.nix still reference noglob curl
-      xh
-      mosh
-      autossh
+      # curl    # redundant: use system curl or xh
+      # httpie  # redundant: xh covers this
       # magic-wormhole  # redundant: croc covers p2p file transfer
-      croc # p2p file transfer
-      # putty # FIXME: https://github.com/NixOS/nixpkgs/pull/449689
+      # putty
 
-      # TLS
-      mkcert
+      # Remote access
+      mosh # https://mosh.org
+      autossh # https://www.harding.motd.ca/autossh
 
-      # Credential Managers
-      _1password-cli
-      age
+      # TLS & credentials
+      mkcert # https://github.com/FiloSottile/mkcert
+      _1password-cli # https://1password.com/downloads/command-line
+      age # https://github.com/FiloSottile/age
       # yubikey-manager
       # yubikey-personalization
-
-      # Network analysis
-      knot-dns
-      # tldx # domain availability search
-      bandwhich
-      doggo # modern dig
-      hey
-      iperf
-      ipcalc # network address calculations for IPv4 and IPv6 (https://gitlab.com/ipcalc/ipcalc)
-      mitmproxy
-      nali
-      nexttrace
-      nmap
-      rtmpdump
-      socat
-      sslscan
-      stress
-      tcpflow
-      ookla-speedtest
-      tcping-go
-      tcpreplay
-      tcptraceroute
-      wakeonlan
-      dns2tcp
-      dnslookup
-
-      # VPN & security
-      wireguard-go
-      wireguard-tools
-      sqlmap
-      # thc-hydra # network logon cracker
-      testssl
-
-      # ============================================================================
-      # AUTHENTICATION & SECURITY
-      # ============================================================================
-
       # yubico-piv-tool
+
+      # Network analysis & tools
+      knot-dns # https://www.knot-dns.cz
+      bandwhich # https://github.com/imsnif/bandwhich
+      doggo # https://github.com/mr-karan/doggo (modern dig)
+      hey # https://github.com/rakyll/hey (HTTP load generator)
+      iperf # https://github.com/esnet/iperf
+      ipcalc # https://gitlab.com/ipcalc/ipcalc (IPv4/IPv6 address calculator)
+      mitmproxy # https://mitmproxy.org
+      nali # https://github.com/zu1k/nali (IP geolocation lookup)
+      nexttrace # https://github.com/nxtrace/NTrace-core (visual traceroute)
+      nmap # https://nmap.org
+      rtmpdump # https://rtmpdump.mplayerhq.hu
+      socat # http://www.dest-unreach.org/socat
+      sslscan # https://github.com/rbsec/sslscan
+      stress # https://people.seas.harvard.edu/~apw/stress
+      tcpflow # https://github.com/simsong/tcpflow
+      ookla-speedtest # https://www.speedtest.net/apps/cli
+      tcping-go # https://github.com/cloverstd/tcping
+      tcpreplay # https://tcpreplay.appneta.com
+      tcptraceroute # https://github.com/mct/tcptraceroute
+      wakeonlan # https://github.com/jpoliv/wakeonlan
+      dns2tcp # https://www.hsc.fr/ressources/outils/dns2tcp
+      dnslookup # https://github.com/ameshkov/dnslookup
+      # tldx
+
+      # VPN & security testing
+      wireguard-go # https://github.com/WireGuard/wireguard-go
+      wireguard-tools # https://www.wireguard.com
+      sqlmap # https://github.com/sqlmapproject/sqlmap
+      testssl # https://github.com/drwetter/testssl.sh
+      # thc-hydra
 
       # ============================================================================
       # AI & MACHINE LEARNING
       # ============================================================================
 
-      # gfortran
-      # openblas.dev
-      # gemini-cli
+      mods # https://github.com/charmbracelet/mods
       # crush
       # ollama
       # aichat
-      mods
+      # gfortran
+      # openblas.dev
 
       # ============================================================================
-      # DEVELOPMENT UTILITIES
+      # TERMINAL & SHELL
       # ============================================================================
 
-      # Web development
-      # caddy
-      # httpie  # redundant: xh covers this
-
-      # Code quality
-      yamllint
-
-      # Databases
-      # redis
-      # pgcli
-
-      # ============================================================================
-      # SYSTEM UTILITIES
-      # ============================================================================
-
-      # Shell enhancements
-      # emojify # https://github.com/mrowa44/emojify
-      progress
-      pv # progress bar for a pipe
-
-      # Terminal utilities
-      tmux
+      tmux # https://github.com/tmux/tmux
+      viddy # https://github.com/sachaos/viddy (modern watch)
+      lesspipe # https://github.com/wofr06/lesspipe
+      glow # https://github.com/charmbracelet/glow (markdown in terminal)
+      termdown # https://github.com/trehn/termdown (countdown timer)
+      pop # https://github.com/charmbracelet/pop (email from terminal)
+      moreutils # https://joeyh.name/code/moreutils
+      getopt # https://frodo.looijaard.name/project/getopt
+      progress # https://github.com/Xfennec/progress (coreutils progress watcher)
+      pv # https://www.ivarch.com/programs/pv.shtml (progress bar for pipes)
       # gotop  # redundant: htop/bottom cover this
       # procs  # redundant: htop/bottom cover this
-      viddy
-      lesspipe
-      glow # markdown in the terminal (https://github.com/charmbracelet/glow)
-      termdown # timer https://github.com/trehn/termdown
-      pop # email sender https://github.com/charmbracelet/pop
-
-      # General shell utilities
-      moreutils # https://joeyh.name/code/moreutils/
-      getopt
-
-      # File operations
-      entr # watch files and run arbitrary commands when files change
-      hexyl # modern hex viewer
-      coreutils-prefixed
-      eza
-      rsync
-      # tree  # redundant: `tree` alias uses eza --tree
-      dust # du in rust (https://github.com/bootandy/dust)
-      qpdf
-      html-tidy
-      gnutar
-      gnused
-      xz
-
-      # Diff
-      difftastic
-      vbindiff # Visual Binary Diff compares files in hex & ASCII formats
-
-      vivid # LS_COLORS generator (https://github.com/sharkdp/vivid)
-
-      # Searcher
-      fd
-      ripgrep
-      pdfgrep
-
-      # Data Science
-      xan # csv file processing (https://github.com/medialab/xan)
-      qsv # csv manipulation (https://github.com/dathere/qsv)
-      visidata # Interactive terminal multitool for tabular data
-      miller # awk, sed, cut, join, and sort for CSV, TSV, JSON
-      gron # greppable JSON (https://github.com/tomnomnom/gron)
-
-      # Text operations
-      jq
-      up # https://github.com/akavel/up
-      fx # terminal JSON viewer
-      choose # modern cut+awk (https://github.com/theryangeary/choose)
-      gnugrep
-      sd
-      serpl # global search & replace TUI
-      jc # convert output of common cli tools to JSON (https://github.com/kellyjonbrazil/jc?tab=readme-ov-file#parsers)
-      jo # generate JSON by simple commands
-      yq-go # jq for YAML, JSON, XML, CSV, TOML and properties
-      htmlq # jq for HTML (https://github.com/mgdm/htmlq)
-
-      # System monitoring
-      duf
-      jc
-      glances
+      # emojify # https://github.com/mrowa44/emojify
 
       # ============================================================================
-      # UTILITIES & TOOLS
+      # FILE UTILITIES
+      # ============================================================================
+
+      entr # https://github.com/eradman/entr (run commands on file change)
+      hexyl # https://github.com/sharkdp/hexyl (hex viewer)
+      coreutils-prefixed # https://www.gnu.org/software/coreutils
+      eza # https://github.com/eza-community/eza (modern ls)
+      rsync # https://rsync.samba.org
+      dust # https://github.com/bootandy/dust (du in rust)
+      qpdf # https://github.com/qpdf/qpdf
+      html-tidy # https://github.com/htacg/tidy-html5
+      gnutar # https://www.gnu.org/software/tar
+      gnused # https://www.gnu.org/software/sed
+      xz # https://tukaani.org/xz
+
+      # Diff
+      difftastic # https://github.com/Wilfred/difftastic
+      vbindiff # https://www.cjmweb.net/vbindiff (visual binary diff in hex & ASCII)
+
+      # Search
+      fd # https://github.com/sharkdp/fd
+      ripgrep # https://github.com/BurntSushi/ripgrep
+      pdfgrep # https://pdfgrep.org
+
+      vivid # https://github.com/sharkdp/vivid (LS_COLORS generator)
+
+      # ============================================================================
+      # DATA & TEXT PROCESSING
+      # ============================================================================
+
+      # JSON / YAML / structured data
+      jq # https://jqlang.github.io/jq
+      yq-go # https://github.com/mikefarah/yq (jq for YAML, JSON, XML, CSV, TOML)
+      fx # https://github.com/antonmedv/fx (terminal JSON viewer)
+      jc # https://github.com/kellyjonbrazil/jc (convert CLI tool output to JSON)
+      jo # https://github.com/jpmens/jo (generate JSON from shell commands)
+      htmlq # https://github.com/mgdm/htmlq (jq for HTML)
+      gron # https://github.com/tomnomnom/gron (greppable JSON)
+
+      # CSV / tabular data
+      xan # https://github.com/medialab/xan (CSV processing)
+      qsv # https://github.com/dathere/qsv (CSV manipulation)
+      visidata # https://www.visidata.org (interactive tabular data TUI)
+      miller # https://github.com/johnkerl/miller (awk/sed/cut/join/sort for CSV, TSV, JSON)
+
+      # Text manipulation
+      up # https://github.com/akavel/up (interactive pipe builder)
+      choose # https://github.com/theryangeary/choose (modern cut + awk)
+      gnugrep # https://www.gnu.org/software/grep
+      sd # https://github.com/chmln/sd (modern sed)
+      serpl # https://github.com/yassinebridi/serpl (global search & replace TUI)
+
+      # ============================================================================
+      # SYSTEM MONITORING
+      # ============================================================================
+
+      duf # https://github.com/muesli/duf (modern df)
+      glances # https://github.com/nicolargo/glances
+
+      # ============================================================================
+      # MEDIA & DOWNLOAD
+      # ============================================================================
+
+      # Media processing
+      ffmpeg # https://ffmpeg.org
+      exiftool # https://exiftool.org
+      imagemagickBig # https://imagemagick.org
+      optipng # https://optipng.sourceforge.net
+      oxipng # https://github.com/oxipng/oxipng (multithreaded PNG optimizer in rust)
+
+      # Download & streaming
+      lux # https://github.com/iawia002/lux (video downloader)
+      yt-dlp # https://github.com/yt-dlp/yt-dlp
+      sox # https://sourceforge.net/projects/sox (used by Claude Code to record audio)
+
+      # ============================================================================
+      # PRODUCTIVITY
       # ============================================================================
 
       # Recording & presentation
-      asciinema
+      asciinema # https://asciinema.org
       # slides
 
       # Documentation & help
-      cht-sh
-      tldr
-
-      # Fun & misc
-      # cowsay
-      # lolcat
-      fastfetch
+      cht-sh # https://github.com/chubin/cheat.sh
+      tldr # https://github.com/tldr-pages/tldr
 
       # Notifications
-      noti
+      noti # https://github.com/variadico/noti
 
-      # Download & media
-      lux
-      yt-dlp
-      sox # used by Claude Code to record audio
-
-      # ============================================================================
-      # MEDIA PROCESSING
-      # ============================================================================
-
-      ffmpeg
-      exiftool
-      imagemagickBig
-      optipng
-      oxipng # Multithreaded PNG optimizer written in Rust (https://github.com/oxipng/oxipng)
+      # Misc
+      fastfetch # https://github.com/fastfetch-cli/fastfetch
+      # cowsay
+      # lolcat
 
       # ============================================================================
-      # CLI TOOLS
+      # NIX & PLATFORM TOOLS
       # ============================================================================
+
+      # @see https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md#should-i-use-gh-or-hub
+      gh # https://cli.github.com
+
+      nh # https://github.com/nix-community/nh
+      cachix # https://cachix.org
 
       # powershell
       # stripe-cli
       # dex2jar
-      # hyperfine # cli command benchmarking
-
-      # GitHub CLI Tools
-      # @see https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md#should-i-use-gh-or-hub
-      gh
-      # hub  # redundant: use gh
-
-      # Nix Tools
-      nh # https://github.com/nix-community/nh
-      cachix
+      # hyperfine # https://github.com/sharkdp/hyperfine (cli benchmarking)
 
       # ============================================================================
       # FONTS
       # ============================================================================
+
       # lcdf-typetools
-      berkeley-mono
-      berkeley-mono-variable
-      commit-mono-nf
-      noto-fonts-cjk-sans-static
-      monaspace
-      sarasa-gothic
+      berkeley-mono # https://berkeleygraphics.com/typefaces/berkeley-mono
+      berkeley-mono-variable # https://berkeleygraphics.com/typefaces/berkeley-mono
+      commit-mono-nf # https://commitmono.com
+      noto-fonts-cjk-sans-static # https://github.com/notofonts/noto-cjk
+      monaspace # https://monaspace.githubnext.com
+      sarasa-gothic # https://github.com/be5invis/Sarasa-Gothic
     ]
     # macOS-only packages
     ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
 
-      m-cli
-      blueutil
-      mas
-      stats
-      mactop
-      osx-cpu-temp
+      m-cli # https://github.com/rgcr/m-cli
+      blueutil # https://github.com/toy/blueutil
+      mas # https://github.com/mas-cli/mas
+      stats # https://github.com/exelban/stats
+      mactop # https://github.com/context-labs/mactop
+      osx-cpu-temp # https://github.com/lavoiesl/osx-cpu-temp
 
-      pinentry_mac
-      pam-reattach
-      reattach-to-user-namespace
+      pinentry_mac # https://github.com/GPGTools/pinentry
+      pam-reattach # https://github.com/fabianishere/pam_reattach
+      reattach-to-user-namespace # https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 
-      ocr
-      impbcopy
-      pngpaste
-      create-dmg
-      terminal-notifier
+      ocr # packages/ocr/ocr.nix
+      impbcopy # packages/impbcopy/impbcopy.nix
+      pngpaste # https://github.com/jcsalterego/pngpaste
+      create-dmg # https://github.com/create-dmg/create-dmg
+      terminal-notifier # https://github.com/julienXX/terminal-notifier
     ])
     # Linux-only packages
     ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
 
-      plocate # very fast `locate`
+      plocate # https://plocate.sesse.net (very fast locate)
 
     ]);
 }
