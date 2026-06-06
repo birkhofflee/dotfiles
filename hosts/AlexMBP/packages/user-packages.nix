@@ -342,6 +342,7 @@ in
 
       ocr # packages/ocr/ocr.nix
       impbcopy # packages/impbcopy/impbcopy.nix
+      supercharge # packages/supercharge.nix https://sindresorhus.com/supercharge
       pngpaste # https://github.com/jcsalterego/pngpaste
       create-dmg # https://github.com/create-dmg/create-dmg
       terminal-notifier # https://github.com/julienXX/terminal-notifier

@@ -128,15 +128,20 @@
             secrets = inputs.secrets;
           };
           commit-mono-nf = prev.callPackage ./packages/fonts/commit-mono-nf.nix { };
+          supercharge = prev.callPackage "${inputs.secrets}/packages/supercharge.nix" { };
         };
 
         python-llm-plugins = _: prev: {
           pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-            (python-final: _: {
-              llm-cmd-comp = python-final.callPackage ./packages/llm-cmd-comp.nix { };
-            } // prev.lib.optionalAttrs prev.stdenv.isDarwin {
-              llm-mlx = python-final.callPackage ./packages/llm-mlx.nix { };
-            })
+            (
+              python-final: _:
+              {
+                llm-cmd-comp = python-final.callPackage ./packages/llm-cmd-comp.nix { };
+              }
+              // prev.lib.optionalAttrs prev.stdenv.isDarwin {
+                llm-mlx = python-final.callPackage ./packages/llm-mlx.nix { };
+              }
+            )
           ];
         };
 
@@ -193,8 +198,7 @@
               sshUser = "root";
               user = "root";
               remoteBuild = true;
-              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos
-                self.nixosConfigurations.${hostname};
+              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.${hostname};
             };
           };
         in

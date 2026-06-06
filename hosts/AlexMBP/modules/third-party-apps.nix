@@ -137,6 +137,9 @@
       # Unminimize windows when app becomes active
       unminimizeWindowsOnAppActivationMode = "allWindowsOnlyIfAllMinimized";
 
+      # Disable Sparkle auto-update checks since we're managing it with Nix
+      SUEnableAutomaticChecks = 0;
+
       # Hide the Supercharge menu bar icon
       showMenuBarIcon = 0;
 

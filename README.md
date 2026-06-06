@@ -312,7 +312,6 @@ $ just orb-configure
 ## Other Notes
 
 * Development Environments [should be managed using nix-shell](https://joshblais.com/blog/nixos-is-the-endgame-of-distrohopping/#development-environments).
-* [Supercharge](https://sindresorhus.com/supercharge) has to be downloaded manually due to licensing constraints.
 * While I'd like Nix to handle every app on my Mac, most GUI apps are better managed by Homebrew due to the conflicting nature of Nix and the self-updating capabilities of those apps.
 
 ## Articles
