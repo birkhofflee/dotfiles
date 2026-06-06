@@ -11,6 +11,7 @@
       "hopenpgp-tools"
       "screenresolution"
       "apfel"
+      "xcodegen"
     ];
 
     casks = [
