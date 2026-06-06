@@ -14,6 +14,7 @@
     ./modules/bat.nix
     ./modules/bottom.nix
     ./modules/claude.nix
+    ./modules/codex.nix
     ./modules/delta.nix
     ./modules/direnv.nix
     ./modules/dprint.nix
