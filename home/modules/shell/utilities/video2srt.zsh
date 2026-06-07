@@ -75,7 +75,7 @@ echo ""
 
 # Step 2: Run parakeet-mlx to generate SRT
 echo "${GREEN}[2/3] Running parakeet-mlx for transcription...${NC}"
-if ! uv tool run parakeet-mlx "$WAV_FILE" --max-words 15; then
+if ! uvx --with "httpx[socks]" parakeet-mlx "$WAV_FILE" --max-words 15; then
     error_exit "Failed to run parakeet-mlx"
 fi
 if [[ ! -f "$SRT_FILE" ]]; then
