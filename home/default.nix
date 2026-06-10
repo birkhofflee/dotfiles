@@ -27,8 +27,10 @@
     ./modules/hushlogin.nix
     ./modules/lazygit.nix
     ./modules/llm.nix
+    ./modules/mcp.nix
     ./modules/nano.nix
     ./modules/nodejs.nix
+    ./modules/opencode.nix
     ./modules/scripts.nix
     ./modules/ssh.nix
     ./modules/starship.nix

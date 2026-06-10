@@ -18,6 +18,13 @@ in
       mode = "0600";
     };
 
+    # MCP auth tokens, exported as env vars by zsh (see home/modules/mcp.nix)
+    age.secrets.mcp-env = {
+      file = ../../secrets/mcp-env.age;
+      path = "/Users/${username}/.config/mcp/secrets.env";
+      mode = "0600";
+    };
+
     # agenix includes `Crashed = false` in KeepAlive, which means "restart if not crashed"
     # (i.e. restart on every clean exit, including success). Override to only restart on failure.
     # @see https://github.com/ryantm/agenix/issues/372

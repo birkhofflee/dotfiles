@@ -50,6 +50,12 @@ in
     ];
     armor = true;
   };
+  "mcp-env.age" = {
+    publicKeys = [
+      ale
+    ];
+    armor = true;
+  };
   "vps-tw-01-network.age" = {
     publicKeys = [
       ale
