@@ -38,7 +38,7 @@ _vm-ssh command='':
   ssh {{SSH_OPTIONS}} -p{{NIXPORT}} {{NIXUSER}}@{{NIXADDR}} -- "{{command}}"
 
 _vm-add-root-sshkey:
-  @op read "op://Personal/id_ed25519/id_ed25519" | NIXUSER=root just _vm-ssh 'umask 077 && mkdir -p /root/.ssh && cat > /root/.ssh/id_ed25519 && chmod 600 /root/.ssh/id_ed25519'
+  @op read "op://Private/id_ed25519/id_ed25519" | NIXUSER=root just _vm-ssh 'umask 077 && mkdir -p /root/.ssh && cat > /root/.ssh/id_ed25519 && chmod 600 /root/.ssh/id_ed25519'
 
 _vm-remove-root-sshkey:
   @NIXUSER=root just _vm-ssh 'rm -f /root/.ssh/id_ed25519'

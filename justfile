@@ -114,13 +114,13 @@ update-input input:
 [group('secrets')]
 [working-directory: 'secrets']
 edit-secret secret_file:
-  agenix -e {{secret_file}} --identity <(op read 'op://Personal/id_ed25519/private key?ssh-format=openssh') && git add "{{secret_file}}"
+  agenix -e {{secret_file}} --identity <(op read 'op://Private/id_ed25519/private key?ssh-format=openssh') && git add "{{secret_file}}"
 
 # Rekey all secrets.
 [group('secrets')]
 [working-directory: 'secrets']
 rekey:
-  op read 'op://Personal/id_ed25519/private key?ssh-format=openssh' > /tmp/k && agenix -r --identity /tmp/k && rm -f /tmp/k
+  op read 'op://Private/id_ed25519/private key?ssh-format=openssh' > /tmp/k && agenix -r --identity /tmp/k && rm -f /tmp/k
 
 # Push darwin build artifacts to cachix (pushes full closure, not just newly-built paths)
 [group('cache')]
