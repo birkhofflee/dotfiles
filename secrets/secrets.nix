@@ -28,14 +28,6 @@ in
     publicKeys = myHosts;
     armor = true;
   };
-  "atuin-session.age" = {
-    publicKeys = myHosts;
-    armor = true;
-  };
-  "atuin-key.age" = {
-    publicKeys = myHosts;
-    armor = true;
-  };
   "apex-discord-bot.age" = {
     publicKeys = withHomelab;
     armor = true;
