@@ -23,7 +23,9 @@
       "blender"
       "chatgpt"
       "claude"
+      "clop"
       "cmux"
+      "cyberduck"
       "deskpad"
       "discord"
       "dropbox"
@@ -39,7 +41,7 @@
       "imageoptim"
       "imazing"
       "input-source-pro"
-      "jurplel/tap/instant-space-switcher"
+      "mmathys/tap/noswoosh"
       "keka"
       "key-codes"
       "keycastr"
@@ -54,6 +56,7 @@
       "ogdesign-eagle"
       "orbstack"
       "orion"
+      "parsec"
       "quicklook-csv"
       "raycast"
       "shottr"
@@ -94,6 +97,7 @@
       "Goodnotes" = 1444383602;
       "Hush" = 1544743900;
       "Hyperduck" = 6444667067;
+      "Infuse" = 1136220934;
       "Keynote" = 361285480;
       "LINE" = 539883307;
       "Mactracker" = 430255202;
