@@ -197,11 +197,6 @@
           user = "ale";
           hasDesktop = true;
         };
-
-        nixos-vps-tw-01 = mkSystem "nixos-vps-tw-01" {
-          system = "x86_64-linux";
-          user = "ale";
-        };
       };
 
       packages.x86_64-linux.nixos-desktop-01-image =
@@ -231,7 +226,6 @@
         {
           nixos-server-01 = mkNode "nixos-server-01";
           nixos-desktop-01 = mkNode "nixos-desktop-01";
-          nixos-vps-tw-01 = mkNode "nixos-vps-tw-01";
         };
     }
     //

@@ -65,10 +65,6 @@ switch-nixos-server:
 switch-nixos-desktop:
   {{NO_SSH_MUX}} nh os switch -H nixos-desktop-01 --accept-flake-config --target-host root@nixos-desktop-01 --build-host nixos-server-01 -e passwordless
 
-[group('homelab')]
-switch-nixos-vps-tw:
-  {{NO_SSH_MUX}} nh os switch -H nixos-vps-tw-01 --accept-flake-config --target-host root@nixos-vps-tw-01 --build-host nixos-server-01 -e passwordless
-
 # Deploy nixos-server-01 via deploy-rs (remote build, magic rollback), then cache Determinate Nix
 [group('homelab')]
 deploy-server:
@@ -79,11 +75,6 @@ deploy-server:
 [group('homelab')]
 deploy-desktop:
   deploy .#nixos-desktop-01
-
-# Deploy nixos-vps-tw-01 via deploy-rs (remote build, magic rollback)
-[group('homelab')]
-deploy-vps-tw:
-  deploy .#nixos-vps-tw-01
 
 # Deploy all NixOS hosts via deploy-rs
 [group('homelab')]
@@ -169,8 +160,8 @@ cache-determinate:
   # neither cache.nixos.org nor install.determinate.systems — only on the paid FlakeHub
   # Cache. Without this, every NixOS host recompiles Nix (~130 MiB closure) whenever the
   # `determinate` input is bumped. `deploy-server` runs this automatically, so the desktop
-  # and the VPS substitute it from birkhoff.cachix.org instead of recompiling. All three
-  # NixOS hosts are x86_64-linux, so one build covers them all.
+  # substitutes it from birkhoff.cachix.org instead of recompiling. Both NixOS hosts are
+  # x86_64-linux, so one build covers them all.
   #
   # Builds and pushes entirely on nixos-server-01: the cachix token is an agenix secret at
   # /run/agenix/cachix-token (declared in hosts/nixos-server-01/default.nix, owned by ale), so

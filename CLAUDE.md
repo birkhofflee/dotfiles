@@ -12,7 +12,6 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 - `nixos-orbstack`: NixOS (aarch64-linux) - OrbStack VM
 - `nixos-server-01`: NixOS (x86_64-linux) - Proxmox VM on homelab server (`homelab-nuc`)
 - `nixos-desktop-01`: NixOS (x86_64-linux) - Proxmox VM with GUI (GNOME default, Hyprland specialization)
-- `nixos-vps-tw-01`: NixOS (x86_64-linux) - VPS (Taiwan)
 
 **Current user:** `ale`
 
@@ -52,9 +51,6 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   │   ├── desktop.nix   # GNOME/GDM, dconf HiDPI, GNOME Remote Desktop service, sleep targets
 │   │   ├── users.nix     # Users, fonts, system packages, timezone, sudo, i18n
 │   │   └── home.nix      # Host-specific home config (CLI/shell tools + 1password, ghostty)
-│   ├── nixos-vps-tw-01/  # VPS (Taiwan)
-│   │   ├── default.nix
-│   │   └── home.nix
 │   ├── common-system-packages.nix  # System packages shared across all hosts
 │   └── shared-nix-settings.nix     # Shared Nix daemon settings
 ├── home/                  # Shared home-manager base (imported by every host's home.nix)
@@ -152,10 +148,6 @@ The `home/` directory provides a **shared base** that every host's `home.nix` im
 - System config split into sub-modules: `hardware.nix`, `networking.nix`, `desktop.nix`, `users.nix`
 - SSH host key pre-seeded from `dotfiles.secret` input (required for agenix on first boot)
 
-**nixos-vps-tw-01** (`hosts/nixos-vps-tw-01/default.nix`):
-- NixOS x86_64-linux VPS (Taiwan)
-- Deployed via deploy-rs (`just deploy-vps-tw`) or nh (`just switch-nixos-vps-tw`)
-
 ### Package Management Strategy
 
 **Nix packages** are used for:
@@ -196,9 +188,9 @@ Decrypted agenix secrets are never at risk here: they live in `/run/agenix` at a
 
 **NixOS** — the module sets `nix.package` to the `nix-src` flake output (`modules/nixos.nix:31`). That store path is on neither `cache.nixos.org` nor the public `https://install.determinate.systems` cache (verified with `nix path-info --store`, for both the current and the previously-shipping version — that cache serves installer artifacts, not nix-src flake outputs). The only upstream source is FlakeHub Cache (`https://cache.flakehub.com`), which is **paid and needs imperative per-machine auth** (`determinate-nixd login`; hosts are `logged-out`, and there is no declarative equivalent).
 
-So on NixOS Nix would otherwise be recompiled per host per bump. The workaround is **`just cache-determinate`**: build it once on nixos-server-01 and push the ~130 MiB closure to `birkhoff.cachix.org`, which every host already trusts. All three NixOS hosts are x86_64-linux, so one build covers them all.
+So on NixOS Nix would otherwise be recompiled per host per bump. The workaround is **`just cache-determinate`**: build it once on nixos-server-01 and push the ~130 MiB closure to `birkhoff.cachix.org`, which every host already trusts. Both x86_64-linux NixOS hosts share that one build.
 
-**`just deploy-server` runs `just cache-determinate` automatically as its last step**, so the normal workflow (`just update` → `just deploy-server` → deploy the others) never recompiles Nix more than once. Deploy the server first: `deploy-desktop` / `deploy-vps-tw` build on the target (deploy-rs `remoteBuild = true`) and would otherwise each recompile it. The `switch-nixos-*` recipes use `--build-host nixos-server-01` and already share one build.
+**`just deploy-server` runs `just cache-determinate` automatically as its last step**, so the normal workflow (`just update` → `just deploy-server` → deploy the others) never recompiles Nix more than once. Deploy the server first: `deploy-desktop` builds on the target (deploy-rs `remoteBuild = true`) and would otherwise recompile it. The `switch-nixos-*` recipes use `--build-host nixos-server-01` and already share one build.
 
 The build and the push both run on nixos-server-01 — nothing is copied back to the Mac. The cachix token is the agenix secret `secrets/cachix-token.age`, declared in `hosts/nixos-server-01/default.nix` (owner `ale`, mode `0400`, mounted at `/run/agenix/cachix-token`), and `pkgs.cachix` is in that host's `systemPackages`. The recipe reads the token into `CACHIX_AUTH_TOKEN` on the far side, so it never crosses the wire. Because the push is now server-side, extending it to whole system closures is just a matter of changing what gets piped into `cachix push`.
 
@@ -217,10 +209,8 @@ Using `just` (preferred):
 just switch                 # Build and switch to new configuration (alias: just s)
 just switch-nixos-server    # Switch nixos-server-01 remotely via nh os switch
 just switch-nixos-desktop   # Switch nixos-desktop-01 remotely via nh os switch
-just switch-nixos-vps-tw    # Switch nixos-vps-tw-01 remotely via nh os switch
 just deploy-server          # Deploy nixos-server-01 via deploy-rs (with magic rollback)
 just deploy-desktop         # Deploy nixos-desktop-01 via deploy-rs (with magic rollback)
-just deploy-vps-tw          # Deploy nixos-vps-tw-01 via deploy-rs (with magic rollback)
 just deploy-all             # Deploy all NixOS hosts via deploy-rs
 just build-desktop-image    # Build Proxmox VMA for nixos-desktop-01 (runs on nixos-server-01)
 just update                 # Update all flake inputs and commit lock file (alias: just u)
