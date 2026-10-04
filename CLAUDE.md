@@ -8,10 +8,12 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 
 **Current hosts:**
 - `AlexMBP`: macOS (M1 Pro, Tahoe) - nix-darwin
-- `nixos-vm-aarch64`: NixOS (aarch64-linux) - VMware Fusion VM
-- `nixos-orbstack`: NixOS (aarch64-linux) - OrbStack VM
-- `nixos-server-01`: NixOS (x86_64-linux) - Proxmox VM on homelab server (`homelab-nuc`)
 - `nixos-desktop-01`: NixOS (x86_64-linux) - Proxmox VM with GUI (GNOME default, Hyprland specialization)
+
+**Not configured here:** `nixos-server-01` (x86_64-linux, Proxmox VM on
+`homelab-nuc`) moved to `~/Documents/Infrastructure/Homelab`. This repo still
+*depends* on it — `nixos-desktop-01` forwards every build to it and
+`just cache-determinate` builds and pushes there — but no longer defines it.
 
 **Current user:** `ale`
 
@@ -32,18 +34,7 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   │   ├── age-identity.txt  # 1Password age plugin identity for decryption
 │   │   ├── ssh-config.nix    # agenix HM module config + secret declarations
 │   │   └── packages/     # homebrew.nix + user-packages.nix
-│   ├── nixos-vm-aarch64/ # VMware Fusion NixOS VM
-│   │   ├── default.nix   # System configuration
-│   │   └── home.nix      # Host-specific home config
-│   ├── nixos-orbstack/   # OrbStack NixOS VM
-│   │   ├── default.nix
-│   │   └── home.nix
-│   ├── nixos-server-01/  # Proxmox VM (homelab server)
-│   │   ├── default.nix
-│   │   ├── disk-config.nix   # disko BTRFS layout
-│   │   ├── facter.json       # nixos-facter hardware report (pre-committed)
-│   │   ├── home.nix          # Host-specific home config
-│   │   └── services/         # tailscale, atuin, rybbit, caddy, cloudflared, apex-discord-bot, jupyter
+│   │                     # (nixos-server-01 lives in the Homelab repo now)
 │   ├── nixos-desktop-01/ # Proxmox VM (GUI desktop)
 │   │   ├── default.nix   # Entry point: imports sub-modules + sets stateVersion
 │   │   ├── hardware.nix  # Boot, proxmox VM config, zramSwap, enableHardwareAccel option
@@ -66,12 +57,9 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   ├── impbcopy/                      # macOS ObjC tool: copy images to clipboard (used by impaste)
 │   ├── ocr/                           # macOS Swift Vision-framework OCR CLI
 │   └── patches/                       # Patch files applied by the derivations above
-├── secrets/               # agenix-encrypted secrets
-│   ├── secrets.nix        # Public key declarations for each secret
-│   └── *.age              # Encrypted secret files
-└── justfiles/             # Modular just recipes
-    ├── vm-vmware-fusion.just  # VMware Fusion VM management
-    └── vm-orbstack.just       # OrbStack VM management
+└── secrets/               # agenix-encrypted secrets
+    ├── secrets.nix        # Public key declarations for each secret
+    └── *.age              # Encrypted secret files
 ```
 
 ### Flake Structure
@@ -123,23 +111,6 @@ The `home/` directory provides a **shared base** that every host's `home.nix` im
 - System packages and Homebrew integration
 - macOS-specific OS settings and network configuration
 
-**nixos-vm-aarch64** (`hosts/nixos-vm-aarch64/default.nix`):
-- NixOS system configuration for VMware Fusion
-- Basic bootloader and filesystem configuration
-- NixOS-specific settings (networking, SSH, systemd)
-
-**nixos-orbstack** (`hosts/nixos-orbstack/default.nix`):
-- NixOS system configuration for OrbStack
-- Similar to nixos-vm-aarch64 but optimized for OrbStack environment
-
-**nixos-server-01** (`hosts/nixos-server-01/default.nix`):
-- NixOS system configuration for a Proxmox VM running on the `homelab-nuc` PVE host
-- Uses `mkSystem` with `nixos-anywhere = true` (enables disko and nixos-facter modules)
-- Home config at `hosts/nixos-server-01/home.nix` imports the shared `../../home` base and adds a few extras (glow, just, git-open, gh, nil, yaml-language-server)
-- Services: tailscale, atuin, rybbit (analytics), caddy (reverse proxy), cloudflared (tunnel), apex-discord-bot (from the `apex-discord-bot` flake input), jupyter
-- Containers (Podman): rybbit-backend, rybbit-client, rybbit-postgres, rybbit-clickhouse, jupyter (scipy-notebook)
-- Uses zramSwap for better memory management
-
 **nixos-desktop-01** (`hosts/nixos-desktop-01/default.nix`):
 - NixOS Proxmox VM with a full GUI desktop on `homelab-nuc`
 - Default desktop: GNOME with GDM and GNOME Remote Desktop (RDP on port 3389)
@@ -188,11 +159,11 @@ Decrypted agenix secrets are never at risk here: they live in `/run/agenix` at a
 
 **NixOS** — the module sets `nix.package` to the `nix-src` flake output (`modules/nixos.nix:31`). That store path is on neither `cache.nixos.org` nor the public `https://install.determinate.systems` cache (verified with `nix path-info --store`, for both the current and the previously-shipping version — that cache serves installer artifacts, not nix-src flake outputs). The only upstream source is FlakeHub Cache (`https://cache.flakehub.com`), which is **paid and needs imperative per-machine auth** (`determinate-nixd login`; hosts are `logged-out`, and there is no declarative equivalent).
 
-So on NixOS Nix would otherwise be recompiled per host per bump. The workaround is **`just cache-determinate`**: build it once on nixos-server-01 and push the ~130 MiB closure to `birkhoff.cachix.org`, which every host already trusts. Both x86_64-linux NixOS hosts share that one build.
+So on NixOS Nix would otherwise be recompiled per host per bump. The workaround is **`just cache-determinate`**: build it once on nixos-server-01 and push the ~130 MiB closure to `birkhoff.cachix.org`, which every host already trusts. `nixos-desktop-01` is the only NixOS host left in this repo, but it is x86_64-linux like the builder, so that one build covers it.
 
-**`just deploy-server` runs `just cache-determinate` automatically as its last step**, so the normal workflow (`just update` → `just deploy-server` → deploy the others) never recompiles Nix more than once. Deploy the server first: `deploy-desktop` builds on the target (deploy-rs `remoteBuild = true`) and would otherwise recompile it. The `switch-nixos-*` recipes use `--build-host nixos-server-01` and already share one build.
+**`deploy-desktop` and `deploy-all` now run `just cache-determinate` first**, as a just prerequisite, so the normal workflow (`just update` → `just deploy-desktop`) never recompiles Nix. This used to hang off `deploy-server`, which meant you had to remember to deploy the server first; that recipe is gone with the host, and running the cache step ahead of the deploy makes the desktop deploy self-sufficient instead. The `switch-nixos-desktop` recipe uses `--build-host nixos-server-01` and shares the same build.
 
-The build and the push both run on nixos-server-01 — nothing is copied back to the Mac. The cachix token is the agenix secret `secrets/cachix-token.age`, declared in `hosts/nixos-server-01/default.nix` (owner `ale`, mode `0400`, mounted at `/run/agenix/cachix-token`), and `pkgs.cachix` is in that host's `systemPackages`. The recipe reads the token into `CACHIX_AUTH_TOKEN` on the far side, so it never crosses the wire. Because the push is now server-side, extending it to whole system closures is just a matter of changing what gets piped into `cachix push`.
+The build and the push both run on nixos-server-01 — nothing is copied back to the Mac. That host is configured from `~/Documents/Infrastructure/Homelab` now, which keeps its credentials as plain files rather than agenix; the token is still readable at `/run/agenix/cachix-token` because that repo's `services/cachix.nix` keeps the path alive as a tmpfiles symlink to `/etc/cachix-token`, specifically so this recipe needed no edit. The recipe reads the token into `CACHIX_AUTH_TOKEN` on the far side, so it never crosses the wire. Because the push is server-side, extending it to whole system closures is just a matter of changing what gets piped into `cachix push`.
 
 The remote command runs `bash -eo pipefail` without `-u`: NixOS's `/etc/bashrc` is sourced for non-interactive shells and is not `set -u` clean.
 
@@ -207,11 +178,9 @@ Note that on NixOS the Determinate module retargets the generated `nix.conf` to 
 Using `just` (preferred):
 ```bash
 just switch                 # Build and switch to new configuration (alias: just s)
-just switch-nixos-server    # Switch nixos-server-01 remotely via nh os switch
 just switch-nixos-desktop   # Switch nixos-desktop-01 remotely via nh os switch
-just deploy-server          # Deploy nixos-server-01 via deploy-rs (with magic rollback)
-just deploy-desktop         # Deploy nixos-desktop-01 via deploy-rs (with magic rollback)
-just deploy-all             # Deploy all NixOS hosts via deploy-rs
+just deploy-desktop         # Deploy nixos-desktop-01 via deploy-rs (runs cache-determinate first)
+just deploy-all             # Deploy all NixOS hosts via deploy-rs (only the desktop remains)
 just build-desktop-image    # Build Proxmox VMA for nixos-desktop-01 (runs on nixos-server-01)
 just update                 # Update all flake inputs and commit lock file (alias: just u)
 just update-input <name>    # Update specific flake input (alias: just ui)
@@ -240,9 +209,7 @@ nix build ".#darwinConfigurations.AlexMBP.system" --show-trace
 
 For NixOS (evaluation only from macOS):
 ```bash
-nix eval ".#nixosConfigurations.nixos-vm-aarch64.config.system.name"
-nix eval ".#nixosConfigurations.nixos-orbstack.config.system.name"
-nix eval ".#nixosConfigurations.nixos-server-01.config.system.name"
+nix eval ".#nixosConfigurations.nixos-desktop-01.config.system.name"
 ```
 
 > **Note:** `nix build "."` uses the git index (staged files only). If you have unstaged modifications, use `nix build "path:.#..."` to include working tree changes.
@@ -251,56 +218,25 @@ After switching, verify services are running correctly and check for any activat
 
 ### VM Management
 
-**VMware Fusion VM** (`justfiles/vm-vmware-fusion.just`):
-```bash
-# Bootstrap a fresh NixOS ISO (run once with root password 'root')
-just vm-bootstrap0 <ip-address>
+The `nixos-vm-aarch64` (VMware Fusion) and `nixos-orbstack` (OrbStack) throwaway
+NixOS guests were removed, along with `justfiles/vm-vmware-fusion.just` and
+`justfiles/vm-orbstack.just`. Both had been commented out of
+`nixosConfigurations` since 2026-04-23, which left their `vm-switch` /
+`orb-configure` recipes broken anyway — they call `nh os switch --hostname` for a
+configuration that no longer existed. `justfiles/` is now empty and the
+`import` lines are gone from the root `justfile`.
 
-# Finalize installation (copy config, switch, setup secrets)
-just vm-bootstrap <ip-address>
+Note the OrbStack *Mac app* is unrelated and still managed here: the cask in
+`hosts/AlexMBP/packages/homebrew.nix` and its shell init in
+`home/modules/zsh.nix`.
 
-# SSH into the VM
-just vm-ssh           # as user 'ale'
-just vm-ssh root      # as root
-
-# Sync dotfiles to VM
-NIXADDR=<ip> just vm-sync
-
-# Rebuild NixOS on VM
-NIXADDR=<ip> just vm-switch
-```
-
-**OrbStack VM** (`justfiles/vm-orbstack.just`):
-```bash
-# Create OrbStack VM
-just orb-create
-
-# Configure NixOS on OrbStack VM
-just orb-configure
-
-# Remove OrbStack VM
-just orb-remove
-```
-
-Environment variables for VMware VM commands:
-- `NIXADDR`: VM IP address (required)
-- `NIXPORT`: SSH port (default: 22)
-- `NIXUSER`: SSH user (default: ale)
-
-**Homelab NixOS Provisioning** (using nixos-anywhere):
-
-See `docs/deployment-instructions-nixos-server.md` for the full step-by-step procedure. Key points:
-
-- The PVE host (`homelab-nuc`) is used as a ProxyJump host to reach the VM at `192.168.1.8`
-- SSH host keys must be **pre-generated** and injected via `--extra-files` so agenix secrets can be encrypted to the new host before installation
-- The NixOS installer's `/etc/nix/nix.conf` is read-only; pass binary caches via `--option extra-substituters` and `--option extra-trusted-public-keys` directly to nixos-anywhere
-- New files must be `git add`-ed (staged) before running nixos-anywhere, since nix evaluates from the git index
-- After reinstall, the Tailscale auth key must be rotated (single-use keys are consumed on first boot) and deployed via `nh os switch`
-
-```bash
-# After initial provisioning or config changes:
-just switch-nixos-server
-```
+**Homelab NixOS Provisioning**: no longer handled here. `nixos-server-01` was
+the only `nixos-anywhere` host in this repo; it and its
+`docs/deployment-instructions-nixos-server.md` moved to
+`~/Documents/Infrastructure/Homelab`, which carries its own
+`docs/deployment-instructions-nixos-server-01.md` covering both the cutover and
+re-provisioning. `mkSystem`'s `nixos-anywhere = true` path still exists here for
+future hosts, but nothing uses it.
 
 ## File Organization Patterns
 
@@ -380,17 +316,16 @@ Example shared module:
 
 ### Justfile Architecture
 
-The repository uses a modular `justfile` system where the main `justfile` at the root imports specialized recipe files from `justfiles/`:
+The repository supports a modular `justfile` system: the main `justfile` at the
+root can import specialized recipe files from `justfiles/`. That directory is
+currently empty — both VM recipe files were removed with their hosts — so every
+recipe lives in the root `justfile` today.
 
-- Main `justfile`: Core commands (switch, update, format, clean, cache)
-- `justfiles/vm-vmware-fusion.just`: VMware Fusion VM management recipes
-- `justfiles/vm-orbstack.just`: OrbStack VM management recipes
-
-When adding new VM-related or specialized commands, create a new `.just` file in `justfiles/` and import it in the main `justfile` using `import 'justfiles/<name>.just'`.
+When adding VM-related or specialized commands, create a new `.just` file in `justfiles/` and import it in the main `justfile` using `import 'justfiles/<name>.just'`.
 
 **Justfile groups** organize commands:
 - `darwin`: macOS-specific commands (switch)
-- `homelab`: Homelab server commands (switch-nixos-*, deploy-*, build-desktop-image)
+- `homelab`: Homelab commands (switch-nixos-desktop, deploy-desktop, deploy-all, build-desktop-image)
 - `flake`: Flake management (update, update-input)
 - `nix-misc`: Nix store maintenance (optimize, repair)
 - `cache`: Cachix operations (cache-darwin)
@@ -422,12 +357,25 @@ A private `dotfiles.secret` flake input is also referenced for sensitive files r
 
 ### Homelab-Specific Architecture
 
-The `nixos-server-01` host is a Proxmox VM on the `homelab-nuc` PVE host. It uses `mkSystem` with `nixos-anywhere = true`:
-- **Home config**: `hosts/nixos-server-01/home.nix` imports the shared `home/` base plus a small set of host extras
-- **Uses nixos-anywhere**: Automated remote installation with disk partitioning (disko)
-- **Uses nixos-facter**: Hardware config via `hosts/nixos-server-01/facter.json` (pre-committed; do not regenerate unless hardware changes)
-- **Remote deployment**: `just switch-nixos-server` uses `nh os switch` targeting `nixos-server-01` via Tailscale
-- **Secrets**: agenix secrets in `secrets/` are encrypted to both the `ale` key (1Password) and the server's SSH host key. When reinstalling, the host key changes — update `secrets/secrets.nix` and rekey with `just rekey` before running nixos-anywhere
+`nixos-server-01` is configured from `~/Documents/Infrastructure/Homelab`, not
+here. What remains in this repo is the *dependency* on it, in two places that
+intentionally still name the host:
+
+- **`hosts/nixos-desktop-01/remote-builder.nix`** — the desktop runs with
+  `max-jobs = 0` and forwards every derivation to nixos-server-01 over ssh-ng,
+  authenticating with its own pre-seeded SSH host key (authorized for root on
+  the server by the Homelab config) and pinning the server's `publicHostKey`.
+  If that host is down, builds on the desktop fail outright rather than falling
+  back to local compilation.
+- **`just cache-determinate` / `just build-desktop-image`** — both build on
+  nixos-server-01 over SSH. The former reads the cachix token from
+  `/run/agenix/cachix-token`, a path the Homelab config deliberately preserves
+  as a tmpfiles symlink so these recipes did not need changing.
+
+Secrets here are encrypted to the `ale` key (1Password) and, for
+`tailscale-authkey.age`, to `nixos-desktop-01`'s SSH host key. The server's host
+key was removed from `secrets/secrets.nix` and the remaining secrets rekeyed
+when the host moved out.
 
 ### Activation Scripts
 

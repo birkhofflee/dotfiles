@@ -6,7 +6,6 @@ set shell := ["bash", "-cu"]
 # Get the path to this directory
 FLAKES_PATH := justfile_directory()
 
-SSH_OPTIONS := "-o PubkeyAuthentication=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 CACHIX_COMMAND := "op plugin run -- cachix"
 
 # birkhoff.cachix.org is world-readable, so anything pushed to it is published. These are the
@@ -32,16 +31,9 @@ PRIVATE_PATHS := "berkeley-mono|supercharge"
 # first occurrence of any given option, so these win.
 NO_SSH_MUX := "NIX_SSHOPTS='-o ControlMaster=no -o ControlPath=none'"
 
-import 'justfiles/vm-vmware-fusion.just'
-import 'justfiles/vm-orbstack.just'
-
 # Overview of justfile
 default:
   @echo "Runtime Variables:"
-  @echo "    NIXADDR={{NIXADDR}}"
-  @echo "    NIXPORT={{NIXPORT}}"
-  @echo "    NIXUSER={{NIXUSER}}"
-  @echo "    SSH_OPTIONS={{SSH_OPTIONS}}"
   @echo "    FLAKES_PATH={{FLAKES_PATH}}"
   @echo ""
   @just --list
@@ -57,34 +49,37 @@ alias s := switch
 switch:
   nh darwin switch --show-trace -- --accept-flake-config
 
-[group('homelab')]
-switch-nixos-server:
-  {{NO_SSH_MUX}} nh os switch -H nixos-server-01 --accept-flake-config --target-host nixos-server-01 --build-host nixos-server-01 -e passwordless
-
+# Switch nixos-desktop-01 remotely via nh os switch (builds on nixos-server-01)
 [group('homelab')]
 switch-nixos-desktop:
   {{NO_SSH_MUX}} nh os switch -H nixos-desktop-01 --accept-flake-config --target-host root@nixos-desktop-01 --build-host nixos-server-01 -e passwordless
 
-# Deploy nixos-server-01 via deploy-rs (remote build, magic rollback), then cache Determinate Nix
-[group('homelab')]
-deploy-server:
-  deploy .#nixos-server-01
-  just cache-determinate
+# cache-determinate runs first, not last. It used to hang off `deploy-server`,
+# which is gone now that nixos-server-01 is configured from the Homelab repo —
+# and without it this deploy recompiles Determinate Nix on the builder, because
+# nix-src is on no public cache (see the comment on that recipe). Running it
+# ahead of the deploy means the closure is in birkhoff.cachix.org before the
+# deploy needs it, so this is now self-sufficient rather than depending on the
+# server having been deployed first.
 
 # Deploy nixos-desktop-01 via deploy-rs (remote build, magic rollback)
 [group('homelab')]
-deploy-desktop:
+deploy-desktop: cache-determinate
   deploy .#nixos-desktop-01
+
+# nixos-desktop-01 is the only node left in this repo's deploy.nodes, so this is
+# equivalent to deploy-desktop.
 
 # Deploy all NixOS hosts via deploy-rs
 [group('homelab')]
-deploy-all:
+deploy-all: cache-determinate
   deploy .
 
-# Build proxmox VMA image for nixos-desktop-01 on nixos-server-01 (x86_64-linux).
 # Syncs the working tree (including uncommitted changes) then builds remotely.
 # The dotfiles.secret input is resolved locally (mac has GitHub SSH access) and
 # rsynced separately, then injected via --override-input on the remote build.
+
+# Build proxmox VMA image for nixos-desktop-01 on nixos-server-01 (x86_64-linux)
 [group('homelab')]
 build-desktop-image:
   #!/usr/bin/env bash
@@ -159,14 +154,16 @@ cache-determinate:
   # The Determinate NixOS module sets nix.package to a nix-src flake output that is on
   # neither cache.nixos.org nor install.determinate.systems — only on the paid FlakeHub
   # Cache. Without this, every NixOS host recompiles Nix (~130 MiB closure) whenever the
-  # `determinate` input is bumped. `deploy-server` runs this automatically, so the desktop
-  # substitutes it from birkhoff.cachix.org instead of recompiling. Both NixOS hosts are
-  # x86_64-linux, so one build covers them all.
+  # `determinate` input is bumped. `deploy-desktop` runs this first, so the desktop
+  # substitutes it from birkhoff.cachix.org instead of recompiling. nixos-desktop-01 is
+  # the only NixOS host left in this repo, but it is x86_64-linux like the builder.
   #
-  # Builds and pushes entirely on nixos-server-01: the cachix token is an agenix secret at
-  # /run/agenix/cachix-token (declared in hosts/nixos-server-01/default.nix, owned by ale), so
-  # it is read into the environment on the far side and never crosses the wire. After the
-  # first run this is nearly a no-op — cachix skips paths it already has.
+  # Builds and pushes entirely on nixos-server-01, which this repo no longer configures —
+  # it is defined in ~/Documents/Infrastructure/Homelab. The token is still at
+  # /run/agenix/cachix-token, kept alive there by a tmpfiles symlink to /etc/cachix-token
+  # precisely so this recipe needs no edit (see that repo's services/cachix.nix). It is
+  # read into the environment on the far side and never crosses the wire. After the first
+  # run this is nearly a no-op — cachix skips paths it already has.
   src=$(jq -r '.nodes.nix.locked.url' {{FLAKES_PATH}}/flake.lock)
   case "$src" in
     *nix-src*) ;;
@@ -176,7 +173,7 @@ cache-determinate:
   # No `-u` on the far side: NixOS's /etc/bashrc is not set -u clean and gets sourced here.
   ssh nixos-server-01 -- "bash -eo pipefail -c '
     if [ ! -r /run/agenix/cachix-token ]; then
-      echo \"error: /run/agenix/cachix-token not readable — deploy the host first\" >&2; exit 1
+      echo \"error: /run/agenix/cachix-token not readable — deploy nixos-server-01 from the Homelab repo first\" >&2; exit 1
     fi
     export CACHIX_AUTH_TOKEN=\$(cat /run/agenix/cachix-token)
     nix build --no-link --print-out-paths \"$src#packages.x86_64-linux.default\" \

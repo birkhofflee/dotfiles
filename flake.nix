@@ -176,22 +176,11 @@
       };
 
       nixosConfigurations = {
-        # nixos-vm-aarch64 = mkSystem "nixos-vm-aarch64" {
-        #   system = "aarch64-linux";
-        #   user = "ale";
-        # };
-
-        # nixos-orbstack = mkSystem "nixos-orbstack" {
-        #   system = "aarch64-linux";
-        #   user = "ale";
-        # };
-
-        nixos-server-01 = mkSystem "nixos-server-01" {
-          system = "x86_64-linux";
-          user = "ale";
-          nixos-anywhere = true;
-        };
-
+        # nixos-server-01 is configured from ~/Documents/Infrastructure/Homelab,
+        # not here. This repo still *uses* that host — nixos-desktop-01 forwards
+        # every build to it (hosts/nixos-desktop-01/remote-builder.nix) and
+        # `just cache-determinate` builds and pushes there — but it no longer
+        # defines it.
         nixos-desktop-01 = mkSystem "nixos-desktop-01" {
           system = "x86_64-linux";
           user = "ale";
@@ -224,7 +213,6 @@
           };
         in
         {
-          nixos-server-01 = mkNode "nixos-server-01";
           nixos-desktop-01 = mkNode "nixos-desktop-01";
         };
     }

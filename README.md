@@ -190,20 +190,22 @@ nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --
 
 <details>
 
-<summary>Provisioning nixos-server-01 (NixOS VM running on Proxmox)</summary>
+<summary>nixos-server-01 (moved out of this repo)</summary>
 
-[nixos-anywhere](https://github.com/nix-community/nixos-anywhere/) is used to remotely provision `nixos-server-01`, a Proxmox VM on the `homelab-nuc` PVE host. The target should be running a minimal NixOS installer ISO.
+`nixos-server-01` — the Proxmox VM on the `homelab-nuc` PVE host — is configured
+from `~/Documents/Infrastructure/Homelab`, including its provisioning docs. It is
+no longer defined here, and `just switch-nixos-server` / `just deploy-server`
+are gone with it.
 
-A [patch](packages/patches/nixos-anywhere-zram.patch) is used to support use of the tool on machines with low amount of RAM.
+This repo still depends on that host in two places, deliberately:
+`hosts/nixos-desktop-01/remote-builder.nix` forwards every desktop build to it,
+and `just cache-determinate` / `just build-desktop-image` both build there.
 
-[nixos-facter](https://github.com/nix-community/nixos-facter) is used in conjunction to dynamically determine configurations from hardware.
-See [`docs/deployment-instructions-nixos-server.md`](docs/deployment-instructions-nixos-server.md) for the full step-by-step procedure.
-
-To apply new flake config after provisioning:
-
-```shell
-just switch-nixos-server
-```
+The [nixos-anywhere](https://github.com/nix-community/nixos-anywhere/) and
+[nixos-facter](https://github.com/nix-community/nixos-facter) plumbing is still
+wired into `mkSystem` (and the low-RAM
+[patch](packages/patches/nixos-anywhere-zram.patch) is still applied) for future
+hosts, but no host in this repo currently uses it.
 
 </details>
 
@@ -262,48 +264,6 @@ If RDP fails somehow:
 
 ```shell
 just switch-nixos-desktop
-```
-
-</details>
-
-<details>
-
-<summary>NixOS VM bootstrap instructions on macOS (VMware Fusion)</summary>
-
-During my test, it appears that NAT DHCP in VMWare Fusion 13.6.4 doesn't work; use 13.6.3 instead (on macOS Tahoe 26.5).
-
-Note that a desktop environment is yet to be properly implemented.
-
-My personal settings are hardcoded in the [justfile](https://github.com/BirkhoffLee/dotfiles/blob/2ddd6e468fa073f8aa5a2d49c0063afda89522eb/justfiles/vm-vmware-fusion.just), you should inspect and modify accordingly, otherwise it is going to fail. After that, proceed to follow the instructions on configuring VMWare Fusion, which can be found in [this YouTube video by Mitchell](https://youtu.be/ubDMLoWz76U?si=pgso1-k7lUuGzAEg&t=86).
-
-After setting the root password, execute the following to bootstrap the VM automatically:
-
-```shell
-# This will run `./vm-installer.sh`, that erases the disk, makes partitions on it, configures Nix for the next step.
-$ just vm-bootstrap0 <vm-ipv4-address>
-
-# Ensure the VM reboots into the disk instead of the installer.
-# After that, run this to initiate the flake switch:
-$ just vm-bootstrap <vm-ipv4-address>
-
-# When it finishes, you will be able to SSH into the machine:
-$ just vm-ssh [user]
-```
-
-</details>
-
-<details>
-
-<summary>NixOS VM bootstrap instructions on macOS (OrbStack)</summary>
-
-Note that there's no GUI support on OrbStack Linux VMs. This setup focuses on usage only via SSH. It's fairly simple to setup on OrbStack compared to doing that on VMWare Fusion. This dotfiles intends to use the default system configurations provided by OrbStack, since it's heavily customized to be used with macOS shell.
-
-```shell
-# Ensure OrbStack is running, and create the VM:
-$ just orb-create
-
-# After that, simply run this to bootstrap it:
-$ just orb-configure
 ```
 
 </details>
