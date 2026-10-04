@@ -39,6 +39,7 @@ in
       # LANGUAGE SERVERS
       # ============================================================================
 
+      astro-language-server # https://github.com/withastro/language-tools (astro)
       bash-language-server # https://github.com/bash-lsp/bash-language-server
       cmake-language-server # https://github.com/regen100/cmake-language-server
       vscode-css-languageserver # https://github.com/microsoft/vscode (css, scss)
