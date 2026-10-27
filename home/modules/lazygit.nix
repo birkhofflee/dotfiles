@@ -61,10 +61,10 @@
           searchingActiveBorderColor = [
             "#eed49f"
           ];
-        };
 
-        authorColors = {
-          "*" = "#b7bdf8";
+          authorColors = {
+            "*" = "#b7bdf8";
+          };
         };
       };
     };
