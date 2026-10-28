@@ -47,7 +47,6 @@
       "keycastr"
       "knockknock"
       "lm-studio"
-      "macfuse"
       "menuwhere"
       "mounty"
       "notion"
