@@ -67,7 +67,6 @@
       "telegram"
       "temurin"
       "thaw"
-      "thebrowsercompany-dia"
       "transmission"
       "transmit"
       "typora"
