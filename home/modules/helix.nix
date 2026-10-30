@@ -450,13 +450,7 @@ in
         # yazi integration
         # https://github.com/sxyazi/yazi/pull/2461
         "C-y" = [
-          ":sh rm -f /tmp/helix-yazi-tmpfile"
-          ":insert-output yazi \"%{buffer_name}\" --chooser-file=/tmp/helix-yazi-tmpfile"
-          ":insert-output echo \"\x1b[?1049h\x1b[?2004h\" > /dev/tty"
-          ":open %sh{cat /tmp/helix-yazi-tmpfile}"
-          ":redraw"
-          ":set mouse false"
-          ":set mouse true"
+          ":open %sh{f=$(mktemp) && rex split --split left --ratio 20 --label yazi --wait --cwd \"$(pwd)\" -- yazi --chooser-file=\"$f\" >/dev/null && cat \"$f\"; rm -f \"$f\"}"
         ];
 
         # lazygit integration
