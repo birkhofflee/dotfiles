@@ -80,7 +80,8 @@ zstyle ':completion:*' verbose yes
 zstyle ':completion:*:matches' group 'yes'
 zstyle ':completion:*:warnings' format '%F{red}%B-- No match for: %d --%b%f'
 zstyle ':completion:*:messages' format '%d'
-zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+# No %B/%F escapes in group headers: fzf-tab shows them literally (see descriptions above)
+zstyle ':completion:*:corrections' format '[%d (errors: %e)]'
 
 # The process list command is set per-OS in fzf.zsh
 zstyle ':completion:*:kill:*' ignored-patterns '0'
