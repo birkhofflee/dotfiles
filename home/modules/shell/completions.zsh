@@ -60,7 +60,7 @@ zstyle -e ':completion:*' completer '
 # Enhanced filename completion
 # 0 - Exact match ( Abc -> Abc )      1 - Case correction ( abc -> Abc )
 # 2 - Word completion ( f-b -> foo-bar )  3 - Suffix completion ( .cxx -> foo.cxx )
-zstyle ':completion:*:(argument-rest|files):*' matcher-list '' \
+zstyle ':completion:*' matcher-list '' \
     'm:{[:lower:]-}={[:upper:]_}' \
     'r:|[.,_-]=* r:|=*' \
     'r:|.=* r:|=*'
