@@ -7,20 +7,7 @@
 # @see https://github.com/junegunn/fzf?tab=readme-ov-file#key-bindings-for-command-line
 # =========================
 
-typeset -AU __FZF __FZF_TAB
-
-# =========================
-# DETERMINE CLIPBOARD COPY COMMAND
-# =========================
-if [[ "$OSTYPE" == darwin* ]]; then
-  __FZF_COPY_CMD="pbcopy"
-elif command -v xclip &> /dev/null; then
-  __FZF_COPY_CMD="xclip -selection clipboard"
-elif command -v wl-copy &> /dev/null; then
-  __FZF_COPY_CMD="wl-copy"
-else
-  __FZF_COPY_CMD="cat"  # Fallback: just output to stdout
-fi
+typeset -A __FZF __FZF_TAB
 
 # Preview a file or an image in the preview window of fzf:
 # https://github.com/junegunn/fzf/blob/master/bin/fzf-preview.sh
@@ -30,8 +17,6 @@ fi
 # =========================
 __FZF[PREVIEW_DIR]="eza -a --tree --level 3 --color=always --icons --no-quotes --group-directories-first --show-symlinks"
 
-__FZF[PREVIEW_TEXT]="bat --style=numbers,changes --wrap never --color always {} || cat {}"
-
 __FZF[PREVIEW_FILE_OR_DIR]="
   if [ -d {} ]; then
     ${__FZF[PREVIEW_DIR]} {};
@@ -39,8 +24,6 @@ __FZF[PREVIEW_FILE_OR_DIR]="
     less {};
   fi
 "
-
-__FZF_TAB[PREVIEW_TEXT]='bat --style=numbers,changes --wrap never --color always $realpath || cat $realpath'
 
 __FZF_TAB[PREVIEW_FILE_OR_DIR]="
   if [ -d \$realpath ]; then
@@ -91,11 +74,10 @@ exclude_list=(
   "--exclude .DS_Store"
 )
 export FZF_CTRL_T_COMMAND="fd -H -tf --follow ${exclude_list[*]} -0 | xargs -0 ls -t"
-export FZF_ALT_C_COMMAND="fd $dirPATH -td ${exclude_list[*]} -0 | xargs -0 ls -dt"
+export FZF_ALT_C_COMMAND="fd -td ${exclude_list[*]} -0 | xargs -0 ls -dt"
 unset exclude_list
 
-# atuin is used for the history search instead.
-export FZF_CTRL_R_COMMAND=""
+# C-r is left to atuin; fzf.nix sets FZF_CTRL_R_COMMAND="" so fzf doesn't bind it.
 
 # FZF - File Browser (C-t)
 export FZF_CTRL_T_OPTS="
@@ -105,18 +87,6 @@ export FZF_CTRL_T_OPTS="
 # FZF - Interactive change directory (Alt-C)
 export FZF_ALT_C_OPTS="
   --preview '${__FZF[PREVIEW_DIR]} {}'"
-
-# FZF - Shell History (C-r)
-# Use `--with-nth 2..` to hide the history index
-# NOTE: right now atuin is used so this is of no use
-export FZF_CTRL_R_OPTS="
-  --color header:italic
-  --preview 'echo {}'
-  --preview-window up:3:hidden:wrap
-  --bind '?:toggle-preview'
-  --bind 'ctrl-t:track+clear-query'
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | $__FZF_COPY_CMD)+abort'
-  --header 'CTRL-T: Track command, CTRL-Y: copy command to clipboard'"
 
 # =========================
 # COMPLETION OPTIONS - USING FZF-TAB (https://github.com/Aloxaf/fzf-tab)
@@ -234,5 +204,4 @@ fi
 
 unset __FZF
 unset __FZF_TAB
-unset __FZF_COPY_CMD
 

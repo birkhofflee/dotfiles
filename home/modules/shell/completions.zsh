@@ -8,10 +8,6 @@ setopt NO_BEEP # disable beep sound
 setopt AUTO_PARAM_SLASH # (autocomplete) If completed parameter is a directory, add a trailing slash
 unsetopt MENU_COMPLETE # Do not autoselect the first completion entry
 
-# Use new completion system
-zstyle ':completion:*' use-compctl false
-compctl () { }
-
 # Use caching so that commands like apt and dpkg complete are useable
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*:complete:*' cache-policy _COMP_CACHING_POLICY
@@ -69,7 +65,7 @@ zstyle ':completion:*' matcher-list '' \
 zstyle ':completion:*' regular false
 
 # set list-colors to enable filename colorizing
-# LS_COLORS is set in external.zsh
+# LS_COLORS is set in colors.zsh
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
@@ -87,8 +83,7 @@ zstyle ':completion:*:warnings' format '%F{red}%B-- No match for: %d --%b%f'
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 
-# 补全当前用户所有进程列表
-zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm,cmd -w -w"
+# The process list command is set per-OS in fzf.zsh
 zstyle ':completion:*:kill:*' ignored-patterns '0'
 
 function kubectl() {
@@ -115,6 +110,4 @@ zstyle ':completion:*:jobs' numbers true
 zstyle ":completion:*:git-checkout:*" sort false
 zstyle ':completion:*' file-sort modification
 zstyle ':completion:*' list-dirs-first true
-zstyle ':completion:*:exa' sort false
 zstyle ':completion:*:docker' sort false
-zstyle ':completion:files' sort false
