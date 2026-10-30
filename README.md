@@ -12,7 +12,7 @@ My [nix-darwin](https://github.com/nix-darwin/nix-darwin) and NixOS configuratio
 
 My daily driver is macOS because I prefer the Apple desktop environment. There are also a NixOS homelab server (running as a Proxmox VM) and NixOS VM setups mainly for experiments.
 
-![Screenshot of fastfetch on M1 Pro running macOS Tahoe](./docs/screenshot-alexmbp-fastfetch.png)
+![Screenshot of fastfetch on M1 Pro running macOS Golden Gate](./docs/screenshot-alexmbp-fastfetch.png)
 
 ## Overview
 
@@ -22,7 +22,7 @@ My daily driver is macOS because I prefer the Apple desktop environment. There a
 
 ## Highlights
 
-* Terminal: [Ghostty](https://ghostty.org/), using its built-in splits and tabs instead of a multiplexer
+* Terminal: [Rex](https://www.superlogical.com/)
 * Font: [Berkeley Mono™ Typeface](https://usgraphics.com/products/berkeley-mono)
 * General zsh configuration:
   * Prompt: [Starship](https://starship.rs) with a customized [Pure prompt](https://starship.rs/presets/pure-preset#pure-preset)
@@ -226,27 +226,6 @@ Notes:
 * `--refresh` makes Nix re-fetch the repo; otherwise a `github:` flake ref is cached for up to an hour and a freshly pushed commit is silently ignored.
 * `--no-nom` works around [nix-output-monitor#320](https://github.com/maralorn/nix-output-monitor/issues/320) (nom 2.2.0 can't parse Determinate Nix's newer log events). The fix is merged upstream but unreleased; drop the flag once nixpkgs ships a newer nom.
 * If activation fails with `Existing file ... would be clobbered`, move that file out of the way (or pass `-b backup`), after checking it isn't something the host needs.
-
-</details>
-
-<details>
-
-<summary>nixos-server-01 (moved out of this repo)</summary>
-
-`nixos-server-01` — the Proxmox VM on the `homelab-nuc` PVE host — is configured
-from `~/Documents/Infrastructure/Homelab`, including its provisioning docs. It is
-no longer defined here, and `just switch-nixos-server` / `just deploy-server`
-are gone with it.
-
-This repo still depends on that host in two places, deliberately:
-`hosts/nixos-desktop-01/remote-builder.nix` forwards every desktop build to it,
-and `just cache-determinate` / `just build-desktop-image` both build there.
-
-The [nixos-anywhere](https://github.com/nix-community/nixos-anywhere/) and
-[nixos-facter](https://github.com/nix-community/nixos-facter) plumbing is still
-wired into `mkSystem` (and the low-RAM
-[patch](packages/patches/nixos-anywhere-zram.patch) is still applied) for future
-hosts, but no host in this repo currently uses it.
 
 </details>
 
