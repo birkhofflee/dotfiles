@@ -33,6 +33,8 @@ in
     # Helix mode would be nice, however Multirious/zsh-helix-mode
     # still has some compatibility issues and some bugs that I cannot
     # bear. (Oct 2025)
+    #
+    # To edit current prompt with $EDITOR, use C-x C-e.
     defaultKeymap = "emacs";
 
     # This lets you change to any dir without having to type `cd`, that is, by just
