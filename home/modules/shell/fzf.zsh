@@ -168,7 +168,14 @@ zstyle ':fzf-tab:complete:git-(add|diff|restore|show|checkout):*' fzf-flags \
   --preview-window 'right:40%:nowrap' \
   --bind 'alt-up:preview-page-up' \
   --bind 'alt-down:preview-page-down'
-zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview "git diff \$word | ${__FZF_TAB[PREVIEW_DELTA]}"
+# git diff is empty for untracked files, so show their contents instead
+zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview "
+  if [[ \$group == '[untracked file]' ]]; then
+    if [[ -d \$word ]]; then ${__FZF[PREVIEW_DIR]} \$word; else less \$word; fi
+  else
+    git diff \$word | ${__FZF_TAB[PREVIEW_DELTA]}
+  fi
+"
 # $group is the formatted description, so it carries the '[%d]' brackets from completions.zsh
 zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
 	'case "$group" in
