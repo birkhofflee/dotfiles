@@ -180,15 +180,16 @@ zstyle ':fzf-tab:complete:git-(add|diff|restore|show|checkout):*' fzf-flags \
   --bind 'alt-up:preview-page-up' \
   --bind 'alt-down:preview-page-down'
 zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview "git diff \$word | ${__FZF_TAB[PREVIEW_DELTA]}"
+# $group is the formatted description, so it carries the '[%d]' brackets from completions.zsh
 zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
 	'case "$group" in
-	"commit tag") git show --color=always $word ;;
+	"[commit tag]") git show --color=always $word ;;
 	*) git show --color=always $word | '"${__FZF_TAB[PREVIEW_DELTA]}"' ;;
 	esac'
 zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 	'case "$group" in
-	"modified file") git diff $word | '"${__FZF_TAB[PREVIEW_DELTA]}"' ;;
-	"recent commit object name") git show --color=always $word | '"${__FZF_TAB[PREVIEW_DELTA]}"' ;;
+	"[modified file]") git diff $word | '"${__FZF_TAB[PREVIEW_DELTA]}"' ;;
+	"[recent commit object name]") git show --color=always $word | '"${__FZF_TAB[PREVIEW_DELTA]}"' ;;
 	*) git log --color=always $word ;;
 	esac'
 
