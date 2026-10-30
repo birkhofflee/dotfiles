@@ -86,14 +86,6 @@ zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
 # The process list command is set per-OS in fzf.zsh
 zstyle ':completion:*:kill:*' ignored-patterns '0'
 
-function kubectl() {
-  if ! type __start_kubectl >/dev/null 2>&1; then
-    source <(command kubectl completion zsh)
-  fi
-
-  command kubectl "$@"
-}
-
 # complete manual by their section, from grml
 zstyle ':completion:*:manuals'    separate-sections true
 zstyle ':completion:*:manuals.*'  insert-sections   true
