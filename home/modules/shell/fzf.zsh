@@ -45,14 +45,14 @@ __FZF_COLORS=(
 # TAB / Shift-TAB: multiple selections
 # Alt-Up: preview page up, Alt-Down: preview page down
 # ?: toggle preview window
-# ^O: open with $VISUAL (`code` on macOS)
+# ^O: open the selected items with $VISUAL
 export FZF_DEFAULT_OPTS="
   ${__FZF_COLORS[*]}
   --style full
   --multi
   --bind 'alt-up:preview-page-up'
   --bind 'alt-down:preview-page-down'
-  --bind 'ctrl-o:execute($VISUAL {})+abort'
+  --bind 'ctrl-o:execute(\$VISUAL {+})+abort'
   --bind '?:toggle-preview'
 "
 
@@ -119,13 +119,15 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 #
 # Note: some other flags are already set in fzf-tab code
 # @see https://github.com/Aloxaf/fzf-tab/blob/master/lib/-ftb-fzf#L90
+#
+# No ^O here: fzf-tab's lines are `index\0display\0…`, and the display is relative
+# to the completion prefix, so no placeholder yields a usable path.
 zstyle ':fzf-tab:*' fzf-flags \
   $__FZF_COLORS \
   --height=-2 \
   --preview-window 'right:40%:wrap' \
   --bind 'alt-up:preview-page-up' \
   --bind 'alt-down:preview-page-down' \
-  --bind "ctrl-o:execute($VISUAL {})+abort" \
   --bind '?:toggle-preview'
 
 # =========================
