@@ -32,6 +32,9 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 # ... unless we really want to.
 zstyle '*' single-ignored show
 
+# Hide completion functions (_git, _files, …) from command names; a second TAB brings them back via _ignored
+zstyle ':completion::(^approximate*):*:functions' ignored-patterns '_*'
+
 # Dynamically set the order of completion functions (completers) for Zsh.
 # On the first TAB press, only fast and common completers are used for performance:
 #   - _complete: standard completion
