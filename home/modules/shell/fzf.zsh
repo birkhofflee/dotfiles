@@ -47,7 +47,6 @@ __FZF_COLORS=(
 # ?: toggle preview window
 # ^O: open with $VISUAL (`code` on macOS)
 export FZF_DEFAULT_OPTS="
-  --header '?: preview, alt-up: pgup, alt-down: pgdown, ^o: open editor'
   ${__FZF_COLORS[*]}
   --style full
   --multi
@@ -56,6 +55,9 @@ export FZF_DEFAULT_OPTS="
   --bind 'ctrl-o:execute($VISUAL {})+abort'
   --bind '?:toggle-preview'
 "
+
+# Only for the widgets below; FZF_DEFAULT_OPTS reaches every program that runs fzf.
+__FZF[HEADER]="--header '?: preview, alt-up: pgup, alt-down: pgdown, ^o: open editor'"
 
 # =========================
 # FZF - File Browser (C-t) and Alt-C
@@ -86,11 +88,13 @@ unset exclude_list
 
 # FZF - File Browser (C-t)
 export FZF_CTRL_T_OPTS="
+  ${__FZF[HEADER]}
   --preview '${__FZF[PREVIEW_FILE_OR_DIR]}'
   --preview-window right:60%:border:wrap"
 
 # FZF - Interactive change directory (Alt-C)
 export FZF_ALT_C_OPTS="
+  ${__FZF[HEADER]}
   --preview '${__FZF[PREVIEW_DIR]} {}'"
 
 # =========================
