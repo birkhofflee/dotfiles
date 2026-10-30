@@ -192,6 +192,25 @@ zstyle ':fzf-tab:complete:man:*' fzf-preview \
   '[[ $group == "[manual page"* ]] && MANWIDTH=$FZF_PREVIEW_COLUMNS man $word 2>/dev/null'
 
 # =========================
+# DOCKER
+# @see https://github.com/Freed-Wu/fzf-tab-source/blob/main/sources/docker.zsh (and docker-*.zsh)
+# =========================
+# OrbStack's cobra-generated _docker never sets per-subcommand contexts (no docker-inspect:
+# etc.), so everything arrives as `docker:` and the preview branches on $words instead.
+zstyle ':fzf-tab:complete:docker:*' fzf-preview \
+	'if (( $#words <= 2 )); then
+		docker $word --help
+	elif (( $#words == 3 )) && [[ $words[2] == (container|image|network|volume|compose|system|context|buildx) ]]; then
+		docker $words[2] $word --help
+	else
+		case $words[2] in
+		(logs) docker logs --tail 100 $word 2>&1 ;;
+		(run|create|rmi|history|tag|push|pull|save) docker images $word ;;
+		(*) docker inspect $word 2>/dev/null | bat -ljson -p --color=always ;;
+		esac
+	fi'
+
+# =========================
 # HOMEBREW
 # =========================
 zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-flags \
