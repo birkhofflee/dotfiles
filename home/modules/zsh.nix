@@ -260,11 +260,16 @@ in
     completionInit = ''
       # Regenerate the completion cache file if it's older than 24 hours.
       # Use ''${ZDOTDIR:-$HOME} so the glob matches where compinit actually writes the dump.
+      # compinit only rewrites the dump when the number of completion files changes,
+      # so touch it afterwards; otherwise it stays stale and every shell pays for a full compinit.
       autoload -Uz compinit
-      for dump in ''${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24); do
-        compinit
-      done
-      compinit -C
+      _zcompdump_stale=( ''${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24) )
+      if (( $#_zcompdump_stale )); then
+        compinit && touch "''${ZDOTDIR:-$HOME}/.zcompdump"
+      else
+        compinit -C
+      fi
+      unset _zcompdump_stale
 
       # Completions for git-extras doesn't load automatically
       # due to the lack of #compdef directive. We need to source it manually.
