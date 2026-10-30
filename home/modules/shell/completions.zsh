@@ -34,7 +34,6 @@ zstyle '*' single-ignored show
 
 # Dynamically set the order of completion functions (completers) for Zsh.
 # On the first TAB press, only fast and common completers are used for performance:
-#   - _expand_alias: expand aliases
 #   - _complete: standard completion
 #   - _extensions: complete file extensions (*.\t)
 #   - _match: allow wildcard matching
@@ -48,7 +47,7 @@ zstyle '*' single-ignored show
 zstyle -e ':completion:*' completer '
   if [[ $_last_try != "$HISTNO$BUFFER$CURSOR" ]]; then
     _last_try="$HISTNO$BUFFER$CURSOR"
-    reply=(_expand_alias _complete _extensions _match _files)
+    reply=(_complete _extensions _match _files)
   else
     reply=(_complete _ignored _correct _approximate)
   fi'
