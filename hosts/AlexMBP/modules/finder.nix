@@ -81,8 +81,11 @@
       };
 
       "NSGlobalDomain" = {
-        # Open a folder automatically when hovering over it while dragging a file
-        "com.apple.springing.enabled" = 1;
+        # Open a folder automatically when hovering over it while dragging a file.
+        # Disabled: on macOS 27.2, spring-loading over a folder in Finder hangs the drag
+        # session (Esc doesn't cancel; only closing the window does), especially with
+        # Handoff or Yoink running. Re-test after the next macOS update.
+        "com.apple.springing.enabled" = 0;
 
         # Seconds to wait before spring-loading activates (0.5 s feels responsive without being hair-trigger)
         "com.apple.springing.delay" = "0.5";
