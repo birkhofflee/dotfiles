@@ -116,6 +116,9 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 # Space picks the highlighted entry (Tab still moves down). Costs typing a space in the query.
 zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
 
+# CTRL-C aborts but keeps the typed query on the command line
+zstyle ':fzf-tab:*' print-query ctrl-c
+
 # =========================
 # DEFAULT FLAGS FOR FZF WHEN USING FZF-TAB
 # =========================
