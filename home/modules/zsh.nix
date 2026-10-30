@@ -242,7 +242,7 @@ in
 
         # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
         # Note: `lg` is alias for `lazygit`
-        AUTO_NOTIFY_IGNORE = "vim nvim hx nano tmux zellij bat cat less more watch top htop ssh man zi lazygit lg e ssh claude";
+        AUTO_NOTIFY_IGNORE = "vim nvim hx nano tmux bat cat less more watch top htop ssh man zi lazygit lg e ssh claude";
       })
     ];
 

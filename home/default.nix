@@ -38,7 +38,6 @@
     ./modules/trippy.nix
     ./modules/uv.nix
     ./modules/yazi.nix
-    # ./modules/zellij.nix
     ./modules/zoxide.nix
     ./modules/zsh.nix
   ];

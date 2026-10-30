@@ -59,11 +59,6 @@
     # _1password-shell-plugins.url = "github:1Password/shell-plugins";
     helix.url = "github:helix-editor/helix/master";
 
-    # Zellij stuff
-    zjstatus.url = "github:dj95/zjstatus";
-    zjstatus-hints.url = "github:b0o/zjstatus-hints";
-    zj-quit.url = "github:dj95/zj-quit";
-
     secrets = {
       url = "git+ssh://git@github.com/birkhofflee/dotfiles.secret.git?ref=main&shallow=1";
       flake = false;
@@ -117,12 +112,6 @@
         # Linux-only; the attribute is lazy so Darwin configs simply never touch it.
         machinereport = _: prev: {
           machinereport = inputs.machinereport.packages.${prev.stdenv.hostPlatform.system}.default;
-        };
-
-        zellij-plugins = _: prev: {
-          zjstatus = inputs.zjstatus.packages.${prev.stdenv.hostPlatform.system}.default;
-          zjstatus-hints = inputs.zjstatus-hints.packages.${prev.stdenv.hostPlatform.system}.default;
-          zj-quit = inputs.zj-quit.packages.${prev.stdenv.hostPlatform.system}.default;
         };
 
         custom-packages = _: prev: {
