@@ -9,8 +9,8 @@ proxy_on() {
     # export http_proxy=http://127.0.0.1:6152
     # export all_proxy=socks5://127.0.0.1:6153
 
-    # Cache the output of scutil --proxy
-    local scutil_output=$(scutil --proxy)
+    # Reuse the scutil --proxy output the precmd hook already fetched, if any
+    local scutil_output=${1:-$(scutil --proxy)}
     local -A info=(${=${(M)${(f)scutil_output}:#[A-Za-z ]# : [^ ]#}/:})
 
     local proxy_enabled=0
@@ -48,6 +48,7 @@ proxy_on() {
         # httpx and most Python HTTP libs don't support IPv6 in NO_PROXY and crash
         # trying to parse them as URLs. IPv4 CIDRs are kept (they don't crash parsers).
         local -a _noproxy_normalized=()
+        local _entry
         for _entry in ${(s:, :)_noproxy}; do
             [[ $_entry == *:*:* ]] && continue
             _noproxy_normalized+=("$_entry")
@@ -58,10 +59,6 @@ proxy_on() {
         export no_proxy=$_noproxy
     fi
 }
-
-if (( $OSTYPE[(I)darwin] )); then
-    proxy_on
-fi
 
 proxy_off() {
     unset http_proxy
@@ -75,3 +72,21 @@ proxy_off() {
     unset NO_PROXY
     unset no_proxy
 }
+
+# Re-read the system proxy before every prompt, so switching networks or
+# toggling a proxy app takes effect in already-open shells. The variables are
+# only rewritten when scutil's output actually changes, which keeps a manual
+# export (or proxy_off) in place until the system setting moves.
+_proxy_sync() {
+    local scutil_output=$(scutil --proxy)
+    [[ $scutil_output == "$_proxy_last_scutil" ]] && return
+    typeset -g _proxy_last_scutil=$scutil_output
+    proxy_off
+    proxy_on "$scutil_output"
+}
+
+if (( $OSTYPE[(I)darwin] )); then
+    autoload -Uz add-zsh-hook
+    add-zsh-hook precmd _proxy_sync
+    _proxy_sync
+fi
