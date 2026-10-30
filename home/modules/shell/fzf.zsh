@@ -166,6 +166,19 @@ zstyle ':fzf-tab:complete:(-parameter-|-brace-parameter-|export|unset|expand):*'
 zstyle ':fzf-tab:complete:(cd|vim|nano|e|hx|cursor|code|mv|cp|rm|rmdir|ln|file|bat|cat|less|head|tail|open|eza|ls|ncdu|source):*' \
   fzf-preview "${__FZF_TAB[PREVIEW_FILE_OR_DIR]}"
 
+# `cd -<Tab>` / `cd +<Tab>` list the directory stack (AUTO_PUSHD). Entries are indexes, so
+# $realpath is empty; the path is in the display text, `1  ~/foo` (`1 -- ~/foo` with the
+# default list-separator). Strip the index and separator; ${~…} expands the ~.
+zstyle ':fzf-tab:complete:cd:*' fzf-preview "
+  if [[ \$group == *'directory stack'* ]]; then
+    setopt extended_glob;
+    dir=\${desc/#[0-9]##[[:space:]]##(--[[:space:]]##|)/};
+    ${__FZF[PREVIEW_DIR]} \${~dir};
+  else
+    ${__FZF_TAB[PREVIEW_FILE_OR_DIR]}
+  fi
+"
+
 # =========================
 # GIT
 # =========================
