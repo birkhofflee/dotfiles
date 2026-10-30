@@ -33,17 +33,22 @@ __FZF_TAB[PREVIEW_FILE_OR_DIR]="
   fi
 "
 
+# Catppuccin Macchiato. Shared with fzf-tab, which ignores FZF_DEFAULT_OPTS.
+__FZF_COLORS=(
+  '--color=header:italic'
+  '--color=bg:#24273a,bg+:#363a4f,spinner:#f4dbd6,hl:#ed8796'
+  '--color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6'
+  '--color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796'
+  '--color=selected-bg:#494d64,border:#363a4f,label:#cad3f5'
+)
+
 # TAB / Shift-TAB: multiple selections
 # Alt-Up: preview page up, Alt-Down: preview page down
 # ?: toggle preview window
 # ^O: open with $VISUAL (`code` on macOS)
 export FZF_DEFAULT_OPTS="
   --header '?: preview, alt-up: pgup, alt-down: pgdown, ^o: open editor'
-  --color header:italic
-  --color=bg:#24273a,bg+:#363a4f,spinner:#f4dbd6,hl:#ed8796
-  --color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6
-  --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796
-  --color=selected-bg:#494d64,border:#363a4f,label:#cad3f5
+  ${__FZF_COLORS[*]}
   --style full
   --multi
   --bind 'alt-up:preview-page-up'
@@ -111,7 +116,7 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 # Note: some other flags are already set in fzf-tab code
 # @see https://github.com/Aloxaf/fzf-tab/blob/master/lib/-ftb-fzf#L90
 zstyle ':fzf-tab:*' fzf-flags \
-  --color header:italic \
+  $__FZF_COLORS \
   --height=-2 \
   --preview-window 'right:40%:wrap' \
   --bind 'alt-up:preview-page-up' \
@@ -150,6 +155,7 @@ zstyle ':fzf-tab:complete:(cd|vim|nano|e|hx|cursor|code|mv|cp|rm|file):*' \
 # =========================
 __FZF_TAB[PREVIEW_DELTA]='delta --hunk-header-decoration-style="cyan box"'
 zstyle ':fzf-tab:complete:git-(add|diff|restore|show|checkout):*' fzf-flags \
+  $__FZF_COLORS \
   --height=-2 \
   --preview-window 'right:40%:nowrap' \
   --bind 'alt-up:preview-page-up' \
@@ -175,6 +181,7 @@ zstyle ':fzf-tab:complete:git-help:*' fzf-preview 'git help $word | bat -plman -
 # HOMEBREW
 # =========================
 zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-flags \
+  $__FZF_COLORS \
   --height=-2 \
   --preview-window 'right:70%:nowrap' \
   --bind 'alt-up:preview-page-up' \
@@ -185,6 +192,7 @@ zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' 
 # KILL / PS
 # =========================
 zstyle ':fzf-tab:complete:(kill|ps):*' fzf-flags \
+  $__FZF_COLORS \
   --height=20 \
   --preview-window 'down:3:wrap'
 
@@ -204,4 +212,5 @@ fi
 
 unset __FZF
 unset __FZF_TAB
+unset __FZF_COLORS
 
