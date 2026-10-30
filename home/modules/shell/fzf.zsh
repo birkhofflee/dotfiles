@@ -155,13 +155,18 @@ zstyle ':fzf-tab:*' fzf-flags \
 zstyle ':fzf-tab:complete:*:options' fzf-preview
 zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
 
-# FIXME: does not work
-# zstyle ':fzf-tab:complete:(-command-):*' fzf-preview 'builtin type -- {}'
+# =========================
+# DESCRIBE COMMANDS WHEN COMPLETING THE COMMAND POSITION
+# =========================
+# fzf-tab previews are zsh snippets with $word set; `{}` is fzf syntax and isn't substituted.
+# The preview runs in a separate zsh, so aliases and functions from this shell are unknown to it.
+zstyle ':fzf-tab:complete:-command-:*' fzf-preview \
+  'tldr --color always $word 2>/dev/null || whence -va -- $word'
 
 # =========================
 # EXPAND THE VALUE OF ENVIRONMENT VARIABLES OR SIMILAR PARAMETERS IN THE PREVIEW WINDOW
 # =========================
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
+zstyle ':fzf-tab:complete:(-parameter-|-brace-parameter-|export|unset|expand):*' \
 	fzf-preview 'echo ${(P)word}'
 
 # =========================
