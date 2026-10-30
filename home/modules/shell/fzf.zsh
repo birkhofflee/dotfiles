@@ -229,7 +229,7 @@ zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' 
   --preview-window 'right:70%:nowrap' \
   --bind 'alt-up:preview-page-up' \
   --bind 'alt-down:preview-page-down'
-zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-preview 'brew info $word | bat --color=always'
+zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-preview 'HOMEBREW_COLOR=1 brew info $word'
 
 # =========================
 # KILL / PS
