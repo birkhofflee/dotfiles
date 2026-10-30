@@ -16,8 +16,10 @@ compctl () { }
 zstyle ':completion:*' use-cache yes
 zstyle ':completion:*:complete:*' cache-policy _COMP_CACHING_POLICY
 _COMP_CACHING_POLICY() {
-  # If cache don't exist or are older than 14 days, consider them invalid
-  [[ ! -f $1 && -n "$1"(Nm+14) ]]
+  # If cache don't exist or are older than 14 days, consider them invalid.
+  # Globs don't expand inside [[ ]], so match via an array assignment.
+  local -a fresh=( $1(Nm-14) )
+  (( ! $#fresh ))
 }
 
 # Don't complete uninteresting users
