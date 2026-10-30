@@ -361,12 +361,18 @@ in
       }
       {
         name = "you-should-use";
-        src = pkgs.fetchFromGitHub {
-          # https://github.com/MichaelAquilina/zsh-you-should-use
-          owner = "MichaelAquilina";
-          repo = "zsh-you-should-use";
-          rev = "64dd9e3ff977e4ae7d024602b2d9a7a4f05fd8f6";
-          sha256 = "sha256-u3abhv9ewq3m4QsnsxT017xdlPm3dYq5dqHNmQhhcpI=";
+        src = pkgs.applyPatches {
+          src = pkgs.fetchFromGitHub {
+            # https://github.com/MichaelAquilina/zsh-you-should-use
+            owner = "MichaelAquilina";
+            repo = "zsh-you-should-use";
+            rev = "5f3d129864ee4505043d88c3486224f1d75b692e"; # 1.11.1 + BESTMATCH fix
+            sha256 = "sha256-1ojmr9+Wg5+X5Dip4sKjP4IKKACMncPQDZ8RtYQSQ80=";
+          };
+          patches = [
+            # Hardcode color escapes instead of forking tput 5 times on every shell start (~13ms)
+            ./patches/zsh-you-should-use-no-tput.patch
+          ];
         };
       }
     ]

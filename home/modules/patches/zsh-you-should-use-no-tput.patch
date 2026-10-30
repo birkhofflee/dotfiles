@@ -1,0 +1,28 @@
+diff --git a/you-should-use.plugin.zsh b/you-should-use.plugin.zsh
+index e1dbf5c..4403c50 100644
+--- a/you-should-use.plugin.zsh
++++ b/you-should-use.plugin.zsh
+@@ -2,16 +2,13 @@
+ 
+ export YSU_VERSION='1.11.1'
+ 
+-if ! type "tput" > /dev/null; then
+-    printf "WARNING: tput command not found on your PATH.\n"
+-    printf "zsh-you-should-use will fallback to uncoloured messages\n"
+-else
+-    NONE="$(tput sgr0)"
+-    BOLD="$(tput bold)"
+-    RED="$(tput setaf 1)"
+-    YELLOW="$(tput setaf 3)"
+-    PURPLE="$(tput setaf 5)"
+-fi
++# Hardcoded ANSI sequences instead of 5 tput subprocess forks at load time.
++# Equivalent tput commands are noted inline for reference.
++NONE=$'\e[0m'     # tput sgr0
++BOLD=$'\e[1m'     # tput bold
++RED=$'\e[31m'     # tput setaf 1
++YELLOW=$'\e[33m'  # tput setaf 3
++PURPLE=$'\e[35m'  # tput setaf 5
+ 
+ function check_alias_usage() {
+     # Optional parameter that limits how far back history is checked
