@@ -402,13 +402,10 @@ in
             # https://github.com/Aloxaf/fzf-tab
             owner = "Aloxaf";
             repo = "fzf-tab";
-            rev = "0fbd5753f935dcb6899e5fb2a0fb9a3fd69f1ce0";
-            sha256 = "sha256-JrFUT0bxCWWKO3FWTpnFRK3DwNMZUstRdRaerKV2xZE=";
+            rev = "24105b15714bfec37989ed5c5b6e60f572253019"; # 1.3.0 + 3
+            sha256 = "sha256-YhTSu0P7mFlVx1zBvbT0jNstkamcZHhPYJHKMAHgyuM=";
           };
           patches = [
-            # Fix background color bleed: missing reset in dsuf for non-symlink files
-            # @see https://github.com/Aloxaf/fzf-tab/issues/563
-            ./patches/fzf-tab-color-reset.patch
             # Show unescaped filenames in fzf list (no backslash before spaces)
             # @see https://github.com/Aloxaf/fzf-tab/issues/564
             ./patches/fzf-tab-unescape-display.patch
