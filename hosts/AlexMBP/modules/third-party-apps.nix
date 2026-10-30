@@ -48,6 +48,8 @@
       KeyboardShortcuts_fullscreen = "{\"carbonKeyCode\":20,\"carbonModifiers\":768}";
       # Area screenshot (⇧⌘4)
       KeyboardShortcuts_area = "{\"carbonModifiers\":768,\"carbonKeyCode\":21}";
+      # Load image from clipboard (⇧⌘1)
+      KeyboardShortcuts_loadClipboard = "{\"carbonModifiers\":768,\"carbonKeyCode\":18}";
       "Shottr.ObjArrow: size" = 6;
       afterGrabCopy = 0;
       afterGrabSave = 0;
