@@ -130,10 +130,11 @@ zstyle ':fzf-tab:*' fzf-flags \
   --bind '?:toggle-preview'
 
 # =========================
-# DISABLE OR OVERRIDE PREVIEW FOR COMMAND OPTIONS AND SUBCOMMANDS
+# DISABLE PREVIEW FOR COMMAND OPTIONS
 # =========================
+# No catch-all for argument-1: on equal specificity the first-defined zstyle wins, so an
+# empty `*:argument-1` here hid later previews for first arguments, e.g. git-log:*.
 zstyle ':fzf-tab:complete:*:options' fzf-preview
-zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
 
 # =========================
 # DESCRIBE COMMANDS WHEN COMPLETING THE COMMAND POSITION
