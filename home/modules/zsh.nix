@@ -239,10 +239,6 @@ in
       (lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         # https://docs.brew.sh/Analytics
         HOMEBREW_NO_ANALYTICS = "1";
-
-        # zsh-auto-notify (https://github.com/MichaelAquilina/zsh-auto-notify)
-        # Note: `lg` is alias for `lazygit`
-        AUTO_NOTIFY_IGNORE = "vim nvim hx nano tmux bat cat less more watch top htop ssh man zi lazygit lg e ssh claude";
       })
     ];
 
@@ -320,6 +316,11 @@ in
           # automatically add itself into this array, so we're sure
           # that it's the only source where autosuggestions are fetched
           ZSH_AUTOSUGGEST_STRATEGY=()
+
+          # Extend zsh-auto-notify's default ignore list. Must be an array
+          # appended after the plugin loads; it only sets its defaults when
+          # the variable is empty. Note: `lg` is alias for `lazygit`
+          AUTO_NOTIFY_IGNORE+=(hx tmux bat cat zi lazygit lg e claude)
         '';
 
         # This loads at the end of zshrc
