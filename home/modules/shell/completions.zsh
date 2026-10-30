@@ -42,12 +42,15 @@ zstyle '*' single-ignored show
 #   - _ignored: include previously ignored matches by ignored-patterns
 #   - _correct: offer spelling corrections
 #   - _approximate: offer fuzzy/approximate matches
+# Except for rm/mv, where a near-miss filename is a footgun: they never get _correct/_approximate.
 # This setup ensures fast completions on the first try, and more exhaustive/fuzzy completions only on repeated attempts, improving both speed and usability.
 #
 zstyle -e ':completion:*' completer '
   if [[ $_last_try != "$HISTNO$BUFFER$CURSOR" ]]; then
     _last_try="$HISTNO$BUFFER$CURSOR"
     reply=(_complete _extensions _match _files)
+  elif [[ $words[1] = (rm|mv) ]]; then
+    reply=(_complete _ignored)
   else
     reply=(_complete _ignored _correct _approximate)
   fi'
