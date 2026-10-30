@@ -308,7 +308,10 @@ in
         # General configuration
         zshConfig = ''
           source "${config.home.homeDirectory}/.shell/functions.zsh"
-          source "${config.home.homeDirectory}/.shell/op.zsh"
+
+          ${lib.optionalString hasDesktop ''
+            source "${config.home.homeDirectory}/.shell/op.zsh"
+          ''}
 
           ${lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
             source "${config.home.homeDirectory}/.shell/proxy.zsh"
