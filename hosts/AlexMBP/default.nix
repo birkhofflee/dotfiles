@@ -57,6 +57,12 @@ in
     zsh
   ];
 
+  environment.interactiveShellInit = ''
+    if [ -n "$REX_BIN_DIR" ]; then
+      export PATH="$REX_BIN_DIR:$PATH"
+    fi
+  '';
+
   # Load nix-darwin in /etc/zshrc.
   programs.zsh = {
     enable = true;
