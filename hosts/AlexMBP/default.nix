@@ -20,7 +20,7 @@ in
     ../shared-nix-settings.nix
     ../common-system-packages.nix
 
-    (import ./os-settings.nix ({ inherit hostname; }))
+    (import ./os-settings ({ inherit hostname; }))
     ./packages/homebrew.nix
     ./ssh-config.nix
   ];

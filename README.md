@@ -51,7 +51,7 @@ My daily driver is macOS because I prefer the Apple desktop environment. There a
   * Diffs: [delta](https://github.com/dandavison/delta) everywhere: `git`, lazygit, and fzf-tab previews
   * Merges: [mergiraf](https://mergiraf.org/) as a syntax-aware merge driver
 * Secrets: [agenix](https://github.com/ryantm/agenix), decrypted with an identity held in 1Password via [age-plugin-1p](https://github.com/Enzime/age-plugin-1p), so no private key on disk
-* macOS: [system and app preferences](hosts/AlexMBP/modules) (Dock, Finder, keyboard, trackpad, Safari, third-party apps…) set declaratively via nix-darwin; GUI apps via [Homebrew](hosts/AlexMBP/packages/homebrew.nix)
+* macOS: [system and app preferences](hosts/AlexMBP/os-settings) (Dock, Finder, keyboard, trackpad, Safari, third-party apps…) set declaratively via nix-darwin; GUI apps via [Homebrew](hosts/AlexMBP/packages/homebrew.nix)
 
 ## Custom Shell Shortcuts & Functions
 

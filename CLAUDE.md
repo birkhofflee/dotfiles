@@ -30,7 +30,7 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   ├── AlexMBP/          # macOS host (nix-darwin)
 │   │   ├── default.nix   # System configuration
 │   │   ├── home.nix      # macOS-specific home: imports shared home + 1password, ghostty
-│   │   ├── os-settings.nix
+│   │   ├── os-settings/  # default.nix imports the per-area macOS defaults modules
 │   │   ├── age-identity.txt  # 1Password age plugin identity for decryption
 │   │   ├── ssh-config.nix    # agenix HM module config + secret declarations
 │   │   └── packages/     # homebrew.nix + user-packages.nix
