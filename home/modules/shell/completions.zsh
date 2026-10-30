@@ -35,6 +35,9 @@ zstyle '*' single-ignored show
 # Rescan $PATH when completing a command name, so newly installed programs complete right away
 zstyle ':completion:*' rehash true
 
+# Offer `..` for an empty word, `.`, `..` or a chain of `../`, so `cd ../<Tab>` keeps climbing
+zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(|.|..) ]] && reply=(..)'
+
 # Hide completion functions (_git, _files, …) from command names; a second TAB brings them back via _ignored
 zstyle ':completion::(^approximate*):*:functions' ignored-patterns '_*'
 
