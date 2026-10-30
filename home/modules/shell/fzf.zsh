@@ -25,10 +25,12 @@ __FZF[PREVIEW_FILE_OR_DIR]="
   fi
 "
 
+# fzf-tab previews run in zsh. Use [[ ]]: with an empty $realpath (non-file items such as
+# named directories or options), `[ -d $realpath ]` is `[ -d ]`, which is true.
 __FZF_TAB[PREVIEW_FILE_OR_DIR]="
-  if [ -d \$realpath ]; then
+  if [[ -d \$realpath ]]; then
     ${__FZF[PREVIEW_DIR]} \$realpath;
-  else
+  elif [[ -f \$realpath ]]; then
     less \$realpath;
   fi
 "
