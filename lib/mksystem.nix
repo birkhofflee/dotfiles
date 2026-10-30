@@ -9,7 +9,8 @@ name:
   system,
   user,
   nixos-anywhere ? false,
-  hasDesktop ? false,
+  # Darwin hosts always have a desktop; NixOS hosts opt in.
+  hasDesktop ? nixpkgs.lib.hasSuffix "-darwin" system,
 }:
 
 let
