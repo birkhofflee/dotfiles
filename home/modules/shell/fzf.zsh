@@ -169,7 +169,9 @@ zstyle ':fzf-tab:complete:(cd|vim|nano|e|hx|cursor|code|mv|cp|rm|rmdir|ln|file|b
 # `cd -<Tab>` / `cd +<Tab>` list the directory stack (AUTO_PUSHD). Entries are indexes, so
 # $realpath is empty; the path is in the display text, `1  ~/foo` (`1 -- ~/foo` with the
 # default list-separator). Strip the index and separator; ${~…} expands the ~.
-zstyle ':fzf-tab:complete:cd:*' fzf-preview "
+# The path may use a named directory (~dl, ~nix), which the preview's separate zsh doesn't
+# know, so -e prepends this shell's `hash -dL` to the script at completion time.
+__FZF_TAB[PREVIEW_CD]="
   if [[ \$group == *'directory stack'* ]]; then
     setopt extended_glob;
     dir=\${desc/#[0-9]##[[:space:]]##(--[[:space:]]##|)/};
@@ -178,6 +180,8 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview "
     ${__FZF_TAB[PREVIEW_FILE_OR_DIR]}
   fi
 "
+zstyle -e ':fzf-tab:complete:cd:*' fzf-preview \
+  "reply=(\"\$(hash -dL)\"\$'\\n'${(q)__FZF_TAB[PREVIEW_CD]})"
 # fzf-tab seeds the query with the typed `-`/`+`, which the unsigned entries never match.
 # For those, seed only from the entries' common prefix (empty here) instead of the input.
 zstyle -e ':fzf-tab:complete:cd:*' query-string \
