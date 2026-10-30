@@ -152,7 +152,7 @@ zstyle ':fzf-tab:complete:(-parameter-|-brace-parameter-|export|unset|expand):*'
 # =========================
 # PREVIEW DIRECTORY OR FILE'S CONTENT WHEN COMPLETING SOME COMMANDS
 # =========================
-zstyle ':fzf-tab:complete:(cd|vim|nano|e|hx|cursor|code|mv|cp|rm|file):*' \
+zstyle ':fzf-tab:complete:(cd|vim|nano|e|hx|cursor|code|mv|cp|rm|rmdir|ln|file|bat|cat|less|head|tail|open|eza|ls|ncdu|source):*' \
   fzf-preview "${__FZF_TAB[PREVIEW_FILE_OR_DIR]}"
 
 # =========================
