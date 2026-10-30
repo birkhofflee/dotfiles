@@ -29,16 +29,29 @@ My daily driver is macOS because I prefer the Apple desktop environment. There a
   * Theme: [Catppuccin Macchiato](https://catppuccin.com/) (Blue accent wherever available)
   * A number of handy [aliases](home/modules/zsh.nix) and [functions](home/modules/shell/functions.zsh) and [shell scripts](home/modules/shell/utilities)
   * [Automatic](home/modules/shell/proxy.zsh) shell proxy propagation from macOS settings
+  * [Completion tuning](home/modules/shell/completions.zsh): case-insensitive and partial-word matching (`hx h/m/zs` → `home/modules/zsh.nix`); Tab twice for spelling corrections and approximate matches
 * CLI apps of choice:
   * Editor: [Helix](https://helix-editor.com/)
   * Shell History: [Atuin](https://github.com/atuinsh/atuin)
-  * Git TUI: [lazygit](https://github.com/jesseduffield/lazygit) ([a quick starter video](https://www.youtube.com/watch?v=CPLdltN7wgE))
   * File Manager: [Yazi](https://yazi-rs.github.io/) (invoke with `y` for shell integration)
   * Directory Navigation: [zoxide](https://github.com/ajeetdsouza/zoxide)
-  * [fzf shell integration](home/modules/fzf.nix)
-    * CTRL-T - Paste the path of selected files and directories
-    * ALT-C - cd into the selected directory
-  * [fzf-tab](https://github.com/Aloxaf/fzf-tab) for fuzzy-searching zsh completion results, including a [smart preview window](home/modules/shell/fzf.zsh)
+  * [fzf shell integration](home/modules/fzf.nix) ([config](home/modules/shell/fzf.zsh))
+    * CTRL-T - Full-screen file picker (streamed from `fd`) with a file/directory preview; Tab to multi-select, CTRL-O to open the selection in `$VISUAL`
+    * ALT-C - cd into the selected directory, with a tree preview
+    * In any fzf: `?` toggles the preview, ALT-↑/↓ pages through it
+  * [fzf-tab](https://github.com/Aloxaf/fzf-tab) for fuzzy-searching zsh completion results, in the same Catppuccin theme, with context-aware previews:
+    * Files and directories (`cd`, `hx`, `bat`, `ls`, `mv`, …): syntax-highlighted via lesspipe + bat, or an `eza` tree
+    * git: `delta` diffs for `add`/`diff`/`restore` (untracked files show their contents), commits for `show`/`checkout`/`log`
+    * `man` pages, `docker` (subcommand help, logs, images, inspect JSON), `brew info`, process details for `kill`, and `systemctl status` on Linux
+    * Command names (tldr) and variable values (`echo $<Tab>`)
+    * `<` / `>` switch between completion groups
+  * Per-project environments: [direnv](https://direnv.net/) + [nix-direnv](https://github.com/nix-community/nix-direnv) (cached devshells that survive GC)
+* Git:
+  * TUI: [lazygit](https://github.com/jesseduffield/lazygit) ([a quick starter video](https://www.youtube.com/watch?v=CPLdltN7wgE))
+  * Diffs: [delta](https://github.com/dandavison/delta) everywhere: `git`, lazygit, and fzf-tab previews
+  * Merges: [mergiraf](https://mergiraf.org/) as a syntax-aware merge driver
+* Secrets: [agenix](https://github.com/ryantm/agenix), decrypted with an identity held in 1Password via [age-plugin-1p](https://github.com/Enzime/age-plugin-1p), so no private key on disk
+* macOS: [system and app preferences](hosts/AlexMBP/modules) (Dock, Finder, keyboard, trackpad, Safari, third-party apps…) set declaratively via nix-darwin; GUI apps via [Homebrew](hosts/AlexMBP/packages/homebrew.nix)
 
 ## Custom Shell Shortcuts & Functions
 
@@ -64,7 +77,7 @@ This is designed to work with default Ghostty macOS keybindings, or the iTerm2 N
 
 </details>
 
-### Custom Functions
+### Utility Functions
 
 Shell functions are defined in [`home/modules/shell/functions.zsh`](home/modules/shell/functions.zsh).
 
@@ -287,11 +300,6 @@ just switch-nixos-desktop
 ```
 
 </details>
-
-## Other Notes
-
-* Development Environments [should be managed using nix-shell](https://joshblais.com/blog/nixos-is-the-endgame-of-distrohopping/#development-environments).
-* While I'd like Nix to handle every app on my Mac, most GUI apps are better managed by Homebrew due to the conflicting nature of Nix and the self-updating capabilities of those apps.
 
 ## Articles
 
