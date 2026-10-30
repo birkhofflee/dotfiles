@@ -61,27 +61,26 @@ __FZF[HEADER]="--header '?: preview, alt-up: pgup, alt-down: pgdown, ^o: open ed
 
 # =========================
 # FZF - File Browser (C-t) and Alt-C
-# Override FZF_CTRL_T_COMMAND and FZF_ALT_C_COMMAND to use fd and xargs
-# @see https://github.com/niksingh710/cdots/blob/bc79fa30cd62f5655b45c64cc79401082b4bd791/home/.shell/fzf.zsh#L101-L106
+# Override FZF_CTRL_T_COMMAND and FZF_ALT_C_COMMAND to use fd
 # =========================
 #
+# fd's output is piped straight into fzf so results stream in as they're found.
+# (Sorting by mtime via `xargs ls -t` made fzf wait for the whole walk, and xargs
+# batching meant the order was only correct within each batch.)
+#
 # Explanation of the options:
-# -0: tells both fd and xargs to use a null character (\0) as a separator
-#     instead of whitespace, which avoids issues with filenames containing
-#     spaces, quotes, or other special characters.
 # -tf: only regular files
+# -td: only directories
 # --follow: follow symlinks
-# -H: follow hidden files
-# -d: only directories
-# -t: sort by modification time
+# -H: include hidden files
 exclude_list=(
   "--exclude .git"
   "--exclude .direnv"
   "--exclude node_modules"
   "--exclude .DS_Store"
 )
-export FZF_CTRL_T_COMMAND="fd -H -tf --follow ${exclude_list[*]} -0 | xargs -0 ls -t"
-export FZF_ALT_C_COMMAND="fd -td ${exclude_list[*]} -0 | xargs -0 ls -dt"
+export FZF_CTRL_T_COMMAND="fd -H -tf --follow ${exclude_list[*]}"
+export FZF_ALT_C_COMMAND="fd -td ${exclude_list[*]}"
 unset exclude_list
 
 # C-r is left to atuin; fzf.nix sets FZF_CTRL_R_COMMAND="" so fzf doesn't bind it.
