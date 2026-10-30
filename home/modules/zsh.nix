@@ -421,6 +421,13 @@ in
   xdg.configFile."fsh/catppuccin-macchiato.ini".source =
     "${catppuccinFsh}/themes/catppuccin-macchiato.ini";
 
+  # completionInit uses `compinit -C`, which skips the check for new completion
+  # files. Drop the dump on each switch so newly installed completions show up
+  # in the next shell instead of after the 24h refresh.
+  home.activation.invalidateZcompdump = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD rm -f "${config.programs.zsh.dotDir}/.zcompdump"
+  '';
+
   home.activation.fastSyntaxHighlightingTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     $DRY_RUN_CMD ${pkgs.zsh}/bin/zsh -c 'source ${pkgs.zsh-fast-syntax-highlighting}/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh && XDG_CONFIG_HOME=${config.xdg.configHome} fast-theme XDG:catppuccin-macchiato 2>/dev/null || true'
   '';

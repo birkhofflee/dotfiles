@@ -58,7 +58,18 @@ in
   ];
 
   # Load nix-darwin in /etc/zshrc.
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+
+    # Home Manager runs its own compinit later in .zshrc, after plugin and
+    # OrbStack fpath entries exist, using `compinit -C` with a 24h refresh.
+    # The global one would run a full compaudit on every shell (~70ms) only to
+    # be redone. fpath setup in /etc/zshenv is unaffected, so no completions
+    # are lost.
+    enableGlobalCompInit = false;
+    enableBashCompletion = false; # Nothing uses bash-style `complete`
+    promptInit = ""; # Starship replaces the default `prompt suse` anyway
+  };
 
   # https://github.com/nix-darwin/nix-darwin/blob/master/modules/system/activation-scripts.nix#L83
   system.activationScripts = {
