@@ -178,6 +178,10 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview "
     ${__FZF_TAB[PREVIEW_FILE_OR_DIR]}
   fi
 "
+# fzf-tab seeds the query with the typed `-`/`+`, which the unsigned entries never match.
+# For those, seed only from the entries' common prefix (empty here) instead of the input.
+zstyle -e ':fzf-tab:complete:cd:*' query-string \
+  '[[ ${LBUFFER##*[[:space:]]} == [-+]* ]] && reply=(prefix) || reply=(prefix input first)'
 
 # =========================
 # GIT
