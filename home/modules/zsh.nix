@@ -54,6 +54,9 @@ in
       docs = "$HOME/Documents";
       nix = "$HOME/.config/dotfiles";
       dev = "$HOME/dev";
+    }
+    // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+      infra = "$HOME/Documents/Infrastructure";
     };
 
     history = {
