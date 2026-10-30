@@ -188,6 +188,33 @@
         };
       };
 
+      # Standalone home-manager for non-NixOS Linux boxes (e.g. WSL), where
+      # mkSystem can't be used. Apply with:
+      #   home-manager switch --flake .#ale@wsl
+      homeConfigurations."ale@wsl" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = import inputs.nixpkgs-unstable {
+          system = "x86_64-linux";
+          inherit (nixpkgsDefaults) config overlays;
+        };
+        extraSpecialArgs = {
+          inherit inputs;
+          currentSystemUser = "ale";
+          hasDesktop = false;
+        };
+        modules = [
+          ./home
+          # mkSystem normally adds these at the system level
+          inputs.nix-index-database.homeModules.nix-index
+          {
+            programs.nix-index-database.comma.enable = true;
+            targets.genericLinux.enable = true;
+            # ssh.nix publishes the 1Password key's pubkey; this box has its
+            # own on-disk keypair, which that would leave mismatched.
+            home.file.".ssh/id_ed25519.pub".enable = false;
+          }
+        ];
+      };
+
       packages.x86_64-linux.nixos-desktop-01-image =
         self.nixosConfigurations.nixos-desktop-01.config.system.build.VMA;
 
