@@ -183,6 +183,15 @@ zstyle ':fzf-tab:complete:git-log:*' fzf-preview 'git log --color=always $word'
 zstyle ':fzf-tab:complete:git-help:*' fzf-preview 'git help $word | bat -plman --color=always'
 
 # =========================
+# MAN
+# @see https://github.com/Freed-Wu/fzf-tab-source/blob/main/sources/man.zsh
+# =========================
+# With separate-sections (completions.zsh) the group is "[manual page, section N]".
+# macOS man already emits ANSI formatting when piped, so no bat.
+zstyle ':fzf-tab:complete:man:*' fzf-preview \
+  '[[ $group == "[manual page"* ]] && MANWIDTH=$FZF_PREVIEW_COLUMNS man $word 2>/dev/null'
+
+# =========================
 # HOMEBREW
 # =========================
 zstyle ':fzf-tab:complete:brew-(install|uninstall|search|info):*-argument-rest' fzf-flags \
