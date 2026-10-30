@@ -239,7 +239,7 @@ function lip {
 
 # Lookup certificate transparency logs for an apex domain
 function crt-lookup {
-  xhs "https://crt.name/v1/search?apex=$1"
+  xhs -b "https://crt.name/v1/search?apex=$1"
 }
 
 # Lookup IP address of an A record of a domain
