@@ -32,6 +32,9 @@ zstyle ':completion:*:*:*:users' ignored-patterns \
 # ... unless we really want to.
 zstyle '*' single-ignored show
 
+# Rescan $PATH when completing a command name, so newly installed programs complete right away
+zstyle ':completion:*' rehash true
+
 # Hide completion functions (_git, _files, …) from command names; a second TAB brings them back via _ignored
 zstyle ':completion::(^approximate*):*:functions' ignored-patterns '_*'
 
