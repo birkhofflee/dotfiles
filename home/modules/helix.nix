@@ -455,14 +455,7 @@ in
 
         # lazygit integration
         "C-d" = [
-          ":sh rm -f /tmp/helix-yazi-tmpfile"
-          ":new"
-          ":insert-output lazygit"
-          ":set mouse false"
-          ":set mouse true"
-          ":buffer-close!"
-          ":redraw"
-          ":reload-all"
+          ":sh rex run -c $(pwd) --focus --wait --label lazygit -- lazygit > /dev/null"
         ];
       };
 
