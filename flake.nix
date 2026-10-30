@@ -65,7 +65,7 @@
     zj-quit.url = "github:dj95/zj-quit";
 
     secrets = {
-      url = "git+ssh://git@github.com/BirkhoffLee/dotfiles.secret.git?ref=main&shallow=1";
+      url = "git+ssh://git@github.com/birkhofflee/dotfiles.secret.git?ref=main&shallow=1";
       flake = false;
     };
 

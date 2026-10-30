@@ -81,7 +81,7 @@ function llm {
 # a system prompt template, and copy the Markdown result
 # while rendering it to the terminal.
 #
-# @see https://gist.github.com/BirkhoffLee/45f6dab957557469a5bef19be236dc65
+# @see https://gist.github.com/birkhofflee/45f6dab957557469a5bef19be236dc65
 function md {
   emulate -L zsh
   setopt LOCAL_OPTIONS PIPE_FAIL

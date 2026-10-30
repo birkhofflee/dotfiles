@@ -984,13 +984,13 @@
         "rev": "eb1e1932b7866ac699411b8e807805e2fd71958e",
         "shallow": true,
         "type": "git",
-        "url": "ssh://git@github.com/BirkhoffLee/dotfiles.secret.git"
+        "url": "ssh://git@github.com/birkhofflee/dotfiles.secret.git"
       },
       "original": {
         "ref": "main",
         "shallow": true,
         "type": "git",
-        "url": "ssh://git@github.com/BirkhoffLee/dotfiles.secret.git"
+        "url": "ssh://git@github.com/birkhofflee/dotfiles.secret.git"
       }
     },
     "systems": {

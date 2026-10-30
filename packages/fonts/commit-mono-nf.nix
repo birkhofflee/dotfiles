@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   version = "1.143";
 
   src = fetchzip {
-    url = "https://github.com/BirkhoffLee/CommitMono-Customized-NF/releases/download/v${version}/CommitMono.Nerd.Font.zip";
+    url = "https://github.com/birkhofflee/CommitMono-Customized-NF/releases/download/v${version}/CommitMono.Nerd.Font.zip";
     sha256 = "sha256-ihnN1sbL8Nb4ks7D55Zsbwq+CiNSqCMX6UCIT7CkvGA=";
     stripRoot = false;
   };
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "CommitMono Customized Nerd Font";
-    homepage = "https://github.com/BirkhoffLee/CommitMono-Customized-NF";
+    homepage = "https://github.com/birkhofflee/CommitMono-Customized-NF";
     license = lib.licenses.ofl;
     platforms = lib.platforms.all;
   };

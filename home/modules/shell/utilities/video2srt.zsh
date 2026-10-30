@@ -86,7 +86,7 @@ echo ""
 
 # Step 3: Post-process SRT file with srt-llm-processor
 echo "${GREEN}[3/3] Post-processing SRT file with LLM...${NC}"
-if ! nix run github:BirkhoffLee/srt-llm-processor -- --file "$SRT_FILE"; then
+if ! nix run github:birkhofflee/srt-llm-processor -- --file "$SRT_FILE"; then
     error_exit "Failed to post-process SRT file"
 fi
 echo "${GREEN}✓ Processed SRT file created: $PROCESSED_SRT${NC}"

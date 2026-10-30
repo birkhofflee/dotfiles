@@ -212,14 +212,14 @@ echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.custom.conf
 sudo systemctl restart nix-daemon
 
 # Activate the configuration
-nix run nixpkgs#nh -- home switch github:BirkhoffLee/dotfiles -c ale@wsl --no-nom -- --refresh
+nix run nixpkgs#nh -- home switch github:birkhofflee/dotfiles -c ale@wsl --no-nom -- --refresh
 
 # home-manager can't change the login shell outside NixOS
 command -v zsh | sudo tee -a /etc/shells
 chsh -s "$(command -v zsh)"
 ```
 
-Afterwards, `nh` is installed by the config itself, so updates are just `nh home switch github:BirkhoffLee/dotfiles -c ale@wsl --no-nom -- --refresh`.
+Afterwards, `nh` is installed by the config itself, so updates are just `nh home switch github:birkhofflee/dotfiles -c ale@wsl --no-nom -- --refresh`.
 
 Notes:
 
