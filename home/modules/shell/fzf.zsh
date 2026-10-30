@@ -113,6 +113,9 @@ export FZF_ALT_C_OPTS="
 # =========================
 zstyle ':fzf-tab:*' switch-group '<' '>'
 
+# Space picks the highlighted entry (Tab still moves down). Costs typing a space in the query.
+zstyle ':fzf-tab:*' fzf-bindings 'space:accept'
+
 # =========================
 # DEFAULT FLAGS FOR FZF WHEN USING FZF-TAB
 # =========================
