@@ -13,6 +13,7 @@
     ./modules/atuin.nix
     ./modules/bat.nix
     ./modules/bottom.nix
+    ./modules/btop.nix
     ./modules/claude.nix
     ./modules/codex.nix
     ./modules/delta.nix
