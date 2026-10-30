@@ -190,6 +190,47 @@ nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --
 
 <details>
 
+<summary>Applying the home config on a generic Linux host (e.g. WSL)</summary>
+
+On a non-NixOS distro only the user environment is managed, via a standalone home-manager configuration: `homeConfigurations."ale@wsl"` in [flake.nix](flake.nix). It assumes x86_64-linux and the username `ale` (home at `/home/ale`); copy the output and adjust `system` / `currentSystemUser` for other boxes.
+
+Compared to the other hosts it leaves out agenix secrets and the 1Password and Ghostty modules, and doesn't manage `~/.ssh/id_ed25519.pub` so the host can keep its own key pair.
+
+Install [Determinate Nix](https://determinate.systems/) (on WSL2, enable systemd in `/etc/wsl.conf` first), then:
+
+```shell
+curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+
+# Pre-seed GitHub's SSH host key so the private secrets input doesn't stall
+mkdir -p ~/.ssh
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+# Add the current user to trusted-users so the flake's binary caches are honoured
+# (otherwise e.g. Helix is compiled from source). Answer `y` to the trust prompts
+# on the first switch.
+echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.custom.conf
+sudo systemctl restart nix-daemon
+
+# Activate the configuration
+nix run nixpkgs#nh -- home switch github:BirkhoffLee/dotfiles -c ale@wsl --no-nom -- --refresh
+
+# home-manager can't change the login shell outside NixOS
+command -v zsh | sudo tee -a /etc/shells
+chsh -s "$(command -v zsh)"
+```
+
+Afterwards, `nh` is installed by the config itself, so updates are just `nh home switch github:BirkhoffLee/dotfiles -c ale@wsl --no-nom -- --refresh`.
+
+Notes:
+
+* `--refresh` makes Nix re-fetch the repo; otherwise a `github:` flake ref is cached for up to an hour and a freshly pushed commit is silently ignored.
+* `--no-nom` works around [nix-output-monitor#320](https://github.com/maralorn/nix-output-monitor/issues/320) (nom 2.2.0 can't parse Determinate Nix's newer log events). The fix is merged upstream but unreleased; drop the flag once nixpkgs ships a newer nom.
+* If activation fails with `Existing file ... would be clobbered`, move that file out of the way (or pass `-b backup`), after checking it isn't something the host needs.
+
+</details>
+
+<details>
+
 <summary>nixos-server-01 (moved out of this repo)</summary>
 
 `nixos-server-01` — the Proxmox VM on the `homelab-nuc` PVE host — is configured
