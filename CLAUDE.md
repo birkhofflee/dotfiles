@@ -58,7 +58,7 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   ├── ocr/                           # macOS Swift Vision-framework OCR CLI
 │   └── patches/                       # Patch files applied by the derivations above
 └── secrets/               # agenix-encrypted secrets
-    ├── secrets.nix        # Public key declarations for each secret
+    ├── agenix-rules.nix   # Public key declarations for each secret
     └── *.age              # Encrypted secret files
 ```
 
@@ -341,7 +341,7 @@ When adding packages from different nixpkgs versions, use the overlay system:
 
 Secrets are managed with **agenix** (age-encrypted secrets checked into git).
 
-- **`secrets/secrets.nix`**: Declares which public keys can decrypt each `.age` file. The `ale` key is the SSH ed25519 public key corresponding to the 1Password identity.
+- **`secrets/agenix-rules.nix`**: Declares which public keys can decrypt each `.age` file. The `ale` key is the SSH ed25519 public key corresponding to the 1Password identity.
 - **`secrets/*.age`**: Encrypted secret files (ssh-config, tailscale authkey, cloudflared credentials, etc.).
 - **`hosts/AlexMBP/age-identity.txt`**: The `AGE-PLUGIN-1P` identity used to decrypt secrets on AlexMBP. This is host-specific and lives alongside the agenix config.
 - **`hosts/AlexMBP/ssh-config.nix`**: Configures the agenix home-manager module — sets `age.package`, `age.identityPaths`, declares secrets, and overrides the launchd agent's `KeepAlive` (removing `Crashed = false` which would otherwise cause the agent to loop on every clean exit).
@@ -373,7 +373,7 @@ intentionally still name the host:
 
 Secrets here are encrypted to the `ale` key (1Password) and, for
 `tailscale-authkey.age`, to `nixos-desktop-01`'s SSH host key. The server's host
-key was removed from `secrets/secrets.nix` and the remaining secrets rekeyed
+key was removed from `secrets/agenix-rules.nix` and the remaining secrets rekeyed
 when the host moved out.
 
 ### Activation Scripts
