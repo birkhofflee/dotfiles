@@ -290,6 +290,7 @@ in
       stats # https://github.com/exelban/stats
       mactop # https://github.com/context-labs/mactop
       osx-cpu-temp # https://github.com/lavoiesl/osx-cpu-temp
+      mole-cleaner # https://github.com/tw93/Mole
 
       pinentry_mac # https://github.com/GPGTools/pinentry
       pam-reattach # https://github.com/fabianishere/pam_reattach
