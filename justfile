@@ -101,7 +101,7 @@ alias o := optimize
 # Frees up space by optimizing the Nix Store
 [group('nix-misc')]
 optimize:
-  nh clean all
+  nh clean all --optimise
 
 # Repairs the Nix Store
 [group('nix-misc')]
