@@ -10,6 +10,23 @@ let
     projectRootFile = "flake.nix";
     programs.nixfmt.enable = true;
   };
+
+  # Runs a command in a Rex floating pane and waits for it to exit.
+  # usage: rex-float LABEL COMMAND [ARGS...]
+  rexFloat = pkgs.writeShellApplication {
+    name = "rex-float";
+    runtimeInputs = [ pkgs.jq ];
+    text = ''
+      label=$1
+      shift
+      payload=$(jq -nc --arg cwd "$PWD" --arg label "$label" --args '{
+        bounds: [0.05, 0.05, 0.9, 0.9], focus: true,
+        layout: {block: {flavor: "com.superlogical.terminal.shell", label: $label,
+          options: {cwd: $cwd, command: $ARGS.positional}}}}' -- "$@")
+      block=$(rex api call -s "$REX_SESSION" session.new_layer "$payload" | jq -r '.block_ids[0]')
+      exec rex wait "$block"
+    '';
+  };
 in
 
 {
@@ -447,15 +464,15 @@ in
           "o" = ":sh open -u '%{selection}'";
         };
 
-        # yazi integration
+        # yazi integration, in a Rex floating pane
         # https://github.com/sxyazi/yazi/pull/2461
         "C-y" = [
-          ":open %sh{f=$(mktemp) && rex split --split left --ratio 20 --label yazi --wait --cwd \"$(pwd)\" -- yazi --chooser-file=\"$f\" >/dev/null && cat \"$f\"; rm -f \"$f\"}"
+          ":open %sh{f=$(mktemp) && ${rexFloat}/bin/rex-float yazi yazi --chooser-file=\"$f\" >/dev/null && cat \"$f\"; rm -f \"$f\"}"
         ];
 
-        # lazygit integration
+        # lazygit integration, in a Rex floating pane
         "C-d" = [
-          ":sh rex run -c $(pwd) --focus --wait --label lazygit -- lazygit > /dev/null"
+          ":sh ${rexFloat}/bin/rex-float lazygit lazygit > /dev/null"
         ];
       };
 
