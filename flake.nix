@@ -83,7 +83,6 @@
       self,
       ...
     }@inputs:
-    # https://github.com/malob/nixpkgs/blob/61d4809925a523296278885ff8a75d3776a5c813/flake.nix#L34
     let
       inherit (inputs.nixpkgs-unstable.lib) attrValues;
 
