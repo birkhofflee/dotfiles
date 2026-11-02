@@ -30,12 +30,12 @@ in
       strategy = [ ];
     };
 
-    # Helix mode would be nice, however Multirious/zsh-helix-mode
-    # still has some compatibility issues and some bugs that I cannot
-    # bear. (Oct 2025)
+    # Vim keybindings via zsh-vi-mode (see plugins below), to match LazyVim.
+    # Helix mode was tried earlier, but Multirious/zsh-helix-mode had
+    # compatibility issues and bugs. (Oct 2025)
     #
-    # To edit current prompt with $EDITOR, use C-x C-e.
-    defaultKeymap = "emacs";
+    # To edit current prompt with $EDITOR, use `vv` in normal mode or C-x C-e.
+    defaultKeymap = "viins";
 
     # This lets you change to any dir without having to type `cd`, that is, by just
     # typing its name. Be warned, though: This can misfire if there exists an alias,
@@ -292,7 +292,12 @@ in
       let
         # This runs instantly
         zshConfigEarlyInit = lib.mkBefore ''
-          source "${config.home.homeDirectory}/.shell/keys.zsh"
+          # zsh-vi-mode: init immediately instead of lazily on first prompt,
+          # otherwise it re-runs `bindkey` and clobbers atuin, fzf-tab and keys.zsh.
+          ZVM_INIT_MODE=sourcing
+          ZVM_VI_EDITOR=nvim
+          ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+
           source "${config.home.homeDirectory}/.shell/options.zsh"
 
           # Load Zsh's rename utility `zmv`
@@ -315,6 +320,9 @@ in
 
         # General configuration
         zshConfig = ''
+          # Must come after zsh-vi-mode is sourced (plugins), so these bind
+          # into the viins keymap instead of being reset by it.
+          source "${config.home.homeDirectory}/.shell/keys.zsh"
           source "${config.home.homeDirectory}/.shell/functions.zsh"
 
           ${lib.optionalString hasDesktop ''
@@ -352,6 +360,12 @@ in
 
     # https://nix-community.github.io/home-manager/options.html#opt-programs.zsh.plugins
     plugins = [
+      {
+        # https://github.com/jeffreytse/zsh-vi-mode
+        name = "zsh-vi-mode";
+        src = pkgs.zsh-vi-mode;
+        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+      }
       {
         name = "extract";
         src = pkgs.fetchFromGitHub {

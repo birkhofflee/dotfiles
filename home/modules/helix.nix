@@ -30,11 +30,8 @@ let
 in
 
 {
-  home.sessionVariables.VISUAL = "hx";
-
   programs.helix = {
     enable = true;
-    defaultEditor = true;
     package = inputs.helix.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     languages = {

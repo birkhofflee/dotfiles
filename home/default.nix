@@ -30,6 +30,7 @@
     ./modules/llm.nix
     ./modules/mcp.nix
     ./modules/nano.nix
+    ./modules/neovim.nix
     ./modules/nodejs.nix
     ./modules/opencode.nix
     ./modules/scripts.nix
