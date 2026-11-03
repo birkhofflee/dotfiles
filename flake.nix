@@ -156,19 +156,7 @@
         };
 
         # Temporary overlays
-        tweaks = _: prev: {
-          # tmux 3.7c's configure aborts on darwin unless a jemalloc flag is
-          # passed explicitly; nixpkgs passes neither. Upstream recommends
-          # enabling it (macOS calloc(3) does not reliably zero allocations).
-          tmux = prev.tmux.overrideAttrs (old: {
-            buildInputs =
-              (old.buildInputs or [ ])
-              ++ prev.lib.optional prev.stdenv.hostPlatform.isDarwin prev.jemalloc;
-            configureFlags =
-              (old.configureFlags or [ ])
-              ++ prev.lib.optional prev.stdenv.hostPlatform.isDarwin "--enable-jemalloc";
-          });
-        };
+        tweaks = _: _: { };
       };
 
       darwinConfigurations = {
