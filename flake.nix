@@ -49,8 +49,6 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    flake-utils.url = "github:numtide/flake-utils";
-
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
@@ -69,7 +67,6 @@
 
     apex-discord-bot.url = "github:birkhofflee/apex-discord-bot";
     apex-discord-bot.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    apex-discord-bot.inputs.flake-utils.follows = "flake-utils";
 
     i915-sriov-dkms.url = "github:strongtz/i915-sriov-dkms";
     i915-sriov-dkms.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -84,7 +81,7 @@
       ...
     }@inputs:
     let
-      inherit (inputs.nixpkgs-unstable.lib) attrValues;
+      inherit (inputs.nixpkgs-unstable.lib) attrValues genAttrs mapAttrs;
 
       overlaysList = attrValues self.overlays;
 
@@ -101,6 +98,25 @@
         overlays = overlaysList;
         inherit inputs;
       };
+
+      # Per-system pkgs/treefmt, evaluated once per system and shared by every
+      # per-system output below.
+      perSystem = genAttrs [ "aarch64-darwin" "aarch64-linux" "x86_64-linux" ] (
+        system:
+        let
+          pkgs = import inputs.nixpkgs-unstable {
+            inherit system;
+            inherit (nixpkgsDefaults) config overlays;
+          };
+        in
+        {
+          inherit system pkgs;
+          treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
+            projectRootFile = "flake.nix";
+          };
+        }
+      );
+      eachSystem = f: mapAttrs (_: f) perSystem;
     in
     {
       overlays = {
@@ -230,54 +246,48 @@
         {
           nixos-desktop-01 = mkNode "nixos-desktop-01";
         };
-    }
-    //
-      inputs.flake-utils.lib.eachSystem
-        [
-          "aarch64-darwin"
-          "aarch64-linux"
-          "x86_64-linux"
-        ]
-        (
-          system:
-          let
-            pkgs = import inputs.nixpkgs-unstable {
-              inherit system;
-              inherit (nixpkgsDefaults) config overlays;
-            };
-            treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
-              projectRootFile = "flake.nix";
-            };
-          in
-          {
-            formatter = treefmtEval.config.build.wrapper;
 
-            checks.formatting = treefmtEval.config.build.check self;
+      formatter = eachSystem ({ treefmtEval, ... }: treefmtEval.config.build.wrapper);
 
-            devShells.default =
-              let
-                # Override agenix to use Determinate Nix instead of its bundled nix-2.28.4.
-                # Without this, agenix warns about eval-cores/lazy-trees being unknown settings.
-                nixDeterminate = pkgs.writeShellScriptBin "nix-instantiate" ''
-                  exec /nix/var/nix/profiles/default/bin/nix-instantiate "$@"
-                '';
-                agenix = inputs.agenix.packages.${system}.default.override {
-                  nix = nixDeterminate;
-                };
-              in
-              pkgs.mkShellNoCC {
-                packages = [
-                  pkgs.just
-                  pkgs.ssh-copy-id
-                  pkgs.nh
-                  treefmtEval.config.build.wrapper
-                  pkgs.nixos-anywhere
-                  agenix
-                  pkgs.deploy-rs
-                ];
+      checks = eachSystem (
+        { treefmtEval, ... }:
+        {
+          formatting = treefmtEval.config.build.check self;
+        }
+      );
 
-                NH_FLAKE = ".";
+      devShells = eachSystem (
+        {
+          system,
+          pkgs,
+          treefmtEval,
+        }:
+        {
+          default =
+            let
+              # Override agenix to use Determinate Nix instead of its bundled nix-2.28.4.
+              # Without this, agenix warns about eval-cores/lazy-trees being unknown settings.
+              nixDeterminate = pkgs.writeShellScriptBin "nix-instantiate" ''
+                exec /nix/var/nix/profiles/default/bin/nix-instantiate "$@"
+              '';
+              agenix = inputs.agenix.packages.${system}.default.override {
+                nix = nixDeterminate;
               };
-          }
-        );
+            in
+            pkgs.mkShellNoCC {
+              packages = [
+                pkgs.just
+                pkgs.ssh-copy-id
+                pkgs.nh
+                treefmtEval.config.build.wrapper
+                pkgs.nixos-anywhere
+                agenix
+                pkgs.deploy-rs
+              ];
+
+              NH_FLAKE = ".";
+            };
+        }
+      );
+    };
 }
