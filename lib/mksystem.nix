@@ -76,6 +76,7 @@ systemFunc rec {
     }
 
     # nix-index-database integration
+    # This gives `, <command>` that run commands without installation
     inputs.nix-index-database.${if isDarwin then "darwinModules" else "nixosModules"}.nix-index
     { programs.nix-index-database.comma.enable = true; }
 
