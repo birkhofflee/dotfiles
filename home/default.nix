@@ -36,6 +36,7 @@
     ./modules/ssh.nix
     ./modules/starship.nix
     ./modules/television.nix
+    ./modules/tmux.nix
     ./modules/trippy.nix
     ./modules/uv.nix
     ./modules/yazi.nix
@@ -49,7 +50,10 @@
   home.stateVersion = "25.05";
   home.username = currentSystemUser;
   home.homeDirectory =
-    if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${currentSystemUser}" else "/home/${currentSystemUser}";
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "/Users/${currentSystemUser}"
+    else
+      "/home/${currentSystemUser}";
 
   home.packages = with pkgs; [
     # ── Networking & security ──────────────────────────────────────────────
@@ -87,7 +91,6 @@
     glances # https://github.com/nicolargo/glances (system monitor)
 
     # ── Shell & terminal ───────────────────────────────────────────────────
-    tmux # https://github.com/tmux/tmux
     progress # https://github.com/Xfennec/progress (coreutils progress watcher)
     pv # https://www.ivarch.com/programs/pv.shtml (progress bar for pipes)
 
