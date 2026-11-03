@@ -294,7 +294,6 @@ in
 
       pinentry_mac # https://github.com/GPGTools/pinentry
       pam-reattach # https://github.com/fabianishere/pam_reattach
-      reattach-to-user-namespace # https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 
       ocr # packages/ocr/ocr.nix
       impbcopy # packages/impbcopy/impbcopy.nix
