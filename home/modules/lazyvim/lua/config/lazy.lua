@@ -14,7 +14,19 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- When the config is a read-only Nix store copy (dotfiles.neovim.mutableConfig
+-- = false), keep a writable lockfile in the data dir, seeded from the repo's pins.
+local lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json"
+if vim.fn.filewritable(lockfile) ~= 1 then
+  local seed = lockfile
+  lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json"
+  if not (vim.uv or vim.loop).fs_stat(lockfile) and vim.fn.filereadable(seed) == 1 then
+    vim.fn.writefile(vim.fn.readfile(seed), lockfile)
+  end
+end
+
 require("lazy").setup({
+  lockfile = lockfile,
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },

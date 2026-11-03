@@ -215,6 +215,9 @@
             # ssh.nix publishes the 1Password key's pubkey; this box has its
             # own on-disk keypair, which that would leave mismatched.
             home.file.".ssh/id_ed25519.pub".enable = false;
+            # Applied from a github: ref, so there's no ~/.config/dotfiles checkout
+            # for the LazyVim out-of-store symlink to point at.
+            dotfiles.neovim.mutableConfig = false;
           }
         ];
       };
