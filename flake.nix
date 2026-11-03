@@ -73,6 +73,11 @@
 
     machinereport.url = "github:birkhofflee/machinereport";
     machinereport.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    # Prebuilt Rex (https://www.superlogical.com/rex/docs/linux/installation).
+    # There's no stable channel yet; snapshot is what the Mac app tracks.
+    rex.url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
+    rex.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -197,7 +202,23 @@
           ./home
           # mkSystem normally adds these at the system level
           inputs.nix-index-database.homeModules.nix-index
+          inputs.rex.homeManagerModules.default
           {
+            # Personal Rex server as a systemd user service (linger is on, so
+            # it starts at boot), reachable over its own embedded tailnet node.
+            # Also writes xterm-rex to ~/.terminfo, which the Nix-built zsh
+            # needs: its ncurses doesn't search /usr/share/terminfo.
+            services.rex = {
+              enable = true;
+              # Keep the name the node was enrolled under; changing it
+              # creates a new node that has to sign in again.
+              tailscale.enable = true;
+              tailscale.hostname = "wsl-rex";
+            };
+            # programs.ssh isn't managed here, and the distro's rex package
+            # already installs the guard in /etc/ssh/ssh_config.d.
+            programs.rex.sshGuard = false;
+
             programs.nix-index-database.comma.enable = true;
             targets.genericLinux.enable = true;
             # ssh.nix publishes the 1Password key's pubkey; this box has its
