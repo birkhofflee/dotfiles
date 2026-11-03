@@ -79,7 +79,6 @@
     vivid # https://github.com/sharkdp/vivid (LS_COLORS — colors.zsh)
     dust # https://github.com/bootandy/dust (du in rust)
     hexyl # https://github.com/sharkdp/hexyl (hex viewer)
-    difftastic # https://github.com/Wilfred/difftastic
     moreutils # https://joeyh.name/code/moreutils (ts, sponge, etc.)
     lesspipe # https://github.com/wofr06/lesspipe (LESSOPEN handler)
     entr # https://github.com/eradman/entr (run commands on file change)
