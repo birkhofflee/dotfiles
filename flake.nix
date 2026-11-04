@@ -78,6 +78,55 @@
     # There's no stable channel yet; snapshot is what the Mac app tracks.
     rex.url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
     rex.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    # Declarative Agent Skills (see home/modules/agent-skills.nix)
+    agent-skills.url = "github:Kyure-A/agent-skills-nix";
+    agent-skills.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    emil-skills = {
+      url = "github:emilkowalski/skills";
+      flake = false;
+    };
+    cloudflare-skills = {
+      url = "github:cloudflare/skills";
+      flake = false;
+    };
+    hallmark-skills = {
+      url = "github:nutlope/hallmark";
+      flake = false;
+    };
+    improve-skills = {
+      url = "github:shadcn/improve";
+      flake = false;
+    };
+    seedex-skills = {
+      url = "github:wishworldbetter/seedex-skills";
+      flake = false;
+    };
+    vocabulary-skills = {
+      url = "github:index-how/vocabulary";
+      flake = false;
+    };
+    find-skills = {
+      url = "github:vercel-labs/skills";
+      flake = false;
+    };
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
+    firecrawl-skills = {
+      url = "github:firecrawl/firecrawl-workflows";
+      flake = false;
+    };
+    paper-search-mcp = {
+      url = "github:openags/paper-search-mcp";
+      flake = false;
+    };
+    # A Claude Code plugin rather than plain skills (see home/modules/agent-skills.nix)
+    academic-research-skills = {
+      url = "github:Imbad0202/academic-research-skills";
+      flake = false;
+    };
   };
 
   outputs =
@@ -203,6 +252,7 @@
           # mkSystem normally adds these at the system level
           inputs.nix-index-database.homeModules.nix-index
           inputs.rex.homeManagerModules.default
+          inputs.agent-skills.homeManagerModules.default
           {
             # Personal Rex server as a systemd user service (linger is on, so
             # it starts at boot), reachable over its own embedded tailnet node.

@@ -11,11 +11,7 @@
     # skills = {}
   };
 
-  # skills
-  # /spark
-  # npx skills add wishworldbetter/seedex-skills --skill spark
-  # /improve
-  # npx skills add shadcn/improve
+  # skills: see agent-skills.nix
 
   # plugins
   # claude plugin list

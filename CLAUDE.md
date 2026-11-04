@@ -264,6 +264,20 @@ Example shared module:
 2. It will be symlinked to `~/.shell/` automatically (see `home.file.".shell".source = ./shell` in `zsh.nix`)
 3. Source it explicitly in `home/modules/zsh.nix` if needed, or drop it alongside other scripts that are sourced via glob
 
+### Adding Agent Skills
+
+Skills are managed by [agent-skills-nix](https://github.com/Kyure-A/agent-skills-nix) in `home/modules/agent-skills.nix`, for every host. Do not use `npx skills add`, even when the `find-skills` skill suggests it; it writes untracked copies into the same directories.
+
+1. **Upstream skills**: add a `flake = false` input to `flake.nix`, declare it under `sources`, and select it with `skills.enableAll` or `skills.enable`. `just update` moves them with every other input.
+2. **Your own skills**: add a source with `path = ./skills`, then keep them in `home/modules/skills/<name>/SKILL.md`.
+3. **Suites that need their repo root** (commands, agents, hooks, shared files): use `programs.claude-code.plugins` with a `flake = false` input, as `academic-research-skills` does. agent-skills-nix copies only the skill directory.
+
+The targets deliberately use the `link` structure. The tree structures run `rsync --delete` on the destination, which would remove two things that live alongside the managed skills: Rex's stub in `~/.claude/skills/rex` and `~/.agents/skills/rex` (owned by `rex skill setup`), and home-manager's plugins in `~/.claude/skills`, including `claude-code-home-manager`, which carries the MCP servers.
+
+Plugin skills (Figma, Vercel and so on) are outside this: they stay under `claude plugin`.
+
+Adding or removing a `transform` or `packages` on an installed skill changes it between a symlink and a real directory, and activation then fails with `ln: ... Permission denied`, because home-manager tries to write through the old read-only link. Delete `~/.claude/skills/<name>` and `~/.agents/skills/<name>` and run `just switch` again.
+
 ### Adding Custom Packages
 
 1. **System packages** (shared across hosts): Edit `hosts/common-system-packages.nix`

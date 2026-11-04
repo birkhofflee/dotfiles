@@ -9,6 +9,7 @@
 
 {
   imports = [
+    ./modules/agent-skills.nix
     ./modules/ansible.nix
     ./modules/atuin.nix
     ./modules/bat.nix

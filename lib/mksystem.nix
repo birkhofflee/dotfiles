@@ -82,7 +82,12 @@ systemFunc rec {
 
     # agenix integration
     (if isDarwin then inputs.agenix.darwinModules.default else inputs.agenix.nixosModules.default)
-    { home-manager.sharedModules = [ inputs.agenix.homeManagerModules.age ]; }
+    {
+      home-manager.sharedModules = [
+        inputs.agenix.homeManagerModules.age
+        inputs.agent-skills.homeManagerModules.default
+      ];
+    }
 
     # Determinate Nix integration
     (

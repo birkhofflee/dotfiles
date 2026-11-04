@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "academic-research-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793785746,
+        "narHash": "sha256-Pi6RwOaV1S1cdbMeEWhMEUKmW5ufC3PvpEXt7/dJico=",
+        "owner": "Imbad0202",
+        "repo": "academic-research-skills",
+        "rev": "530659d983c2f4aa584ba3f2df224df08d90b264",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Imbad0202",
+        "repo": "academic-research-skills",
+        "type": "github"
+      }
+    },
     "agenix": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -15,6 +31,26 @@
       "original": {
         "owner": "ryantm",
         "repo": "agenix",
+        "type": "github"
+      }
+    },
+    "agent-skills": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792594212,
+        "narHash": "sha256-XWx3R/AIeYdyZ3guuZVNqirEUPPpehICrIRV3VabR+U=",
+        "owner": "Kyure-A",
+        "repo": "agent-skills-nix",
+        "rev": "f48aa227f3d157ae3abda12cd9c4ab867f400419",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kyure-A",
+        "repo": "agent-skills-nix",
         "type": "github"
       }
     },
@@ -73,6 +109,22 @@
       "original": {
         "owner": "sadjow",
         "repo": "claude-code-nix",
+        "type": "github"
+      }
+    },
+    "cloudflare-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793720135,
+        "narHash": "sha256-U+CATnXtDti9aFxGWRmO3cfle3jVfRuyiVe70rauxm8=",
+        "owner": "cloudflare",
+        "repo": "skills",
+        "rev": "1f2cd0a19588e2c6197c91dd7c71729df1fb6156",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cloudflare",
+        "repo": "skills",
         "type": "github"
       }
     },
@@ -197,6 +249,54 @@
         "type": "github"
       }
     },
+    "emil-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793804678,
+        "narHash": "sha256-t4C0elpHD7G8iphqh2htk6ony0s0Hvh5aG1AwxzJhE8=",
+        "owner": "emilkowalski",
+        "repo": "skills",
+        "rev": "c8a79627b59d72d764d6ab6f2c87c09a48169833",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emilkowalski",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "find-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793749366,
+        "narHash": "sha256-V4T+uKBm7Fe5vU5X/z6gzzsBAwlLh2YGxCZYctPxYdQ=",
+        "owner": "vercel-labs",
+        "repo": "skills",
+        "rev": "9197d919034d19010ae303cf96bf19ad087dd4be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vercel-labs",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "firecrawl-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792366790,
+        "narHash": "sha256-YPNr2NpDk51EzliKChK729A0EbClGn0uKHWt/qMgKTE=",
+        "owner": "firecrawl",
+        "repo": "firecrawl-workflows",
+        "rev": "d2a986240f9d786ae54fc33fcfd9ad37308e9cc3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "firecrawl",
+        "repo": "firecrawl-workflows",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -293,6 +393,22 @@
         "url": "https://flakehub.com/f/cachix/git-hooks.nix/0.1.941"
       }
     },
+    "hallmark-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793792245,
+        "narHash": "sha256-2zfT84pg8+0eNajCHVL1CjsJ7z+S6r4cmq6+gdlc5wE=",
+        "owner": "nutlope",
+        "repo": "hallmark",
+        "rev": "de4999e0cd7a7a41df0b4e6903fa02fe9f1492a8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nutlope",
+        "repo": "hallmark",
+        "type": "github"
+      }
+    },
     "helix": {
       "inputs": {
         "nixpkgs": "nixpkgs_4",
@@ -353,6 +469,22 @@
         "type": "github"
       }
     },
+    "improve-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789212568,
+        "narHash": "sha256-czQV2LzhVddiT6kz0Wf3z+hHqGBgl4Zh/qw6hN3qEQw=",
+        "owner": "shadcn",
+        "repo": "improve",
+        "rev": "cac56e1ebd3c279aa9153616cfeac7b174ab90f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shadcn",
+        "repo": "improve",
+        "type": "github"
+      }
+    },
     "machinereport": {
       "inputs": {
         "nixpkgs": [
@@ -370,6 +502,22 @@
       "original": {
         "owner": "birkhofflee",
         "repo": "machinereport",
+        "type": "github"
+      }
+    },
+    "mattpocock-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793456610,
+        "narHash": "sha256-3vhd77xfZjKUYJsIwPFevIZPUAzUgZXr0RYj5NQrBwk=",
+        "owner": "mattpocock",
+        "repo": "skills",
+        "rev": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattpocock",
+        "repo": "skills",
         "type": "github"
       }
     },
@@ -696,6 +844,22 @@
         "type": "github"
       }
     },
+    "paper-search-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790921798,
+        "narHash": "sha256-KyAGr1CuBsJeM+H4Ex5knD1fL0A1h7yKO9qVO7fDiIg=",
+        "owner": "openags",
+        "repo": "paper-search-mcp",
+        "rev": "cab1b5cc276a0cd004a0044003926a6440088049",
+        "type": "github"
+      },
+      "original": {
+        "owner": "openags",
+        "repo": "paper-search-mcp",
+        "type": "github"
+      }
+    },
     "rex": {
       "inputs": {
         "nixpkgs": [
@@ -715,16 +879,25 @@
     },
     "root": {
       "inputs": {
+        "academic-research-skills": "academic-research-skills",
         "agenix": "agenix",
+        "agent-skills": "agent-skills",
         "apex-discord-bot": "apex-discord-bot",
         "claude-code-nix": "claude-code-nix",
+        "cloudflare-skills": "cloudflare-skills",
         "deploy-rs": "deploy-rs",
         "determinate": "determinate",
         "disko": "disko",
+        "emil-skills": "emil-skills",
+        "find-skills": "find-skills",
+        "firecrawl-skills": "firecrawl-skills",
+        "hallmark-skills": "hallmark-skills",
         "helix": "helix",
         "home-manager": "home-manager",
         "i915-sriov-dkms": "i915-sriov-dkms",
+        "improve-skills": "improve-skills",
         "machinereport": "machinereport",
+        "mattpocock-skills": "mattpocock-skills",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
         "nixos-anywhere": "nixos-anywhere",
@@ -732,9 +905,12 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
+        "paper-search-mcp": "paper-search-mcp",
         "rex": "rex",
         "secrets": "secrets",
-        "treefmt-nix": "treefmt-nix_2"
+        "seedex-skills": "seedex-skills",
+        "treefmt-nix": "treefmt-nix_2",
+        "vocabulary-skills": "vocabulary-skills"
       }
     },
     "rust-overlay": {
@@ -774,6 +950,22 @@
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/birkhofflee/dotfiles.secret.git"
+      }
+    },
+    "seedex-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1779371566,
+        "narHash": "sha256-0SiCvi8/PQkJQuGTBskQekkNiBrWf/NFJbihOMf4AxA=",
+        "owner": "wishworldbetter",
+        "repo": "seedex-skills",
+        "rev": "00155070fcf4617c9f4f96d54a2e07c40a7995ce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wishworldbetter",
+        "repo": "seedex-skills",
+        "type": "github"
       }
     },
     "systems": {
@@ -862,6 +1054,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vocabulary-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1781039245,
+        "narHash": "sha256-PlDxET+33ov6zukYkO+RBXqJDGxGE6tVgLIrp7E13xg=",
+        "owner": "index-how",
+        "repo": "vocabulary",
+        "rev": "b2d53205a03a6538c394b22f28ea175fdbfb97e3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "index-how",
+        "repo": "vocabulary",
         "type": "github"
       }
     }
