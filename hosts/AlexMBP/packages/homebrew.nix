@@ -5,7 +5,6 @@
     enable = true;
 
     brews = [
-      "mas"
       # "carthage"
       "displayplacer"
       "hopenpgp-tools"
@@ -17,17 +16,14 @@
     casks = [
       "1password"
       "anki"
-      "autodesk-fusion"
       "balenaetcher"
       "betterdisplay"
       "blender"
       "chatgpt"
       "claude"
       "clop"
-      "cmux"
       "cyberduck"
       "deskpad"
-      "discord"
       "dropbox"
       "figma"
       "font-sf-pro"
@@ -54,7 +50,6 @@
       "obsidian"
       "ogdesign-eagle"
       "orbstack"
-      "orion"
       "parsec"
       "quicklook-csv"
       "raycast"
@@ -63,7 +58,6 @@
       "steam"
       "sublime-text"
       "suspicious-package"
-      "teamviewer"
       "telegram"
       "temurin"
       "thaw"
@@ -91,6 +85,7 @@
       "BrightIntosh" = 6452471855;
       "CrystalFetch" = 6454431289;
       "DaisyDisk" = 411643860;
+      "Flighty" = 1358823008;
       "Gifski" = 1351639930;
       "Goodnotes" = 1444383602;
       "Hush" = 1544743900;
