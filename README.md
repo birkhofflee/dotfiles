@@ -10,15 +10,15 @@
 
 My [nix-darwin](https://github.com/nix-darwin/nix-darwin) and NixOS configuration.
 
-My daily driver is macOS because I prefer the Apple desktop environment. There is also a NixOS desktop VM on Proxmox. My homelab server and proxy hosts live in separate repos, and reuse the home configuration from this one.
+My daily driver is macOS because I prefer the Apple desktop environment.
 
 ![Screenshot of fastfetch on M1 Pro running macOS Golden Gate](./docs/screenshot-alexmbp-fastfetch.png)
 
 ## Overview
 
-* [Nix flakes](https://determinate.systems/blog/nix-flakes-explained/) provide a reproducible, pin-exact configuration shared across all machines.
+* [Nix flakes](https://determinate.systems/blog/nix-flakes-explained/) provide a reproducible, pinned configuration shared across all machines.
 * On macOS, [nix-darwin](https://github.com/LnL7/nix-darwin) manages system-level settings and packages declaratively.
-* [home-manager](https://github.com/nix-community/home-manager) manages the user environment (dotfiles, packages, shell) across both macOS and NixOS hosts.
+* [home-manager](https://github.com/nix-community/home-manager) manages the user environment (packages, shell) across both macOS and Linux hosts.
 
 ## Highlights
 
