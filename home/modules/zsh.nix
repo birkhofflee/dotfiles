@@ -341,7 +341,7 @@ in
           # Extend zsh-auto-notify's default ignore list. Must be an array
           # appended after the plugin loads; it only sets its defaults when
           # the variable is empty. Note: `lg` is alias for `lazygit`
-          AUTO_NOTIFY_IGNORE+=(hx tmux bat cat zi lazygit lg e claude)
+          AUTO_NOTIFY_IGNORE+=(nvim hx tmux bat cat zi lazygit lg e claude)
         '';
 
         # This loads at the end of zshrc
