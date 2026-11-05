@@ -47,6 +47,14 @@
     options = "--delete-older-than 30d";
   };
 
+  # Collect garbage mid-build once free space drops below 5 GiB, up to 15 GiB free.
+  # With Determinate's collector off, nothing else reacts to a filling disk between
+  # weekly nix.gc runs.
+  nix.settings = {
+    min-free = 5 * 1024 * 1024 * 1024;
+    max-free = 15 * 1024 * 1024 * 1024;
+  };
+
   # Determinate Nixd cannot prune generations, and Determinate asks you to turn its
   # collector off when running your own. It only reads this file at startup.
   environment.etc."determinate/config.json".text = builtins.toJSON {
