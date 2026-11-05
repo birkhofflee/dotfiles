@@ -1,4 +1,4 @@
-{ ... }:
+_:
 
 # https://macos-defaults.com/
 # The trick to get those configuration keys:

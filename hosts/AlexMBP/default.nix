@@ -6,7 +6,6 @@
 
 let
   username = currentSystemUser;
-  hostname = "AlexMBP";
 in
 {
   system.primaryUser = "${username}";
@@ -20,7 +19,7 @@ in
     ../shared-nix-settings.nix
     ../common-system-packages.nix
 
-    (import ./os-settings { inherit hostname; })
+    ./os-settings
     ./packages/homebrew.nix
     ./ssh-config.nix
   ];
