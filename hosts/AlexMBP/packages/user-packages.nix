@@ -29,6 +29,7 @@ in
     pkg-config # https://www.freedesktop.org/wiki/Software/pkg-config
     wasm-pack # https://github.com/rustwasm/wasm-pack
     icu77 # https://icu.unicode.org
+    typst # https://github.com/typst/typst
 
     # Code quality
     yamllint # https://github.com/adrienverge/yamllint
@@ -41,26 +42,22 @@ in
     bash-language-server # https://github.com/bash-lsp/bash-language-server
     cmake-language-server # https://github.com/regen100/cmake-language-server
     vscode-css-languageserver # https://github.com/microsoft/vscode (css, scss)
-    beam28Packages.elixir-ls # https://github.com/elixir-lsp/elixir-ls
     gopls # https://pkg.go.dev/golang.org/x/tools/gopls (go)
     graphql-language-service-cli # https://github.com/graphql/graphiql
     docker-language-server # https://github.com/microsoft/compose-language-service (dockerfile, compose)
     terraform-ls # https://github.com/hashicorp/terraform-ls (hcl)
     superhtml # https://github.com/kristoff-it/superhtml (html)
-    jdt-language-server # https://projects.eclipse.org/projects/eclipse.jdt.ls (java)
     typescript-language-server # https://github.com/typescript-language-server/typescript-language-server (js, ts, tsx)
     jq-lsp # https://github.com/wader/jq-lsp
     vscode-json-languageserver # https://github.com/microsoft/vscode (json)
-    kotlin-language-server # https://github.com/fwcd/kotlin-language-server
     texlab # https://github.com/latex-lsp/texlab (latex)
-    typst # https://github.com/typst/typst
+    tinymist # https://github.com/Myriad-Dreamin/tinymist (typst)
     lua-language-server # https://github.com/LuaLS/lua-language-server
     marksman # https://github.com/artempyanykh/marksman (markdown)
     nil # https://github.com/oxalica/nil (nix)
     perlnavigator # https://github.com/bscan/PerlNavigator
     intelephense # https://intelephense.com (php)
     ruff # https://github.com/astral-sh/ruff (python linter/formatter)
-    R # https://www.r-project.org
     ruby-lsp # https://github.com/Shopify/ruby-lsp
     lldb # https://lldb.llvm.org (rust debugging, provides lldb-dap for Helix DAP)
     solc # https://github.com/ethereum/solidity
@@ -216,7 +213,7 @@ in
     # CSV / tabular data
     xan # https://github.com/medialab/xan (CSV processing)
     qsv # https://github.com/dathere/qsv (CSV manipulation)
-    visidata # https://www.visidata.org (interactive tabular data TUI)
+    # visidata # https://www.visidata.org (interactive tabular data TUI)
 
     # Text manipulation
     up # https://github.com/akavel/up (interactive pipe builder)
@@ -276,7 +273,6 @@ in
     berkeley-mono-variable # https://berkeleygraphics.com/typefaces/berkeley-mono
     commit-mono-nf # https://commitmono.com
     noto-fonts-cjk-sans-static # https://github.com/notofonts/noto-cjk
-    monaspace # https://monaspace.githubnext.com
     sarasa-gothic # https://github.com/be5invis/Sarasa-Gothic
 
     # ============================================================================
