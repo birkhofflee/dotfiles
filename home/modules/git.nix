@@ -39,7 +39,6 @@ in
 
       core = {
         preloadindex = "yes";
-        editor = "hx";
       };
 
       credential = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {

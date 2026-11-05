@@ -31,7 +31,7 @@ My daily driver is macOS because I prefer the Apple desktop environment. There i
   * [Automatic](home/modules/shell/proxy.zsh) shell proxy propagation from macOS settings
   * [Completion tuning](home/modules/shell/completions.zsh): case-insensitive and partial-word matching (`hx h/m/zs` → `home/modules/zsh.nix`); Tab twice for spelling corrections and approximate matches
 * CLI apps of choice:
-  * Editor: [Helix](https://helix-editor.com/)
+  * Editor: [Neovim](https://neovim.io/) with [LazyVim](https://www.lazyvim.org/)
   * Shell History: [Atuin](https://github.com/atuinsh/atuin)
   * File Manager: [Yazi](https://yazi-rs.github.io/) (invoke with `y` for shell integration)
   * Directory Navigation: [zoxide](https://github.com/ajeetdsouza/zoxide)
