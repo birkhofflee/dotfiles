@@ -149,7 +149,7 @@
 
       # Per-system pkgs, evaluated once per system and shared by every
       # per-system output below.
-      perSystem = genAttrs [ "aarch64-darwin" "aarch64-linux" "x86_64-linux" ] (
+      perSystem = genAttrs [ "aarch64-darwin" "x86_64-linux" ] (
         system:
         let
           pkgs = import inputs.nixpkgs-unstable {
