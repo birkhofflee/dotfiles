@@ -36,6 +36,7 @@ in
 
     bash-language-server # https://github.com/bash-lsp/bash-language-server
     vscode-css-languageserver # https://github.com/microsoft/vscode (css, scss)
+    gopls # https://pkg.go.dev/golang.org/x/tools/gopls (go)
     docker-language-server # https://github.com/microsoft/compose-language-service (dockerfile, compose)
     terraform-ls # https://github.com/hashicorp/terraform-ls (hcl)
     superhtml # https://github.com/kristoff-it/superhtml (html)
