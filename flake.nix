@@ -46,8 +46,6 @@
     git-hooks.inputs.nixpkgs.follows = "nixpkgs-unstable";
     git-hooks.inputs.flake-compat.follows = ""; # only for non-flake users
 
-    nur.url = "github:nix-community/NUR";
-
     # _1password-shell-plugins.url = "github:1Password/shell-plugins";
     helix.url = "github:helix-editor/helix/master";
 
@@ -182,8 +180,6 @@
     in
     {
       overlays = {
-        nur = inputs.nur.overlays.default;
-
         claude-code = inputs.claude-code-nix.overlays.default;
 
         custom-packages = _: prev: {

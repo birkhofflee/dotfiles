@@ -49,10 +49,13 @@
     # stay relative to $HOME — this mirrors upstream's own default expression.
     configPath = "${lib.removePrefix "${config.home.homeDirectory}/" config.xdg.configHome}/mozilla/firefox";
 
-    profiles.default = {
-      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
-        onepassword-password-manager
-      ];
+    profiles.default = { };
+
+    # Installed by policy from addons.mozilla.org, which keeps it current without
+    # pulling in NUR for this one extension.
+    policies.ExtensionSettings."{d634138d-c276-4fc8-924b-40a0ea21d284}" = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/1password-x-password-manager/latest.xpi";
+      installation_mode = "force_installed";
     };
   };
 }

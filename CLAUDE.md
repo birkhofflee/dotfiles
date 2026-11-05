@@ -76,7 +76,6 @@ The repository uses a flake-based architecture defined in `flake.nix`:
 
 - **nixpkgs**: `nixpkgs-unstable` is what every host and `pkgs` use.
 - **Overlays system** (all defined in `flake.nix`, applied via `overlaysList` in `mkSystem`): Provides custom packages
-  - `nur`: Nix User Repository
   - `claude-code`: `claude-code-nix` overlay (tracks latest Claude Code)
   - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
