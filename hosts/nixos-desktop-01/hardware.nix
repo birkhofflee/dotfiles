@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 {
   hardware.enableRedistributableFirmware = lib.mkDefault true;
@@ -37,6 +37,24 @@
     memoryPercent = 75;
     algorithm = "zstd";
   };
+
+  # The 64 GiB store fills up without this, and a full disk stops deploys. Nix
+  # keeps the newest generation older than the cutoff, so a rollback target
+  # survives even when deploys are months apart.
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
+  # Determinate Nixd cannot prune generations, and Determinate asks you to turn its
+  # collector off when running your own. It only reads this file at startup.
+  environment.etc."determinate/config.json".text = builtins.toJSON {
+    garbageCollector.strategy = "disabled";
+  };
+  systemd.services.nix-daemon.restartTriggers = [
+    config.environment.etc."determinate/config.json".text
+  ];
 
   # Periodic TRIM for thin-provisioned PVE storage
   services.fstrim.enable = true;

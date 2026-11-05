@@ -42,6 +42,26 @@ in
       extra-substituters = caches.substituters;
       extra-trusted-public-keys = caches.trusted-public-keys;
     };
+
+    # Its collector cannot prune generations, and Determinate asks you to turn it
+    # off when running your own. See launchd.daemons.nix-gc below.
+    determinateNixd.garbageCollector.strategy = "disabled";
+  };
+
+  # nix.gc.automatic asserts nix.enable, which determinateNix forces off, so this
+  # is the daemon nix-darwin would have generated: Sundays at 03:15, as root.
+  launchd.daemons.nix-gc = {
+    command = "/nix/var/nix/profiles/default/bin/nix-collect-garbage --delete-older-than 30d";
+    serviceConfig = {
+      RunAtLoad = false;
+      StartCalendarInterval = [
+        {
+          Weekday = 7;
+          Hour = 3;
+          Minute = 15;
+        }
+      ];
+    };
   };
 
   environment.shells = with pkgs; [
