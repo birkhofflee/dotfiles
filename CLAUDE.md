@@ -82,7 +82,7 @@ The repository uses a flake-based architecture defined in `flake.nix`:
   - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
-- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `cachix`, `agenix`, `ssh-copy-id`, `deploy-rs`, and `nixfmt-tree`; sets `NH_FLAKE="."`
+- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `cachix`, `attic-client`, `agenix`, `ssh-copy-id`, `deploy-rs`, and `nixfmt-tree`; sets `NH_FLAKE="."`
 - **Formatting**: `nix fmt` (and `just format`) run nixpkgs' `nixfmt-tree`. The `nixfmt` pre-commit hook enforces it, including in `nix flake check`.
 - **Pre-commit hooks** ([git-hooks.nix](https://github.com/cachix/git-hooks.nix), `preCommitCheck` in `flake.nix`): `nixfmt` (RFC 166), `deadnix` and `statix`. Entering the devShell (`direnv` via `.envrc`, or `nix develop`) installs `.git/hooks/pre-commit` and symlinks the gitignored `.pre-commit-config.yaml`; the same hooks run tree-wide as `checks.<system>.pre-commit-check` (`just lint`). statix reads `statix.toml`, which disables only `repeated_keys` (it rejects the dotted `home.packages = …; home.file = …;` style). Use `_:` rather than `{ ... }:` for modules that take no arguments, and drop unused lambda args (e.g. `mkDerivation (finalAttrs: …)` when `finalAttrs` is unused) — deadnix runs with `--fail`. Bypass once with `git commit --no-verify`.
 
@@ -150,6 +150,8 @@ Keep the two lists in sync. `just deploy-*` (deploy-rs `remoteBuild = true`) and
 
 `just cache-darwin` pushes to `birkhoff.cachix.org`, and pushes **darwin** closures only — Linux hosts get no benefit from it.
 
+`just cache-attic` pushes the full darwin closure, private paths and all, to the Attic cache on the `attic` LXC (configured in `~/Documents/Infrastructure/Homelab`). It exists only to bootstrap a new or reinstalled Mac, through the `--option` flags in the README, so it is deliberately in neither substituter list above. The cache is public but reachable only from the LAN and the tailnet. Its retention is 1 year and only downloads count as access: a push skips paths already there, so paths left untouched for a year are dropped, and go back at the next push. Push at least once within that year, or the cache empties.
+
 **`birkhoff.cachix.org` is world-readable and this repo is public.** Anything pushed is published, so pushes must be filtered: the `PRIVATE_PATHS` variable in the `justfile` excludes store paths built from the private `secrets` input (`berkeley-mono`, which is a paid licensed font, and `supercharge`). `commit-mono-nf` is not excluded — it is OFL and fetched from a public GitHub release. Add to `PRIVATE_PATHS` when adding anything else sourced from `secrets`.
 
 Cachix will not serve a narinfo whose closure is incomplete, so filtering makes the toplevel and the home profile unservable while the individual package paths still substitute normally. Also note Cachix has **no CLI or API for deleting store paths** — `cachix remove` only edits nix.conf. Deletion is web-UI-only at app.cachix.org, so treat a push as irreversible.
@@ -195,6 +197,7 @@ just lint                   # Run the pre-commit hooks (nixfmt, deadnix, statix)
 just optimize               # Clean old generations and optimize store (alias: just o)
 just repair                 # Verify and repair Nix store
 just cache-darwin           # Push darwin build artifacts to cachix
+just cache-attic            # Push the full darwin closure to Attic, for bootstrapping a new Mac
 just edit-secret <file.age> # Edit an agenix secret (uses 1Password for identity)
 just rekey                  # Rekey all secrets with the 1Password identity
 ```

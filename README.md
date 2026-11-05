@@ -199,6 +199,14 @@ echo "trusted-users = $USER" | sudo tee -a /etc/nix/nix.custom.conf
 nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --accept-flake-config
 ```
 
+On the home LAN, the first build can download from the self-hosted Attic cache instead, which holds the whole closure as of the last `just cache-attic`. Use this as the last command instead of the one above:
+
+```shell
+nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP -- --accept-flake-config \
+  --option extra-substituters http://192.168.1.4:8080/alexmbp \
+  --option extra-trusted-public-keys alexmbp:/m9B1terMFI2KWozBmSRgv5phXQq5HNvEdaqJGO1a7A=
+```
+
 </details>
 
 <details>

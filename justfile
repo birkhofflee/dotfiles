@@ -150,6 +150,16 @@ cache-darwin:
     | grep -vE '{{PRIVATE_PATHS}}' \
     | {{CACHIX_COMMAND}} push birkhoff
 
+# Unlike cache-darwin this keeps the private paths, because the cache is reachable only from
+# the LAN and the tailnet, and keeps what cache.nixos.org already has, so a bootstrap does not
+# depend on it. Not a daily substituter: see "Binary Caches" in CLAUDE.md.
+
+# Push the full darwin closure to the self-hosted Attic cache, for bootstrapping a new Mac
+[group('cache')]
+cache-attic:
+  nix build '.#darwinConfigurations.AlexMBP.config.system.build.toplevel' --print-out-paths --no-link \
+    | xargs attic push --ignore-upstream-cache-filter alexmbp
+
 # Build Determinate Nix for x86_64-linux on nixos-server-01 and push it to cachix
 [group('cache')]
 cache-determinate:

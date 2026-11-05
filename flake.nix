@@ -317,6 +317,7 @@
                 pkgs.ssh-copy-id
                 pkgs.nh
                 pkgs.cachix
+                pkgs.attic-client
                 pkgs.nixfmt-tree
                 agenix
                 pkgs.deploy-rs
