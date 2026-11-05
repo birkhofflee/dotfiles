@@ -386,7 +386,8 @@ Order matters: home-manager activation scripts use `lib.hm.dag.entryAfter` to en
 ### Shell Configuration
 
 The shell setup uses several specialized files (all under `home/modules/shell/`):
-- `functions.zsh`: Custom functions (impaste, timer, aic, gg, s, nr, ns)
+- `functions.zsh`: Custom functions (impaste, timer, gg, s, nr, ns)
+- `llm.zsh`: `llm` CLI helpers (llm, aic, md), sourced from `home/modules/llm.nix` so hosts that disable that module lose them too
 - `keys.zsh`: Custom Zsh keybindings (Ctrl+U, Alt+Q, Alt+Shift+S, etc.)
 - `fzf.zsh`: fzf-tab configuration with smart previews
 - `proxy.zsh`: Auto-propagated proxy settings from macOS system preferences

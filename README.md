@@ -79,7 +79,7 @@ This is designed to work with default Ghostty macOS keybindings, or the iTerm2 N
 
 ### Utility Functions
 
-Shell functions are defined in [`home/modules/shell/functions.zsh`](home/modules/shell/functions.zsh).
+Shell functions are defined in [`home/modules/shell/functions.zsh`](home/modules/shell/functions.zsh) and [`home/modules/shell/llm.zsh`](home/modules/shell/llm.zsh).
 
 A non-exhaustive list:
 

@@ -24,9 +24,6 @@
   };
 
   home.packages = with pkgs; [
-    # ── Shell & terminal ───────────────────────────────────────────────────
-    glow # render Markdown
-
     # ── Developer tools ────────────────────────────────────────────────────
     just
     git-open # `git open` to open the GitHub page

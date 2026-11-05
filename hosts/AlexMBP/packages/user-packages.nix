@@ -153,7 +153,6 @@ in
     # ============================================================================
 
     viddy # https://github.com/sachaos/viddy (modern watch)
-    glow # https://github.com/charmbracelet/glow (markdown in terminal)
     viu # https://github.com/atanunq/viu (images in terminal)
     termdown # https://github.com/trehn/termdown (countdown timer)
     pop # https://github.com/charmbracelet/pop (email from terminal)

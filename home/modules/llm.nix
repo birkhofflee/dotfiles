@@ -9,6 +9,7 @@ let
 in
 {
   home.packages = [
+    pkgs.glow # shell/llm.zsh renders its output with this
     (pkgs.llm.withPlugins (
       {
         llm-anthropic = true;
@@ -34,6 +35,12 @@ in
 
   # default model for llm CLI
   xdg.configFile."llm/default_model.txt".text = defaultModel;
+
+  programs.zsh.shellAliases.chat = "_llm chat";
+
+  programs.zsh.initContent = ''
+    source "${config.home.homeDirectory}/.shell/llm.zsh"
+  '';
 
   # convert image to markdown
   xdg.configFile."llm/templates/md.yaml".source = ./llm/templates/md.yaml;

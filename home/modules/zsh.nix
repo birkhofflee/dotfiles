@@ -159,7 +159,6 @@ in
           # LLM
           c = "claude";
           mods = "with_llm mods"; # @see https://github.com/charmbracelet/mods
-          chat = "_llm chat";
           files-to-prompt = "uvx files-to-prompt";
 
           # Text processing
