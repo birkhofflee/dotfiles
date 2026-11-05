@@ -17,7 +17,6 @@ in
   };
 
   imports = [
-    ../shared-nix-settings.nix
     ../common-system-packages.nix
 
     ./os-settings

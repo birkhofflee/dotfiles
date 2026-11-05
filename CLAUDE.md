@@ -55,7 +55,7 @@ their next `just sync-dotfiles`.
 │   │   ├── programs/1password.nix # 1Password CLI + GUI (NixOS modules)
 │   │   └── home.nix      # Host-specific home config (imports shared home + 1password, ghostty; firefox)
 │   ├── common-system-packages.nix  # System packages shared across all hosts
-│   └── shared-nix-settings.nix     # Shared Nix daemon settings
+│   └── shared-nix-settings.nix     # Shared Nix daemon settings (NixOS only; the Mac uses determinateNix.customSettings)
 ├── home/                  # Shared home-manager base (imported by every host's home.nix)
 │   ├── default.nix        # Explicit imports of all shared modules + common packages
 │   └── modules/           # All home-manager modules (programs + config files)
@@ -293,7 +293,7 @@ Adding or removing a `transform` or `packages` on an installed skill changes it 
 2. Create `hosts/<hostname>/home.nix` — **required** by mksystem.nix (auto-derived, not configurable). It should import `../../home` for the shared base plus any host-specific modules
 3. Use `currentSystemUser` parameter (provided by mksystem.nix) instead of hardcoding username
 4. Import shared configuration files as needed:
-   - `../shared-nix-settings.nix`: Common Nix daemon settings
+   - `../shared-nix-settings.nix`: Common Nix daemon settings (NixOS only)
    - `../common-system-packages.nix`: Common system packages
 5. Add to `flake.nix`:
    ```nix
