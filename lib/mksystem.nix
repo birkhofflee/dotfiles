@@ -81,7 +81,6 @@ systemFunc rec {
     # better based on these values.
     {
       config._module.args = {
-        currentSystem = system;
         currentSystemName = name;
         currentSystemUser = user;
         inherit inputs;

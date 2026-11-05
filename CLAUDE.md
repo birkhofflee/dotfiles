@@ -96,7 +96,7 @@ The `lib/mksystem.nix` helper abstracts away the differences between Darwin and 
 - Applying overlays and nixpkgs configuration
 - Loading home-manager from `hosts/<hostname>/home.nix` (auto-derived; not configurable)
 - Integrating nix-index-database, agenix, and Determinate Nix
-- Passing special arguments to modules (`currentSystem`, `currentSystemName`, `currentSystemUser`, `inputs`, `hasDesktop`)
+- Passing special arguments to modules (`currentSystemName`, `currentSystemUser`, `inputs`, `hasDesktop`)
 
 ### Home Configuration (`home/`)
 
