@@ -57,7 +57,7 @@ switch:
 # Switch nixos-desktop-01 remotely via nh os switch (builds on nixos-server-01)
 [group('homelab')]
 switch-nixos-desktop:
-  {{NO_SSH_MUX}} nh os switch -H nixos-desktop-01 --accept-flake-config --target-host root@nixos-desktop-01 --build-host nixos-server-01 -e passwordless
+  {{NO_SSH_MUX}} nh os switch -H nixos-desktop-01 --accept-flake-config --target-host ale@nixos-desktop-01 --build-host nixos-server-01 -e passwordless
 
 # cache-determinate runs first, not last. It used to hang off `deploy-server`,
 # which is gone now that nixos-server-01 is configured from the Homelab repo —

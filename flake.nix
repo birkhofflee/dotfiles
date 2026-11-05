@@ -275,7 +275,7 @@
       deploy.nodes.nixos-desktop-01 = {
         hostname = "nixos-desktop-01";
         profiles.system = {
-          sshUser = "root";
+          sshUser = "ale";
           user = "root";
           remoteBuild = true;
           path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-desktop-01;
