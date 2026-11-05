@@ -41,9 +41,6 @@
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
     # Declarative pre-commit hooks (nixfmt, deadnix, statix); see `checks` below
     git-hooks.url = "github:cachix/git-hooks.nix";
     git-hooks.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -152,7 +149,7 @@
         inherit inputs;
       };
 
-      # Per-system pkgs/treefmt, evaluated once per system and shared by every
+      # Per-system pkgs, evaluated once per system and shared by every
       # per-system output below.
       perSystem = genAttrs [ "aarch64-darwin" "aarch64-linux" "x86_64-linux" ] (
         system:
@@ -164,13 +161,6 @@
         in
         {
           inherit system pkgs;
-          treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
-            projectRootFile = "flake.nix";
-            # Same formatter the pre-commit hook enforces, so `nix fmt` fixes
-            # whatever the hook rejects.
-            programs.nixfmt.enable = true;
-          };
-
           # Tree-wide validation and linting. Runs as a git pre-commit hook
           # (installed by the devShell, i.e. on `direnv`/`nix develop`) and as
           # `checks.<system>.pre-commit-check` in `nix flake check`.
@@ -319,12 +309,13 @@
           nixos-desktop-01 = mkNode "nixos-desktop-01";
         };
 
-      formatter = eachSystem ({ treefmtEval, ... }: treefmtEval.config.build.wrapper);
+      # Same formatter the pre-commit hook enforces, so `nix fmt` fixes whatever
+      # the hook rejects.
+      formatter = eachSystem ({ pkgs, ... }: pkgs.nixfmt-tree);
 
       checks = eachSystem (
-        { treefmtEval, preCommitCheck, ... }:
+        { preCommitCheck, ... }:
         {
-          formatting = treefmtEval.config.build.check self;
           pre-commit-check = preCommitCheck;
         }
       );
@@ -333,7 +324,6 @@
         {
           system,
           pkgs,
-          treefmtEval,
           preCommitCheck,
         }:
         {
@@ -353,7 +343,7 @@
                 pkgs.just
                 pkgs.ssh-copy-id
                 pkgs.nh
-                treefmtEval.config.build.wrapper
+                pkgs.nixfmt-tree
                 agenix
                 pkgs.deploy-rs
               ]

@@ -38,7 +38,7 @@ default:
   @echo ""
   @just --list
 
-# Formats the entire repo using treefmt-nix
+# Formats the entire repo using nixfmt-tree
 [group('code-quality')]
 format:
   nix fmt

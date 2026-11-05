@@ -82,8 +82,8 @@ The repository uses a flake-based architecture defined in `flake.nix`:
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
   - `tweaks`: Temporary per-package overrides (currently empty — the place to pin/patch a package short-term)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
-- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `ssh-copy-id`, `deploy-rs`, and the treefmt wrapper; sets `NH_FLAKE="."`
-- **Formatting**: `nix fmt` (and `just format`) run a treefmt-nix wrapper with `nixfmt` enabled. `checks.formatting` enforces it in CI/`nix flake check`.
+- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `ssh-copy-id`, `deploy-rs`, and `nixfmt-tree`; sets `NH_FLAKE="."`
+- **Formatting**: `nix fmt` (and `just format`) run nixpkgs' `nixfmt-tree`. The `nixfmt` pre-commit hook enforces it, including in `nix flake check`.
 - **Pre-commit hooks** ([git-hooks.nix](https://github.com/cachix/git-hooks.nix), `preCommitCheck` in `flake.nix`): `nixfmt` (RFC 166), `deadnix` and `statix`. Entering the devShell (`direnv` via `.envrc`, or `nix develop`) installs `.git/hooks/pre-commit` and symlinks the gitignored `.pre-commit-config.yaml`; the same hooks run tree-wide as `checks.<system>.pre-commit-check` (`just lint`). statix reads `statix.toml`, which disables only `repeated_keys` (it rejects the dotted `home.packages = …; home.file = …;` style). Use `_:` rather than `{ ... }:` for modules that take no arguments, and drop unused lambda args (e.g. `mkDerivation (finalAttrs: …)` when `finalAttrs` is unused) — deadnix runs with `--fail`. Bypass once with `git commit --no-verify`.
 
 ### Configuration Philosophy
@@ -190,7 +190,7 @@ just deploy-all             # Deploy all NixOS hosts via deploy-rs (only the des
 just build-desktop-image    # Build Proxmox VMA for nixos-desktop-01 (runs on nixos-server-01)
 just update                 # Update all flake inputs and commit lock file (alias: just u)
 just update-input <name>    # Update specific flake input (alias: just ui)
-just format                 # Format the whole repo via treefmt-nix (nix fmt)
+just format                 # Format the whole repo via nixfmt-tree (nix fmt)
 just lint                   # Run the pre-commit hooks (nixfmt, deadnix, statix) on every file
 just optimize               # Clean old generations and optimize store (alias: just o)
 just repair                 # Verify and repair Nix store

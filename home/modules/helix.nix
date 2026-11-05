@@ -1,16 +1,12 @@
 {
   pkgs,
+  lib,
   inputs,
   config,
   ...
 }:
 
 let
-  treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
-    projectRootFile = "flake.nix";
-    programs.nixfmt.enable = true;
-  };
-
   # Runs a command in a Rex floating pane and waits for it to exit.
   # usage: rex-float LABEL COMMAND [ARGS...]
   rexFloat = pkgs.writeShellApplication {
@@ -39,7 +35,7 @@ in
         {
           name = "nix";
           auto-format = true;
-          formatter.command = "${treefmtEval.config.programs.nixfmt.package}/bin/nixfmt";
+          formatter.command = lib.getExe pkgs.nixfmt;
         }
         {
           name = "markdown";

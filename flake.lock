@@ -726,7 +726,6 @@
         "secrets": "secrets",
         "security-audit-skill": "security-audit-skill",
         "seedex-skills": "seedex-skills",
-        "treefmt-nix": "treefmt-nix",
         "tw-formal-writing-skills": "tw-formal-writing-skills",
         "vocabulary-skills": "vocabulary-skills"
       }
@@ -829,26 +828,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "treefmt-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1791885023,
-        "narHash": "sha256-C3alQ2MEt0zVrUSho5NUDo3jmhbff72++bfwoqT9Omo=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "0d6d739a833ba9a9c93034862e4a7b061a062a1c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
         "type": "github"
       }
     },
