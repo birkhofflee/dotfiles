@@ -22,8 +22,7 @@ let
 
   # NixOS vs nix-darwin functions
   systemFunc = if isDarwin then inputs.nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
-  home-manager =
-    if isDarwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
+  platformModules = if isDarwin then "darwinModules" else "nixosModules";
 in
 systemFunc {
   inherit system;
@@ -31,9 +30,7 @@ systemFunc {
   specialArgs = { inherit inputs; };
 
   modules = [
-    # Apply our overlays. Overlays are keyed by system type so we have
-    # to go through and apply our system type. We do this first so
-    # the overlays are available globally.
+    # Apply our overlays. We do this first so the overlays are available globally.
     { nixpkgs.overlays = overlays; }
 
     # Allow unfree packages.
@@ -43,7 +40,7 @@ systemFunc {
     machineConfig
 
     # Home-manager integration
-    home-manager.home-manager
+    inputs.home-manager.${platformModules}.home-manager
     {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
@@ -57,25 +54,15 @@ systemFunc {
 
     # nix-index-database integration
     # This gives `, <command>` that run commands without installation
-    inputs.nix-index-database.${if isDarwin then "darwinModules" else "nixosModules"}.nix-index
+    inputs.nix-index-database.${platformModules}.nix-index
     { programs.nix-index-database.comma.enable = true; }
 
     # agenix integration
-    (if isDarwin then inputs.agenix.darwinModules.default else inputs.agenix.nixosModules.default)
-    {
-      home-manager.sharedModules = [
-        inputs.agenix.homeManagerModules.age
-        inputs.agent-skills.homeManagerModules.default
-      ];
-    }
+    inputs.agenix.${platformModules}.default
+    { home-manager.sharedModules = [ inputs.agenix.homeManagerModules.age ]; }
 
     # Determinate Nix integration
-    (
-      if isDarwin then
-        inputs.determinate.darwinModules.default
-      else
-        inputs.determinate.nixosModules.default
-    )
+    inputs.determinate.${platformModules}.default
 
     # We expose some extra arguments so that our modules can parameterize
     # better based on these values.

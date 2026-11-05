@@ -133,13 +133,6 @@
 
       overlaysList = attrValues self.overlays;
 
-      nixpkgsDefaults = {
-        config = {
-          allowUnfree = true;
-        };
-        overlays = overlaysList;
-      };
-
       # Helper function to create system configurations
       mkSystem = import ./lib/mksystem.nix {
         nixpkgs = inputs.nixpkgs-unstable;
@@ -154,7 +147,8 @@
         let
           pkgs = import inputs.nixpkgs-unstable {
             inherit system;
-            inherit (nixpkgsDefaults) config overlays;
+            config.allowUnfree = true;
+            overlays = overlaysList;
           };
         in
         {
@@ -229,10 +223,7 @@
       # mkSystem can't be used. Apply with:
       #   home-manager switch --flake .#ale@wsl
       homeConfigurations."ale@wsl" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = import inputs.nixpkgs-unstable {
-          system = "x86_64-linux";
-          inherit (nixpkgsDefaults) config overlays;
-        };
+        inherit (perSystem.x86_64-linux) pkgs;
         extraSpecialArgs = {
           inherit inputs;
           currentSystemUser = "ale";
@@ -243,7 +234,6 @@
           # mkSystem normally adds these at the system level
           inputs.nix-index-database.homeModules.nix-index
           inputs.rex.homeManagerModules.default
-          inputs.agent-skills.homeManagerModules.default
           {
             # Personal Rex server as a systemd user service (linger is on, so
             # it starts at boot), reachable over its own embedded tailnet node.

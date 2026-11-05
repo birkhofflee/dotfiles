@@ -21,6 +21,10 @@ let
   '';
 in
 {
+  # Imported here rather than by each host, so every consumer of the shared home
+  # base (mkSystem, standalone WSL, the Homelab and Proxy repos) gets the option.
+  imports = [ inputs.agent-skills.homeManagerModules.default ];
+
   # firecrawl-research-papers drives the Research Index through this CLI, which
   # reads FIRECRAWL_API_KEY from secrets/mcp-env.age.
   home.packages = [
