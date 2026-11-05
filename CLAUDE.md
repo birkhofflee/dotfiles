@@ -172,7 +172,7 @@ The build and the push both run on nixos-server-01 — nothing is copied back to
 
 The remote command runs `bash -eo pipefail` without `-u`: NixOS's `/etc/bashrc` is sourced for non-interactive shells and is not `set -u` clean.
 
-Garbage collection is ours, not Determinate Nixd's. Its collector cannot delete old generations, which is what filled `nixos-desktop-01`'s disk, so each host runs a weekly `--delete-older-than` job and sets `garbageCollector.strategy = "disabled"`, as [Determinate advises](https://docs.determinate.systems/determinate-nix/best-practices/) when running your own. On macOS that job is a `launchd.daemons` entry, because `nix.gc.automatic` requires `nix.enable`. There is no urgent mode with its collector off.
+Garbage collection is ours, not Determinate Nixd's. Its collector cannot delete old generations, and `nixos-desktop-01`'s disk reached 100% with it running, so each host runs a weekly `--delete-older-than` job and sets `garbageCollector.strategy = "disabled"`, as [Determinate advises](https://docs.determinate.systems/determinate-nix/best-practices/) when running your own. On macOS that job is a `launchd.daemons` entry, because `nix.gc.automatic` requires `nix.enable`. There is no urgent mode with its collector off.
 
 Do not add `inputs.determinate.inputs.nixpkgs.follows` — upstream warns it causes cache misses for FlakeHub Cache artifacts.
 
