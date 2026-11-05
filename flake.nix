@@ -204,9 +204,6 @@
             )
           ];
         };
-
-        # Temporary overlays
-        tweaks = _: _: { };
       };
 
       darwinConfigurations = {

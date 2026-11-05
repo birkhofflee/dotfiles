@@ -79,7 +79,6 @@ The repository uses a flake-based architecture defined in `flake.nix`:
   - `claude-code`: `claude-code-nix` overlay (tracks latest Claude Code)
   - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
-  - `tweaks`: Temporary per-package overrides (currently empty — the place to pin/patch a package short-term)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
 - **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `ssh-copy-id`, `deploy-rs`, and `nixfmt-tree`; sets `NH_FLAKE="."`
 - **Formatting**: `nix fmt` (and `just format`) run nixpkgs' `nixfmt-tree`. The `nixfmt` pre-commit hook enforces it, including in `nix flake check`.
