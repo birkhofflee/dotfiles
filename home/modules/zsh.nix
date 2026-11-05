@@ -131,8 +131,8 @@ in
           tree = "ls --tree --level 3";
           lr = "ll -R";
           lx = "ll -XB";
-          lc = "lt -c";
-          lu = "lt -u";
+          lc = "ll -s changed --changed";
+          lu = "ll -s accessed --accessed";
 
           # zmv lets you batch rename (or copy or link) files by using pattern matching.
           # https://zsh.sourceforge.io/Doc/Release/User-Contributions.html#index-zmv
@@ -178,7 +178,7 @@ in
           rn = "date; echo && cal";
           oggi = "echo -n \"$(date '+%Y-%m-%d')\"";
           ds-destroy = "${pkgs.fd}/bin/fd -H '^\.DS_Store$' -tf -X rm";
-          clear_history = "> $ZDOTDIR/.zsh_history ; exec $SHELL -l";
+          clear_history = ">! $ZDOTDIR/.zsh_history ; exec $SHELL -l";
           help = "${pkgs.tlrc}/bin/tldr";
           du = "${pkgs.ncdu}/bin/ncdu --color dark -rr -x --exclude .git --exclude node_modules";
           gist = "${pkgs.gh}/bin/gh gist create";
