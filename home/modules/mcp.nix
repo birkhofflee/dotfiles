@@ -1,20 +1,10 @@
-# Shared MCP servers, consumed by claude-code and opencode via
-# their respective enableMcpIntegration options.
+# Shared MCP servers, consumed by claude-code via enableMcpIntegration.
 #
-# Servers requiring auth tokens are declared per-tool below instead of in
-# programs.mcp, because headers are copied verbatim and each client expands
-# environment variables with a different syntax. The tokens live in
-# secrets/mcp-env.age (agenix), decrypted to ~/.config/mcp/secrets.env on
-# AlexMBP and exported by zsh.
+# Servers requiring auth tokens are declared on claude-code below instead of in
+# programs.mcp, because headers are copied verbatim and need Claude Code's
+# variable syntax. The tokens live in secrets/mcp-env.age (agenix), decrypted to
+# ~/.config/mcp/secrets.env on AlexMBP and exported by zsh.
 { lib, pkgs, ... }:
-let
-  secretServers = mkEnvRef: {
-    github = {
-      url = "https://api.githubcopilot.com/mcp";
-      headers.Authorization = "Bearer ${mkEnvRef "GITHUB_MCP_PAT"}";
-    };
-  };
-in
 {
   programs.mcp = {
     enable = true;
@@ -29,12 +19,10 @@ in
   };
 
   # Claude Code expands `${VAR}` in .mcp.json at launch
-  programs.claude-code.mcpServers = secretServers (var: "\${${var}}");
-
-  # opencode expands `{env:VAR}` in opencode.json at launch
-  programs.opencode.settings.mcp = lib.mapAttrs (_: server: { type = "remote"; } // server) (
-    secretServers (var: "{env:${var}}")
-  );
+  programs.claude-code.mcpServers.github = {
+    url = "https://api.githubcopilot.com/mcp";
+    headers.Authorization = "Bearer \${GITHUB_MCP_PAT}";
+  };
 
   programs.zsh.initContent = ''
     # MCP auth tokens (agenix, see secrets/mcp-env.age)

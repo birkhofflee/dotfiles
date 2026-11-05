@@ -32,7 +32,6 @@
     ./modules/nano.nix
     ./modules/neovim.nix
     ./modules/nodejs.nix
-    ./modules/opencode.nix
     ./modules/scripts.nix
     ./modules/ssh.nix
     ./modules/starship.nix

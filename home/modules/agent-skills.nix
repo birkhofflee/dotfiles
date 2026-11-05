@@ -5,7 +5,7 @@
 # destination, which would remove Rex's stub (`rex skill setup` owns
 # */skills/rex) and home-manager's plugins in .claude/skills.
 #
-# ~/.agents/skills is read by Codex, OpenCode, Cursor and Gemini CLI; Claude
+# ~/.agents/skills is read by Codex, Cursor and Gemini CLI; Claude
 # Code only reads ~/.claude/skills.
 { inputs, pkgs, ... }:
 let
