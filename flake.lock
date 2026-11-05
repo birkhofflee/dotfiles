@@ -387,26 +387,6 @@
         "type": "github"
       }
     },
-    "i915-sriov-dkms": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1793198614,
-        "narHash": "sha256-nL3TGK/VpHHmgry3dcRzb6+unZR/fKhSQvRuK1h9ykM=",
-        "owner": "strongtz",
-        "repo": "i915-sriov-dkms",
-        "rev": "3e820c086b38be0feb2c4de36ace53533c20feae",
-        "type": "github"
-      },
-      "original": {
-        "owner": "strongtz",
-        "repo": "i915-sriov-dkms",
-        "type": "github"
-      }
-    },
     "improve-skills": {
       "flake": false,
       "locked": {
@@ -658,7 +638,6 @@
         "hallmark-skills": "hallmark-skills",
         "helix": "helix",
         "home-manager": "home-manager",
-        "i915-sriov-dkms": "i915-sriov-dkms",
         "improve-skills": "improve-skills",
         "mattpocock-skills": "mattpocock-skills",
         "nix-darwin": "nix-darwin",

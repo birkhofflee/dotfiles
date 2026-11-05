@@ -47,7 +47,7 @@ their next `just sync-dotfiles`.
 │   │   └── packages/     # homebrew.nix + user-packages.nix
 │   ├── nixos-desktop-01/ # Proxmox VM (GUI desktop)
 │   │   ├── default.nix   # Entry point: imports sub-modules + sets stateVersion
-│   │   ├── hardware.nix  # Boot, proxmox VM config, zramSwap, enableHardwareAccel option
+│   │   ├── hardware.nix  # Boot, proxmox VM config, zramSwap
 │   │   ├── networking.nix # Hostname, firewall, tailscale, openssh, SSH host key pre-seeding
 │   │   ├── desktop.nix   # GNOME/GDM, dconf HiDPI, GNOME Remote Desktop service, sleep targets
 │   │   ├── users.nix     # Users, fonts, system packages, timezone, sudo, i18n

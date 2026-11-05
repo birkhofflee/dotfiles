@@ -58,9 +58,6 @@
     claude-code-nix.url = "github:sadjow/claude-code-nix";
     claude-code-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    i915-sriov-dkms.url = "github:strongtz/i915-sriov-dkms";
-    i915-sriov-dkms.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
     # Prebuilt Rex (https://www.superlogical.com/rex/docs/linux/installation).
     # There's no stable channel yet; snapshot is what the Mac app tracks.
     rex.url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";

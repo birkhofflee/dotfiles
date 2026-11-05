@@ -1,13 +1,10 @@
 {
-  config,
   pkgs,
-  lib,
   currentSystemUser,
   ...
 }:
 
 let
-  cfg = config.nixos-desktop-01;
   keys = import ../../lib/keys.nix;
 in
 {
@@ -47,14 +44,5 @@ in
     ];
   };
 
-  environment.systemPackages =
-    with pkgs;
-    [
-      xclip
-    ]
-    ++ lib.optionals cfg.enableHardwareAccel [
-      libva-utils # vainfo
-      pciutils # lspci
-      intel-gpu-tools # intel_gpu_top, etc.
-    ];
+  environment.systemPackages = [ pkgs.xclip ];
 }
