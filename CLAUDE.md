@@ -270,7 +270,7 @@ Skills are managed by [agent-skills-nix](https://github.com/Kyure-A/agent-skills
 
 1. **Upstream skills**: add a `flake = false` input to `flake.nix`, declare it under `sources`, and select it with `skills.enableAll` or `skills.enable`. `just update` moves them with every other input.
 2. **Your own skills**: add a source with `path = ./skills`, then keep them in `home/modules/skills/<name>/SKILL.md`.
-3. **Suites that need their repo root** (commands, agents, hooks, shared files): use `programs.claude-code.plugins` with a `flake = false` input, as `academic-research-skills` does. agent-skills-nix copies only the skill directory.
+3. **Suites that need their repo root** (commands, agents, hooks, shared files): add a `flake = false` input and link it with `home.file.".claude/skills/<name>".source`, as `academic-research-skills` does. agent-skills-nix copies only the skill directory. Avoid `programs.claude-code.plugins` for a plugin whose manifest declares component paths (`skills`, `commands`, `monitors` and so on) or that ships a hooks module: it wraps the plugin in per-entry symlinks, and Claude Code refuses those paths with "Path escapes plugin directory". Run `claude plugin list` to see this, since a normal session stays silent about it. Tracked in [home-manager#9906](https://github.com/nix-community/home-manager/issues/9906).
 
 The targets deliberately use the `link` structure. The tree structures run `rsync --delete` on the destination, which would remove two things that live alongside the managed skills: Rex's stub in `~/.claude/skills/rex` and `~/.agents/skills/rex` (owned by `rex skill setup`), and home-manager's plugins in `~/.claude/skills`, including `claude-code-home-manager`, which carries the MCP servers.
 

@@ -31,7 +31,13 @@ in
   # Installed as a plugin, not through agent-skills: its skills read shared/ and
   # scripts/ at the repo root, and its commands, agents and hooks are wired by
   # the plugin manifest.
-  programs.claude-code.plugins.academic-research-skills = inputs.academic-research-skills;
+  #
+  # Linked directly rather than through programs.claude-code.plugins, which wraps
+  # the plugin in a directory of per-entry symlinks. Claude Code then skips every
+  # skill in the manifest with "Path escapes plugin directory", because each one
+  # resolves outside that wrapper. Can move back once this is fixed:
+  # https://github.com/nix-community/home-manager/issues/9906
+  home.file.".claude/skills/academic-research-skills".source = inputs.academic-research-skills;
 
   programs.agent-skills = {
     enable = true;
