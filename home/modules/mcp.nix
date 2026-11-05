@@ -6,7 +6,7 @@
 # environment variables with a different syntax. The tokens live in
 # secrets/mcp-env.age (agenix), decrypted to ~/.config/mcp/secrets.env on
 # AlexMBP and exported by zsh.
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   secretServers = mkEnvRef: {
     github = {
@@ -27,6 +27,8 @@ in
       exa.url = "https://mcp.exa.ai/mcp";
       alphaxiv.url = "https://api.alphaxiv.org/mcp/v1";
       consensus.url = "https://mcp.consensus.app/mcp";
+      # Local stdio server: NixOS/Home Manager/nix-darwin option and package lookup
+      nixos.command = lib.getExe pkgs.mcp-nixos;
     };
   };
 
