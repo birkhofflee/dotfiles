@@ -61,12 +61,10 @@ their next `just sync-dotfiles`.
 │       └── *.nix          # Per-program configs (git, helix, zsh, atuin, etc.)
 ├── packages/              # Custom Nix derivations (exposed via custom-packages / python-llm-plugins overlays)
 │   ├── age-with-plugins.nix           # age + age-plugin-1p wrapper with umask fix
-│   ├── nixos-anywhere-patched.nix     # nixos-anywhere with local patches (see patches/)
 │   ├── llm-mlx.nix                    # llm-mlx python package (Darwin only)
 │   ├── fonts/                         # berkeley-mono(-variable) (secrets-sourced), commit-mono-nf (public release)
 │   ├── impbcopy/                      # macOS ObjC tool: copy images to clipboard (used by impaste)
-│   ├── ocr/                           # macOS Swift Vision-framework OCR CLI
-│   └── patches/                       # Patch files applied by the derivations above
+│   └── ocr/                           # macOS Swift Vision-framework OCR CLI
 └── secrets/               # agenix-encrypted secrets
     ├── agenix-rules.nix   # Public key declarations for each secret
     └── *.age              # Encrypted secret files
@@ -76,15 +74,15 @@ their next `just sync-dotfiles`.
 
 The repository uses a flake-based architecture defined in `flake.nix`:
 
-- **nixpkgs**: `nixpkgs-unstable` is what every host and `pkgs` use. `nixpkgs-stable` (25.05-darwin) exists only for `disko` to follow.
+- **nixpkgs**: `nixpkgs-unstable` is what every host and `pkgs` use.
 - **Overlays system** (all defined in `flake.nix`, applied via `overlaysList` in `mkSystem`): Provides custom packages
   - `nur`: Nix User Repository
   - `claude-code`: `claude-code-nix` overlay (tracks latest Claude Code)
-  - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, `nixos-anywhere` (patched), the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
+  - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
   - `tweaks`: Temporary per-package overrides (currently empty — the place to pin/patch a package short-term)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
-- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `nixos-anywhere`, `ssh-copy-id`, `deploy-rs`, and the treefmt wrapper; sets `NH_FLAKE="."`
+- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `ssh-copy-id`, `deploy-rs`, and the treefmt wrapper; sets `NH_FLAKE="."`
 - **Formatting**: `nix fmt` (and `just format`) run a treefmt-nix wrapper with `nixfmt` enabled. `checks.formatting` enforces it in CI/`nix flake check`.
 - **Pre-commit hooks** ([git-hooks.nix](https://github.com/cachix/git-hooks.nix), `preCommitCheck` in `flake.nix`): `nixfmt` (RFC 166), `deadnix` and `statix`. Entering the devShell (`direnv` via `.envrc`, or `nix develop`) installs `.git/hooks/pre-commit` and symlinks the gitignored `.pre-commit-config.yaml`; the same hooks run tree-wide as `checks.<system>.pre-commit-check` (`just lint`). statix reads `statix.toml`, which disables only `repeated_keys` (it rejects the dotted `home.packages = …; home.file = …;` style). Use `_:` rather than `{ ... }:` for modules that take no arguments, and drop unused lambda args (e.g. `mkDerivation (finalAttrs: …)` when `finalAttrs` is unused) — deadnix runs with `--fail`. Bypass once with `git commit --no-verify`.
 
@@ -100,7 +98,6 @@ The `lib/mksystem.nix` helper abstracts away the differences between Darwin and 
 - Loading home-manager from `hosts/<hostname>/home.nix` (auto-derived; not configurable)
 - Integrating nix-index-database, agenix, and Determinate Nix
 - Passing special arguments to modules (`currentSystem`, `currentSystemName`, `currentSystemUser`, `inputs`, `hasDesktop`)
-- Optionally including disko and nixos-facter modules when `nixos-anywhere = true`
 
 ### Home Configuration (`home/`)
 
@@ -230,8 +227,8 @@ After switching, verify services are running correctly and check for any activat
 
 There are no throwaway VM hosts here. `nixos-server-01` is provisioned from
 `~/Documents/Infrastructure/Homelab` (see its
-`docs/deployment-instructions-nixos-server-01.md`). `mkSystem`'s
-`nixos-anywhere = true` path still exists here, but nothing uses it.
+`docs/deployment-instructions-nixos-server-01.md`). Homelab and Proxy carry their
+own `nixos-anywhere` tooling.
 
 The OrbStack *Mac app* is unrelated and managed here: the cask in
 `hosts/AlexMBP/packages/homebrew.nix` and its shell init in
@@ -310,16 +307,9 @@ Adding or removing a `transform` or `packages` on an installed skill changes it 
      user = "ale";
    };
 
-   # For NixOS with nixos-anywhere (disko + nixos-facter)
-   nixosConfigurations.<hostname> = mkSystem "<hostname>" {
-     system = "x86_64-linux";
-     user = "ale";
-     nixos-anywhere = true;
-   };
    ```
-   Note: when `nixos-anywhere = true`, `hosts/<hostname>/facter.json` must exist (generated with `--generate-hardware-config nixos-facter`). mksystem.nix throws if it's missing.
 
-   For Proxmox VM image builds (like `nixos-desktop-01`), no `nixos-anywhere = true` is needed — the host uses `proxmox-image.nix` and a VMA is built via:
+   For Proxmox VM image builds (like `nixos-desktop-01`), the host uses `proxmox-image.nix` and a VMA is built via:
    ```nix
    packages.x86_64-linux.<hostname>-image = self.nixosConfigurations.<hostname>.config.system.build.VMA;
    ```

@@ -24,15 +24,7 @@
   inputs = {
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
-    # For provisioning NixOS machines with nixos-anywhere
-    nixos-anywhere.url = "github:nix-community/nixos-anywhere";
-    nixos-anywhere.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs-stable";
-    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -206,9 +198,6 @@
 
         custom-packages = _: prev: {
           age-with-plugins = prev.callPackage ./packages/age-with-plugins.nix { };
-          nixos-anywhere = prev.callPackage ./packages/nixos-anywhere-patched.nix {
-            nixos-anywhere = inputs.nixos-anywhere.packages.${prev.stdenv.hostPlatform.system}.nixos-anywhere;
-          };
           berkeley-mono = prev.callPackage ./packages/fonts/berkeley-mono.nix { inherit (inputs) secrets; };
           berkeley-mono-variable = prev.callPackage ./packages/fonts/berkeley-mono-variable.nix {
             inherit (inputs) secrets;
@@ -365,7 +354,6 @@
                 pkgs.ssh-copy-id
                 pkgs.nh
                 treefmtEval.config.build.wrapper
-                pkgs.nixos-anywhere
                 agenix
                 pkgs.deploy-rs
               ]
