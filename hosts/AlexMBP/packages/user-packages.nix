@@ -143,7 +143,6 @@ in
     # ============================================================================
 
     mods # https://github.com/charmbracelet/mods
-    # crush
     # ollama
     # aichat
     # gfortran

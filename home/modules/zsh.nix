@@ -161,7 +161,6 @@ in
           mods = "with_llm mods"; # @see https://github.com/charmbracelet/mods
           chat = "_llm chat";
           files-to-prompt = "uvx files-to-prompt";
-          crush = "with_llm crush";
 
           # Text processing
           p = "$PAGER"; # Pager
