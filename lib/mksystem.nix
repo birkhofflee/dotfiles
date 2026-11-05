@@ -25,7 +25,7 @@ let
   home-manager =
     if isDarwin then inputs.home-manager.darwinModules else inputs.home-manager.nixosModules;
 in
-systemFunc rec {
+systemFunc {
   inherit system;
 
   specialArgs = { inherit inputs; };
