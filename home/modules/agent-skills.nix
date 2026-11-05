@@ -53,6 +53,7 @@ in
       mattpocock = sourceInSkills "mattpocock-skills";
       firecrawl = sourceInSkills "firecrawl-skills";
       tw-formal-writing = sourceInSkills "tw-formal-writing-skills";
+      security-audit = sourceInSkills "security-audit-skill";
       paper-search.input = "paper-search-mcp";
     };
 
@@ -68,6 +69,7 @@ in
       "spark" # wishworldbetter/seedex-skills
       "firecrawl-research-papers" # firecrawl/firecrawl-workflows
       "tw-formal-writing" # Imbad0202/tw-formal-writing
+      "security-audit" # cloudflare/security-audit-skill
     ];
 
     skills.explicit = {
