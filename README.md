@@ -10,7 +10,7 @@
 
 My [nix-darwin](https://github.com/nix-darwin/nix-darwin) and NixOS configuration.
 
-My daily driver is macOS because I prefer the Apple desktop environment. There are also a NixOS homelab server (running as a Proxmox VM) and NixOS VM setups mainly for experiments.
+My daily driver is macOS because I prefer the Apple desktop environment. There is also a NixOS desktop VM on Proxmox. My homelab server and proxy hosts live in separate repos, and reuse the home configuration from this one.
 
 ![Screenshot of fastfetch on M1 Pro running macOS Golden Gate](./docs/screenshot-alexmbp-fastfetch.png)
 
@@ -293,7 +293,7 @@ If RDP fails somehow:
 * On macOS, try to use [Thincast Remote Desktop Client](https://thincast.com/en/products/client) instead.
 * SSH to the VM and check status using `sudo grdctl --system`, `ss -tlnp | grep 3389`, `sudo systemctl status gnome-rdp-setup gnome-remote-desktop`
 
-#### 6. Apply config changes after provisioning
+#### 5. Apply config changes after provisioning
 
 ```shell
 just switch-nixos-desktop

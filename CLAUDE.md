@@ -8,7 +8,7 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 
 **Current hosts:**
 - `AlexMBP`: macOS (M1 Pro, Tahoe) - nix-darwin
-- `nixos-desktop-01`: NixOS (x86_64-linux) - Proxmox VM with GUI (GNOME default, Hyprland specialization)
+- `nixos-desktop-01`: NixOS (x86_64-linux) - Proxmox VM with GUI (GNOME)
 
 **Not configured here:** `nixos-server-01` (x86_64-linux, Proxmox VM on
 `homelab-nuc`) moved to `~/Documents/Infrastructure/Homelab`. This repo still
@@ -16,6 +16,15 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 `just cache-determinate` builds and pushes there — but no longer defines it.
 
 **Current user:** `ale`
+
+**Downstream consumers:** `~/Documents/Infrastructure/Homelab` and
+`~/Documents/Infrastructure/Proxy` take this flake as their `dotfiles` input.
+They import `home/`, `hosts/shared-nix-settings.nix` and
+`hosts/common-system-packages.nix`, apply the whole overlay set, `follows` this
+flake's inputs, and reach for its inputs by name through
+`inputs.dotfiles.inputs // inputs` in their own `lib/mksystem.nix`. Search both
+repos before removing or renaming any of these: nothing fails here, they fail at
+their next `just sync-dotfiles`.
 
 ## Architecture
 
@@ -34,14 +43,15 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   │   ├── age-identity.txt  # 1Password age plugin identity for decryption
 │   │   ├── ssh-config.nix    # agenix HM module config + secret declarations
 │   │   └── packages/     # homebrew.nix + user-packages.nix
-│   │                     # (nixos-server-01 lives in the Homelab repo now)
 │   ├── nixos-desktop-01/ # Proxmox VM (GUI desktop)
 │   │   ├── default.nix   # Entry point: imports sub-modules + sets stateVersion
 │   │   ├── hardware.nix  # Boot, proxmox VM config, zramSwap, enableHardwareAccel option
 │   │   ├── networking.nix # Hostname, firewall, tailscale, openssh, SSH host key pre-seeding
 │   │   ├── desktop.nix   # GNOME/GDM, dconf HiDPI, GNOME Remote Desktop service, sleep targets
 │   │   ├── users.nix     # Users, fonts, system packages, timezone, sudo, i18n
-│   │   └── home.nix      # Host-specific home config (CLI/shell tools + 1password, ghostty)
+│   │   ├── remote-builder.nix # Forwards every build to nixos-server-01
+│   │   ├── programs/1password.nix # 1Password CLI + GUI (NixOS modules)
+│   │   └── home.nix      # Host-specific home config (imports shared home + 1password, ghostty; firefox)
 │   ├── common-system-packages.nix  # System packages shared across all hosts
 │   └── shared-nix-settings.nix     # Shared Nix daemon settings
 ├── home/                  # Shared home-manager base (imported by every host's home.nix)
@@ -53,7 +63,7 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 │   ├── age-with-plugins.nix           # age + age-plugin-1p wrapper with umask fix
 │   ├── nixos-anywhere-patched.nix     # nixos-anywhere with local patches (see patches/)
 │   ├── llm-mlx.nix                    # llm-mlx python package (Darwin only)
-│   ├── fonts/                         # berkeley-mono(-variable), commit-mono-nf (secrets-sourced)
+│   ├── fonts/                         # berkeley-mono(-variable) (secrets-sourced), commit-mono-nf (public release)
 │   ├── impbcopy/                      # macOS ObjC tool: copy images to clipboard (used by impaste)
 │   ├── ocr/                           # macOS Swift Vision-framework OCR CLI
 │   └── patches/                       # Patch files applied by the derivations above
@@ -66,11 +76,11 @@ This is a cross-platform Nix configuration repository supporting both **macOS** 
 
 The repository uses a flake-based architecture defined in `flake.nix`:
 
-- **Multiple nixpkgs channels**: `nixpkgs-stable` (25.05-darwin) and `nixpkgs-unstable` (default)
-- **Overlays system** (all defined in `flake.nix`, applied via `overlaysList` in `mkSystem`): Provides access to different package versions and custom packages
-  - `pkgs-stable`, `pkgs-unstable`: Different nixpkgs versions
+- **nixpkgs**: `nixpkgs-unstable` is what every host and `pkgs` use. `nixpkgs-stable` (25.05-darwin) exists only for `disko` to follow.
+- **Overlays system** (all defined in `flake.nix`, applied via `overlaysList` in `mkSystem`): Provides custom packages
   - `nur`: Nix User Repository
   - `claude-code`: `claude-code-nix` overlay (tracks latest Claude Code)
+  - `machinereport`: System report tool, used by nixos-server-01 in the Homelab repo
   - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, `nixos-anywhere` (patched), the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
   - `tweaks`: Temporary per-package overrides (currently empty — the place to pin/patch a package short-term)
@@ -98,7 +108,7 @@ The `lib/mksystem.nix` helper abstracts away the differences between Darwin and 
 The `home/` directory provides a **shared base** that every host's `home.nix` imports via `../../home`. It is not used directly by mksystem — each host has its own `hosts/<hostname>/home.nix` which imports this shared base plus any host-specific modules (e.g., `1password.nix`, `ghostty.nix`).
 
 - `home/default.nix`: Explicitly imports each shared module from `home/modules/` (not auto-scanned)
-- `home/modules/`: All home-manager modules — program configs (e.g., `zsh.nix`, `helix.nix`) and config files live here (previously split between `home/programs/` and `home/files/`)
+- `home/modules/`: All home-manager modules — program configs (e.g., `zsh.nix`, `helix.nix`) and config files
 - `home/modules/shell/`: Zsh shell scripts sourced by `zsh.nix`
 - Platform-specific settings use `pkgs.stdenv.hostPlatform.isDarwin` / `pkgs.stdenv.hostPlatform.isLinux` within modules
 - macOS activation scripts (Library visibility, restart system services) live in `hosts/AlexMBP/home.nix`
@@ -114,9 +124,9 @@ The `home/` directory provides a **shared base** that every host's `home.nix` im
 **nixos-desktop-01** (`hosts/nixos-desktop-01/default.nix`):
 - NixOS Proxmox VM with a full GUI desktop on `homelab-nuc`
 - Default desktop: GNOME with GDM and GNOME Remote Desktop (RDP on port 3389)
-- Hyprland specialization: selectable at boot; uses wayvnc (VNC on port 5900) for remote access
+- A Hyprland specialisation is sketched as a commented-out block in `desktop.nix`; it is not active
 - Built as a Proxmox VMA image via `packages.x86_64-linux.nixos-desktop-01-image`; use `just build-desktop-image` (builds remotely on nixos-server-01 then rsync to PVE)
-- System config split into sub-modules: `hardware.nix`, `networking.nix`, `desktop.nix`, `users.nix`
+- System config split into sub-modules: `hardware.nix`, `networking.nix`, `desktop.nix`, `users.nix`, `remote-builder.nix`, `programs/1password.nix`
 - SSH host key pre-seeded from `dotfiles.secret` input (required for agenix on first boot)
 
 ### Package Management Strategy
@@ -129,7 +139,7 @@ The `home/` directory provides a **shared base** that every host's `home.nix` im
 **Homebrew** (`hosts/AlexMBP/packages/homebrew.nix`) is used for:
 - GUI applications (they self-update and conflict with Nix immutability)
 - Mac App Store apps (via `mas`)
-- Some specialized tools (displayplacer, borgbackup-fuse)
+- Some specialized tools (displayplacer, hopenpgp-tools, screenresolution, apfel, xcodegen)
 
 ### Binary Caches
 
@@ -161,9 +171,9 @@ Decrypted agenix secrets are never at risk here: they live in `/run/agenix` at a
 
 So on NixOS Nix would otherwise be recompiled per host per bump. The workaround is **`just cache-determinate`**: build it once on nixos-server-01 and push the ~130 MiB closure to `birkhoff.cachix.org`, which every host already trusts. `nixos-desktop-01` is the only NixOS host left in this repo, but it is x86_64-linux like the builder, so that one build covers it.
 
-**`deploy-desktop` and `deploy-all` now run `just cache-determinate` first**, as a just prerequisite, so the normal workflow (`just update` → `just deploy-desktop`) never recompiles Nix. This used to hang off `deploy-server`, which meant you had to remember to deploy the server first; that recipe is gone with the host, and running the cache step ahead of the deploy makes the desktop deploy self-sufficient instead. The `switch-nixos-desktop` recipe uses `--build-host nixos-server-01` and shares the same build.
+**`deploy-desktop` and `deploy-all` run `just cache-determinate` first**, as a just prerequisite, so the normal workflow (`just update` → `just deploy-desktop`) never recompiles Nix. The `switch-nixos-desktop` recipe uses `--build-host nixos-server-01` and shares the same build.
 
-The build and the push both run on nixos-server-01 — nothing is copied back to the Mac. That host is configured from `~/Documents/Infrastructure/Homelab` now, which keeps its credentials as plain files rather than agenix; the token is still readable at `/run/agenix/cachix-token` because that repo's `services/cachix.nix` keeps the path alive as a tmpfiles symlink to `/etc/cachix-token`, specifically so this recipe needed no edit. The recipe reads the token into `CACHIX_AUTH_TOKEN` on the far side, so it never crosses the wire. Because the push is server-side, extending it to whole system closures is just a matter of changing what gets piped into `cachix push`.
+The build and the push both run on nixos-server-01 — nothing is copied back to the Mac. That host is configured from `~/Documents/Infrastructure/Homelab`, which keeps its credentials as plain files rather than agenix; the token is still readable at `/run/agenix/cachix-token` because that repo's `services/cachix.nix` keeps the path alive as a tmpfiles symlink to `/etc/cachix-token`, specifically so this recipe needed no edit. The recipe reads the token into `CACHIX_AUTH_TOKEN` on the far side, so it never crosses the wire. Because the push is server-side, extending it to whole system closures is just a matter of changing what gets piped into `cachix push`.
 
 The remote command runs `bash -eo pipefail` without `-u`: NixOS's `/etc/bashrc` is sourced for non-interactive shells and is not `set -u` clean.
 
@@ -217,27 +227,16 @@ nix eval ".#nixosConfigurations.nixos-desktop-01.config.system.name"
 
 After switching, verify services are running correctly and check for any activation errors.
 
-### VM Management
+### Provisioning
 
-The `nixos-vm-aarch64` (VMware Fusion) and `nixos-orbstack` (OrbStack) throwaway
-NixOS guests were removed, along with `justfiles/vm-vmware-fusion.just` and
-`justfiles/vm-orbstack.just`. Both had been commented out of
-`nixosConfigurations` since 2026-04-23, which left their `vm-switch` /
-`orb-configure` recipes broken anyway — they call `nh os switch --hostname` for a
-configuration that no longer existed. `justfiles/` is now empty and the
-`import` lines are gone from the root `justfile`.
+There are no throwaway VM hosts here. `nixos-server-01` is provisioned from
+`~/Documents/Infrastructure/Homelab` (see its
+`docs/deployment-instructions-nixos-server-01.md`). `mkSystem`'s
+`nixos-anywhere = true` path still exists here, but nothing uses it.
 
-Note the OrbStack *Mac app* is unrelated and still managed here: the cask in
+The OrbStack *Mac app* is unrelated and managed here: the cask in
 `hosts/AlexMBP/packages/homebrew.nix` and its shell init in
 `home/modules/zsh.nix`.
-
-**Homelab NixOS Provisioning**: no longer handled here. `nixos-server-01` was
-the only `nixos-anywhere` host in this repo; it and its
-`docs/deployment-instructions-nixos-server.md` moved to
-`~/Documents/Infrastructure/Homelab`, which carries its own
-`docs/deployment-instructions-nixos-server-01.md` covering both the cutover and
-re-provisioning. `mkSystem`'s `nixos-anywhere = true` path still exists here for
-future hosts, but nothing uses it.
 
 ## File Organization Patterns
 
@@ -331,12 +330,7 @@ Adding or removing a `transform` or `packages` on an installed skill changes it 
 
 ### Justfile Architecture
 
-The repository supports a modular `justfile` system: the main `justfile` at the
-root can import specialized recipe files from `justfiles/`. That directory is
-currently empty — both VM recipe files were removed with their hosts — so every
-recipe lives in the root `justfile` today.
-
-When adding VM-related or specialized commands, create a new `.just` file in `justfiles/` and import it in the main `justfile` using `import 'justfiles/<name>.just'`.
+Every recipe lives in the root `justfile`. To split out specialized commands, create a `.just` file under a new `justfiles/` directory and add `import 'justfiles/<name>.just'` to the root `justfile`.
 
 **Justfile groups** organize commands:
 - `darwin`: macOS-specific commands (switch)
@@ -347,18 +341,12 @@ When adding VM-related or specialized commands, create a new `.just` file in `ju
 - `code-quality`: Code formatting and linting (format, lint)
 - `secrets`: Secret management (edit-secret)
 
-### Overlay System
-
-When adding packages from different nixpkgs versions, use the overlay system:
-- `pkgs-stable.<package>` for stable releases
-- `pkgs-unstable.<package>` for unstable packages (this is the default `pkgs`)
-
 ### Secrets Management
 
 Secrets are managed with **agenix** (age-encrypted secrets checked into git).
 
 - **`secrets/agenix-rules.nix`**: Declares which public keys can decrypt each `.age` file. The `ale` key is the SSH ed25519 public key corresponding to the 1Password identity.
-- **`secrets/*.age`**: Encrypted secret files (ssh-config, tailscale authkey, cloudflared credentials, etc.).
+- **`secrets/*.age`**: Encrypted secret files (ssh-config, tailscale authkey, mcp-env).
 - **`hosts/AlexMBP/age-identity.txt`**: The `AGE-PLUGIN-1P` identity used to decrypt secrets on AlexMBP. This is host-specific and lives alongside the agenix config.
 - **`hosts/AlexMBP/ssh-config.nix`**: Configures the agenix home-manager module — sets `age.package`, `age.identityPaths`, declares secrets, and overrides the launchd agent's `KeepAlive` (removing `Crashed = false` which would otherwise cause the agent to loop on every clean exit).
 - **`packages/age-with-plugins.nix`**: Custom `age` derivation that wraps `age-plugin-1p` with a `umask 077` reset before exec. Required because the agenix mount-secrets script sets `umask u=r,g=,o=` in a subshell, which would otherwise cause `op` to create its session file as `0400` (breaking subsequent invocations).
@@ -388,9 +376,7 @@ intentionally still name the host:
   as a tmpfiles symlink so these recipes did not need changing.
 
 Secrets here are encrypted to the `ale` key (1Password) and, for
-`tailscale-authkey.age`, to `nixos-desktop-01`'s SSH host key. The server's host
-key was removed from `secrets/agenix-rules.nix` and the remaining secrets rekeyed
-when the host moved out.
+`tailscale-authkey.age`, to `nixos-desktop-01`'s SSH host key.
 
 ### Activation Scripts
 
@@ -409,7 +395,7 @@ Order matters: home-manager activation scripts use `lib.hm.dag.entryAfter` to en
 ### Shell Configuration
 
 The shell setup uses several specialized files (all under `home/modules/shell/`):
-- `functions.zsh`: Custom functions (shrinkvid, impaste, timer, aic, gg, s, nr, ns)
+- `functions.zsh`: Custom functions (impaste, timer, aic, gg, s, nr, ns)
 - `keys.zsh`: Custom Zsh keybindings (Ctrl+U, Alt+Q, Alt+Shift+S, etc.)
 - `fzf.zsh`: fzf-tab configuration with smart previews
 - `proxy.zsh`: Auto-propagated proxy settings from macOS system preferences
@@ -417,13 +403,13 @@ The shell setup uses several specialized files (all under `home/modules/shell/`)
 - `options.zsh`: Zsh options
 - `colors.zsh`: Color definitions
 - `op.zsh`: 1Password shell integration
-- `utilities/`: Additional shell utility scripts
+- `utilities/`: Standalone scripts (shrinkvid, burnsrt, favicon, ...), installed to `~/.local/bin` by `home/modules/scripts.nix`
 
 These are symlinked to `~/.shell/` and sourced in `home/modules/zsh.nix`.
 
 ### Development Environments
 
-As noted in the README: "Development Environments should be managed using nix-shell" rather than installing development tools globally. Use `nix-shell -p <packages>` for temporary environments or create `shell.nix` files for projects.
+Prefer per-project environments (`nix-shell -p <packages>`, a `shell.nix`, or a flake devShell through `direnv`) over adding development tools to the global package lists.
 
 The `nix-index-database` and `comma` are configured to help locate and run commands without installation.
 

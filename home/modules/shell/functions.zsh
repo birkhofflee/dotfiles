@@ -66,7 +66,7 @@ function gg {
 }
 
 # Wrapper around https://github.com/simonw/llm
-# Plugins are packaged together with Nix (see home/default.nix)
+# Plugins are packaged together with Nix (see home/modules/llm.nix)
 function _llm {
   with_llm command llm "$@"
 }
