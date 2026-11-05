@@ -47,7 +47,6 @@
     git-hooks.inputs.nixpkgs.follows = "nixpkgs-unstable";
     git-hooks.inputs.flake-compat.follows = ""; # only for non-flake users
 
-    # _1password-shell-plugins.url = "github:1Password/shell-plugins";
     helix.url = "github:helix-editor/helix/master";
 
     secrets = {
