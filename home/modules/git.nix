@@ -9,7 +9,7 @@ let
 
   name = "birkhoff";
   email = "git@birkhoff.me";
-  key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0762tms0QT6kCQ7tTgoOdm+ry29ImKgDk09hXurEfM";
+  key = (import ../../lib/keys.nix).ale;
 
 in
 {

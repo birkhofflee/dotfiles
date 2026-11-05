@@ -1,6 +1,5 @@
 let
-  ale = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB0762tms0QT6kCQ7tTgoOdm+ry29ImKgDk09hXurEfM";
-  nixos-desktop-01 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJIzDz6of9lrchRhiMfr3yChjJrv6LZ5hhpwmDkAa37o"; # gh:birkhofflee/dotfiles.secret ssh-host-keys/nixos-desktop-01
+  inherit (import ../lib/keys.nix) ale nixos-desktop-01;
   myHosts = [
     ale
     nixos-desktop-01

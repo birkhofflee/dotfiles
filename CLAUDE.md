@@ -34,7 +34,9 @@ their next `just sync-dotfiles`.
 .
 ├── flake.nix              # Main flake configuration
 ├── lib/
-│   └── mksystem.nix       # Helper function to create system configurations
+│   ├── mksystem.nix       # Helper function to create system configurations
+│   ├── keys.nix           # Public SSH keys shared across the repo
+│   └── caches.nix         # Binary caches for every host's Nix daemon
 ├── hosts/                 # System-specific configurations
 │   ├── AlexMBP/          # macOS host (nix-darwin)
 │   │   ├── default.nix   # System configuration
@@ -137,15 +139,14 @@ The `home/` directory provides a **shared base** that every host's `home.nix` im
 
 ### Binary Caches
 
-Substituters are declared in three places, and which ones apply depends on **where the build runs**:
+Substituters are declared in two places, and which one applies depends on **where the build runs**:
 
-1. `flake.nix` `nixConfig.extra-substituters` — nix-community, helix, birkhoff, claude-code. Only honoured by the invoking (local) Nix, and only with `--accept-flake-config` + the user in `trusted-users`.
-2. `hosts/shared-nix-settings.nix` — the same four. Imported by every NixOS host, so this is what the **remote daemon** uses.
-3. `hosts/AlexMBP/default.nix` `determinateNix.customSettings` — nix-community, helix, birkhoff (`nix.settings` is ignored when `determinateNix.enable = true`).
+1. `flake.nix` `nixConfig.extra-substituters` — nix-community, helix, birkhoff, claude-code. Only honoured by the invoking (local) Nix, and only with `--accept-flake-config` + the user in `trusted-users`. It has to be a literal, so it can't import the list below.
+2. `lib/caches.nix` — the same four, for every host's daemon. `hosts/shared-nix-settings.nix` applies it on NixOS, so this is what the **remote daemon** uses. `hosts/AlexMBP/default.nix` applies it through `determinateNix.customSettings`, because `nix.settings` is ignored when `determinateNix.enable = true`.
 
 All use `extra-*` so `cache.nixos.org` is preserved.
 
-Keep sets 1 and 2 in sync. `just deploy-*` (deploy-rs `remoteBuild = true`) and `just switch-nixos-*` (`--build-host`) build on the target/build host, and a flake's `nixConfig` does **not** propagate over SSH to the remote daemon — only `shared-nix-settings.nix` applies there. Adding a cache to `flake.nix` alone has no effect on remote builds.
+Keep the two lists in sync. `just deploy-*` (deploy-rs `remoteBuild = true`) and `just switch-nixos-*` (`--build-host`) build on the target/build host, and a flake's `nixConfig` does **not** propagate over SSH to the remote daemon — only `lib/caches.nix` applies there. Adding a cache to `flake.nix` alone has no effect on remote builds.
 
 `just cache-darwin` pushes to `birkhoff.cachix.org`, and pushes **darwin** closures only — Linux hosts get no benefit from it.
 

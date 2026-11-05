@@ -3,6 +3,7 @@
 
   nixConfig = {
     # Merged with the system-level substituters to speed up the initial build.
+    # Has to be a literal, so keep it in sync with lib/caches.nix by hand.
     # Requires the invoking user to be in trusted-users (see installation instructions).
     #
     # Once the user is in trusted-users, --accept-flake-config will pick up the
