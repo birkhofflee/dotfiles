@@ -10,10 +10,6 @@ in
     # DEVELOPMENT
     # ============================================================================
 
-    # Go
-    go # https://go.dev
-    golangci-lint # https://github.com/golangci/golangci-lint
-
     # Rust
     # Not using overlay
     # `rustup component add rust-analyzer` is required for LSP to work
@@ -38,35 +34,24 @@ in
     # LANGUAGE SERVERS
     # ============================================================================
 
-    astro-language-server # https://github.com/withastro/language-tools (astro)
     bash-language-server # https://github.com/bash-lsp/bash-language-server
-    cmake-language-server # https://github.com/regen100/cmake-language-server
     vscode-css-languageserver # https://github.com/microsoft/vscode (css, scss)
-    gopls # https://pkg.go.dev/golang.org/x/tools/gopls (go)
-    graphql-language-service-cli # https://github.com/graphql/graphiql
     docker-language-server # https://github.com/microsoft/compose-language-service (dockerfile, compose)
     terraform-ls # https://github.com/hashicorp/terraform-ls (hcl)
     superhtml # https://github.com/kristoff-it/superhtml (html)
     typescript-language-server # https://github.com/typescript-language-server/typescript-language-server (js, ts, tsx)
     jq-lsp # https://github.com/wader/jq-lsp
     vscode-json-languageserver # https://github.com/microsoft/vscode (json)
-    texlab # https://github.com/latex-lsp/texlab (latex)
     tinymist # https://github.com/Myriad-Dreamin/tinymist (typst)
     lua-language-server # https://github.com/LuaLS/lua-language-server
     marksman # https://github.com/artempyanykh/marksman (markdown)
     nil # https://github.com/oxalica/nil (nix)
-    perlnavigator # https://github.com/bscan/PerlNavigator
-    intelephense # https://intelephense.com (php)
     ruff # https://github.com/astral-sh/ruff (python linter/formatter)
     ruby-lsp # https://github.com/Shopify/ruby-lsp
     lldb # https://lldb.llvm.org (rust debugging, provides lldb-dap for Helix DAP)
-    solc # https://github.com/ethereum/solidity
-    svelte-language-server # https://github.com/sveltejs/language-tools
     systemd-lsp # https://github.com/psacawa/systemd-language-server
     taplo # https://github.com/tamasfe/taplo (toml)
-    vue-language-server # https://github.com/vuejs/language-tools
     yaml-language-server # https://github.com/redhat-developer/yaml-language-server
-    zls # https://github.com/zigtools/zls (zig)
 
     # ============================================================================
     # VERSION CONTROL
@@ -75,14 +60,10 @@ in
     git-absorb # https://github.com/tummychow/git-absorb (`git absorb` — auto-fixup staged changes)
     git-open # https://github.com/paulirish/git-open (`git open` — open GitHub page for repo)
     git-recent # https://github.com/paulirish/git-recent (`git recent` — browse local branches)
-    bfg-repo-cleaner # https://rtyley.github.io/bfg-repo-cleaner
 
     # ============================================================================
     # INFRASTRUCTURE & DEVOPS
     # ============================================================================
-
-    # Backup
-    restic # https://restic.net
 
     # SSH
     ssh-copy-id # https://www.openssh.com
@@ -212,7 +193,6 @@ in
 
     # CSV / tabular data
     xan # https://github.com/medialab/xan (CSV processing)
-    qsv # https://github.com/dathere/qsv (CSV manipulation)
     # visidata # https://www.visidata.org (interactive tabular data TUI)
 
     # Text manipulation
@@ -231,7 +211,6 @@ in
     oxipng # https://github.com/oxipng/oxipng (multithreaded PNG optimizer in rust)
 
     # Download & streaming
-    lux # https://github.com/iawia002/lux (video downloader)
     yt-dlp # https://github.com/yt-dlp/yt-dlp
     sox # https://sourceforge.net/projects/sox (used by Claude Code to record audio)
 
@@ -256,8 +235,6 @@ in
 
     # @see https://github.com/cli/cli/blob/trunk/docs/gh-vs-hub.md#should-i-use-gh-or-hub
     gh # https://cli.github.com
-
-    cachix # https://cachix.org
 
     # powershell
     # stripe-cli

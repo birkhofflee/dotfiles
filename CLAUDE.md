@@ -82,7 +82,7 @@ The repository uses a flake-based architecture defined in `flake.nix`:
   - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
 - **lib/mksystem.nix**: Helper function that simplifies creating system configurations for both Darwin and NixOS
-- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `agenix`, `ssh-copy-id`, `deploy-rs`, and `nixfmt-tree`; sets `NH_FLAKE="."`
+- **devShells.default**: Available via `nix develop` - provides `just`, `nh`, `cachix`, `agenix`, `ssh-copy-id`, `deploy-rs`, and `nixfmt-tree`; sets `NH_FLAKE="."`
 - **Formatting**: `nix fmt` (and `just format`) run nixpkgs' `nixfmt-tree`. The `nixfmt` pre-commit hook enforces it, including in `nix flake check`.
 - **Pre-commit hooks** ([git-hooks.nix](https://github.com/cachix/git-hooks.nix), `preCommitCheck` in `flake.nix`): `nixfmt` (RFC 166), `deadnix` and `statix`. Entering the devShell (`direnv` via `.envrc`, or `nix develop`) installs `.git/hooks/pre-commit` and symlinks the gitignored `.pre-commit-config.yaml`; the same hooks run tree-wide as `checks.<system>.pre-commit-check` (`just lint`). statix reads `statix.toml`, which disables only `repeated_keys` (it rejects the dotted `home.packages = …; home.file = …;` style). Use `_:` rather than `{ ... }:` for modules that take no arguments, and drop unused lambda args (e.g. `mkDerivation (finalAttrs: …)` when `finalAttrs` is unused) — deadnix runs with `--fail`. Bypass once with `git commit --no-verify`.
 

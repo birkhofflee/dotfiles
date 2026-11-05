@@ -316,6 +316,7 @@
                 pkgs.just
                 pkgs.ssh-copy-id
                 pkgs.nh
+                pkgs.cachix
                 pkgs.nixfmt-tree
                 agenix
                 pkgs.deploy-rs

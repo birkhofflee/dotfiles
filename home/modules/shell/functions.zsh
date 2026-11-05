@@ -193,7 +193,7 @@ function tu {
 }
 
 # Show TLS certificate details for a given domain
-# @note     use testssl.sh for complete analysis
+# @note     use , testssl.sh for complete analysis
 # @example  `https google.com 443`
 function https {
   local port=${2:-443}

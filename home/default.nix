@@ -67,7 +67,6 @@
     socat # http://www.dest-unreach.org/socat
     iperf # https://github.com/esnet/iperf
     wireguard-tools # https://www.wireguard.com
-    testssl # https://github.com/drwetter/testssl.sh
     sslscan # https://github.com/rbsec/sslscan
     tcping-go # https://github.com/cloverstd/tcping
 
@@ -109,6 +108,5 @@
 
     # ── Documentation & misc ──────────────────────────────────────────────
     tlrc # https://github.com/tldr-pages/tlrc (tldr client)
-    fastfetch # https://github.com/fastfetch-cli/fastfetch (system info)
   ];
 }

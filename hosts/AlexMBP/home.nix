@@ -26,8 +26,6 @@
   home.sessionPath = [
     # Rust
     "${config.home.homeDirectory}/.cargo/bin"
-    # Golang
-    "${config.home.homeDirectory}/go/bin"
     # uv tool
     "${config.home.homeDirectory}/.local/bin"
     # macOS-specific paths
