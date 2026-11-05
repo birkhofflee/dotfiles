@@ -910,6 +910,7 @@
         "secrets": "secrets",
         "seedex-skills": "seedex-skills",
         "treefmt-nix": "treefmt-nix_2",
+        "tw-formal-writing-skills": "tw-formal-writing-skills",
         "vocabulary-skills": "vocabulary-skills"
       }
     },
@@ -1036,6 +1037,22 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "tw-formal-writing-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790292253,
+        "narHash": "sha256-Hmu6dRBBV0sn+iPa0HkqUdF6REEnXALjrOmeLIAeQt0=",
+        "owner": "Imbad0202",
+        "repo": "tw-formal-writing",
+        "rev": "47b808d5ccaa3fcdf15d0b7c88de1c37439049de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Imbad0202",
+        "repo": "tw-formal-writing",
         "type": "github"
       }
     },

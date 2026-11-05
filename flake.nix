@@ -122,6 +122,10 @@
       url = "github:openags/paper-search-mcp";
       flake = false;
     };
+    tw-formal-writing-skills = {
+      url = "github:Imbad0202/tw-formal-writing";
+      flake = false;
+    };
     # A Claude Code plugin rather than plain skills (see home/modules/agent-skills.nix)
     academic-research-skills = {
       url = "github:Imbad0202/academic-research-skills";

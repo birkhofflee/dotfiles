@@ -46,6 +46,7 @@ in
       find-skills = sourceInSkills "find-skills";
       mattpocock = sourceInSkills "mattpocock-skills";
       firecrawl = sourceInSkills "firecrawl-skills";
+      tw-formal-writing = sourceInSkills "tw-formal-writing-skills";
       paper-search.input = "paper-search-mcp";
     };
 
@@ -60,6 +61,7 @@ in
     skills.enable = [
       "spark" # wishworldbetter/seedex-skills
       "firecrawl-research-papers" # firecrawl/firecrawl-workflows
+      "tw-formal-writing" # Imbad0202/tw-formal-writing
     ];
 
     skills.explicit = {
