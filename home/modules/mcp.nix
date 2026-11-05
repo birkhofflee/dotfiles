@@ -13,10 +13,6 @@ let
       url = "https://api.githubcopilot.com/mcp";
       headers.Authorization = "Bearer ${mkEnvRef "GITHUB_MCP_PAT"}";
     };
-    ref = {
-      url = "https://api.ref.tools/mcp";
-      headers."x-ref-api-key" = mkEnvRef "REF_API_KEY";
-    };
   };
 in
 {
