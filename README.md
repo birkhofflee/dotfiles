@@ -310,11 +310,6 @@ Here are some reads you might find interesting:
 * [fzf examples (fzf wiki)](https://github.com/junegunn/fzf/wiki/examples)
 * [A simple dotfiles template to kick-start/bootstrap your zsh config](https://github.com/marlonrichert/zsh-launchpad)
 
-Some completions setups:
-
-* https://github.com/mashehu/dotfiles/blob/236af8d7d71989f9755a6ea29ee66e33cbbce1f8/zshrc#L89-L105
-* https://github.com/finnurtorfa/zsh/blob/master/completion.zsh
-
 ## Acknowledgements
 
 This project was heavily inspired by other open-source dotfiles. A non-exhaustive list:
