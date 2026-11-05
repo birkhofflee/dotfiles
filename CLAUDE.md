@@ -80,7 +80,6 @@ The repository uses a flake-based architecture defined in `flake.nix`:
 - **Overlays system** (all defined in `flake.nix`, applied via `overlaysList` in `mkSystem`): Provides custom packages
   - `nur`: Nix User Repository
   - `claude-code`: `claude-code-nix` overlay (tracks latest Claude Code)
-  - `machinereport`: System report tool, used by nixos-server-01 in the Homelab repo
   - `custom-packages`: Local derivations in `packages/` — `age-with-plugins`, `nixos-anywhere` (patched), the fonts (`berkeley-mono`, `berkeley-mono-variable`, `commit-mono-nf`), and `supercharge` (from the `secrets` input)
   - `python-llm-plugins`: Extends `pythonPackagesExtensions` with `llm-mlx` (Darwin only)
   - `tweaks`: Temporary per-package overrides (currently empty — the place to pin/patch a package short-term)

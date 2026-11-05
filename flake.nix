@@ -70,14 +70,8 @@
     claude-code-nix.url = "github:sadjow/claude-code-nix";
     claude-code-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    apex-discord-bot.url = "github:birkhofflee/apex-discord-bot";
-    apex-discord-bot.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
     i915-sriov-dkms.url = "github:strongtz/i915-sriov-dkms";
     i915-sriov-dkms.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
-    machinereport.url = "github:birkhofflee/machinereport";
-    machinereport.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # Prebuilt Rex (https://www.superlogical.com/rex/docs/linux/installation).
     # There's no stable channel yet; snapshot is what the Mac app tracks.
@@ -209,11 +203,6 @@
         nur = inputs.nur.overlays.default;
 
         claude-code = inputs.claude-code-nix.overlays.default;
-
-        # Linux-only; the attribute is lazy so Darwin configs simply never touch it.
-        machinereport = _: prev: {
-          machinereport = inputs.machinereport.packages.${prev.stdenv.hostPlatform.system}.default;
-        };
 
         custom-packages = _: prev: {
           age-with-plugins = prev.callPackage ./packages/age-with-plugins.nix { };

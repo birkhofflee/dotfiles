@@ -54,26 +54,6 @@
         "type": "github"
       }
     },
-    "apex-discord-bot": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1793668784,
-        "narHash": "sha256-a/mYJDiw4hNiN/qfOXlSgztx84XkvjOsOG18Ggxp9ws=",
-        "owner": "birkhofflee",
-        "repo": "apex-discord-bot",
-        "rev": "7cc145302cb09b7727f4ea0b47f9128c0b7050f2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "birkhofflee",
-        "repo": "apex-discord-bot",
-        "type": "github"
-      }
-    },
     "bdwgc": {
       "flake": false,
       "locked": {
@@ -506,26 +486,6 @@
         "type": "github"
       }
     },
-    "machinereport": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1786326471,
-        "narHash": "sha256-AXm30TN+a1vm5uNYu/HTBmaUdbbxwIj6RWKyjOG31k4=",
-        "owner": "birkhofflee",
-        "repo": "machinereport",
-        "rev": "f7f08929728ef3cb40f6eaded7ccbd0ce68e3b89",
-        "type": "github"
-      },
-      "original": {
-        "owner": "birkhofflee",
-        "repo": "machinereport",
-        "type": "github"
-      }
-    },
     "mattpocock-skills": {
       "flake": false,
       "locked": {
@@ -903,7 +863,6 @@
         "academic-research-skills": "academic-research-skills",
         "agenix": "agenix",
         "agent-skills": "agent-skills",
-        "apex-discord-bot": "apex-discord-bot",
         "claude-code-nix": "claude-code-nix",
         "cloudflare-skills": "cloudflare-skills",
         "deploy-rs": "deploy-rs",
@@ -918,7 +877,6 @@
         "home-manager": "home-manager",
         "i915-sriov-dkms": "i915-sriov-dkms",
         "improve-skills": "improve-skills",
-        "machinereport": "machinereport",
         "mattpocock-skills": "mattpocock-skills",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
