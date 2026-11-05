@@ -23,7 +23,6 @@
     ./modules/editorconfig.nix
     ./modules/fzf.nix
     ./modules/git.nix
-    ./modules/gpg.nix
     ./modules/helix.nix
     ./modules/htop.nix
     ./modules/hushlogin.nix
