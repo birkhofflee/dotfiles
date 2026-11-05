@@ -120,7 +120,6 @@ The `home/` directory provides a **shared base** that every host's `home.nix` im
 **nixos-desktop-01** (`hosts/nixos-desktop-01/default.nix`):
 - NixOS Proxmox VM with a full GUI desktop on `homelab-nuc`
 - Default desktop: GNOME with GDM and GNOME Remote Desktop (RDP on port 3389)
-- A Hyprland specialisation is sketched as a commented-out block in `desktop.nix`; it is not active
 - Built as a Proxmox VMA image via `packages.x86_64-linux.nixos-desktop-01-image`; use `just build-desktop-image` (builds remotely on nixos-server-01 then rsync to PVE)
 - System config split into sub-modules: `hardware.nix`, `networking.nix`, `desktop.nix`, `users.nix`, `remote-builder.nix`, `programs/1password.nix`
 - SSH host key pre-seeded from `dotfiles.secret` input (required for agenix on first boot)

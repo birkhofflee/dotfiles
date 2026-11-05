@@ -104,33 +104,4 @@
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
-
-  # Hyprland specialization — selectable from the GRUB boot menu.
-  # specialisation.hyprland.configuration = {
-  #   services.displayManager.gdm.enable = lib.mkForce false;
-  #   services.desktopManager.gnome.enable = lib.mkForce false;
-  #   programs.hyprland.enable = true;
-  #   services.displayManager.sddm.enable = true;
-  #   services.displayManager.sddm.wayland.enable = true;
-
-  #   # Autologin so wayvnc has a running Wayland session to connect to.
-  #   services.displayManager.autoLogin.enable = true;
-  #   services.displayManager.autoLogin.user = username;
-
-  #   # wayvnc: VNC server for wlroots-based Wayland compositors (Hyprland).
-  #   # xrdp cannot create Wayland sessions; wayvnc attaches to the running compositor.
-  #   # Client: TigerVNC viewer connecting to port 5900.
-  #   systemd.user.services.wayvnc = {
-  #     description = "wayvnc VNC server";
-  #     after = [ "graphical-session.target" ];
-  #     wantedBy = [ "graphical-session.target" ];
-  #     serviceConfig = {
-  #       ExecStart = "${pkgs.wayvnc}/bin/wayvnc 0.0.0.0 5900";
-  #       Restart = "on-failure";
-  #       RestartSec = 3;
-  #     };
-  #   };
-
-  #   networking.firewall.allowedTCPPorts = [ 5900 ]; # merged with base [ 22 ]
-  # };
 }
