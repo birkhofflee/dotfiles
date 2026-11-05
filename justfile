@@ -127,7 +127,14 @@ edit-secret secret_file:
 [group('secrets')]
 [working-directory: 'secrets']
 rekey:
-  op read 'op://Private/id_ed25519/private key?ssh-format=openssh' > /tmp/k && agenix -r --identity /tmp/k && rm -f /tmp/k
+  #!/usr/bin/env bash
+  set -euo pipefail
+  # A private file that is removed even when agenix fails.
+  umask 077
+  identity=$(mktemp)
+  trap 'rm -f "$identity"' EXIT
+  op read 'op://Private/id_ed25519/private key?ssh-format=openssh' > "$identity"
+  agenix -r --identity "$identity"
 
 # Push darwin build artifacts to cachix, minus anything from the private `secrets` input
 [group('cache')]
