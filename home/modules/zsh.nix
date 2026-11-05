@@ -130,7 +130,7 @@ in
           la = "ls -la";
           tree = "ls --tree --level 3";
           lr = "ll -R";
-          lx = "ll -XB";
+          lx = "ll -s extension";
           lc = "ll -s changed --changed";
           lu = "ll -s accessed --accessed";
 
