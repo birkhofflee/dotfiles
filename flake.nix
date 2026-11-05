@@ -284,21 +284,15 @@
       # nixos-desktop-01 forwards them to nixos-server-01 via `nix.buildMachines`
       # (see hosts/nixos-desktop-01/remote-builder.nix), so the Mac only ever
       # evaluates and orchestrates.
-      deploy.nodes =
-        let
-          mkNode = hostname: {
-            inherit hostname;
-            profiles.system = {
-              sshUser = "root";
-              user = "root";
-              remoteBuild = true;
-              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.${hostname};
-            };
-          };
-        in
-        {
-          nixos-desktop-01 = mkNode "nixos-desktop-01";
+      deploy.nodes.nixos-desktop-01 = {
+        hostname = "nixos-desktop-01";
+        profiles.system = {
+          sshUser = "root";
+          user = "root";
+          remoteBuild = true;
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixos-desktop-01;
         };
+      };
 
       # Same formatter the pre-commit hook enforces, so `nix fmt` fixes whatever
       # the hook rejects.
