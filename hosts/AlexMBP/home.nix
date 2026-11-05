@@ -3,7 +3,6 @@
 # session paths, and activation scripts.
 
 {
-  pkgs,
   lib,
   config,
   ...

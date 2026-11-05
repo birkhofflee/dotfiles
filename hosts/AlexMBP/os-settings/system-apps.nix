@@ -1,4 +1,4 @@
-{ ... }:
+_:
 
 {
   system.defaults.CustomUserPreferences = {
@@ -25,7 +25,7 @@
 
     "com.apple.terminal" = {
       # Only use UTF-8
-      StringEncodings = (4);
+      StringEncodings = 4;
     };
 
     "com.apple.TimeMachine" = {

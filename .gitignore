@@ -2,3 +2,4 @@ result
 .DS_Store
 .direnv
 dotfiles.secret
+.pre-commit-config.yaml

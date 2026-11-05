@@ -52,6 +52,11 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
+    # Declarative pre-commit hooks (nixfmt, deadnix, statix); see `checks` below
+    git-hooks.url = "github:cachix/git-hooks.nix";
+    git-hooks.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    git-hooks.inputs.flake-compat.follows = ""; # only for non-flake users
+
     nur.url = "github:nix-community/NUR";
 
     # _1password-shell-plugins.url = "github:1Password/shell-plugins";
@@ -175,6 +180,25 @@
           inherit system pkgs;
           treefmtEval = inputs.treefmt-nix.lib.evalModule pkgs {
             projectRootFile = "flake.nix";
+            # Same formatter the pre-commit hook enforces, so `nix fmt` fixes
+            # whatever the hook rejects.
+            programs.nixfmt.enable = true;
+          };
+
+          # Tree-wide validation and linting. Runs as a git pre-commit hook
+          # (installed by the devShell, i.e. on `direnv`/`nix develop`) and as
+          # `checks.<system>.pre-commit-check` in `nix flake check`.
+          preCommitCheck = inputs.git-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              # Standard formatting (RFC 166)
+              nixfmt.enable = true;
+
+              # Linting: unused code and anti-patterns. statix reads
+              # statix.toml at the repo root.
+              deadnix.enable = true;
+              statix.enable = true;
+            };
           };
         }
       );
@@ -196,9 +220,9 @@
           nixos-anywhere = prev.callPackage ./packages/nixos-anywhere-patched.nix {
             nixos-anywhere = inputs.nixos-anywhere.packages.${prev.stdenv.hostPlatform.system}.nixos-anywhere;
           };
-          berkeley-mono = prev.callPackage ./packages/fonts/berkeley-mono.nix { secrets = inputs.secrets; };
+          berkeley-mono = prev.callPackage ./packages/fonts/berkeley-mono.nix { inherit (inputs) secrets; };
           berkeley-mono-variable = prev.callPackage ./packages/fonts/berkeley-mono-variable.nix {
-            secrets = inputs.secrets;
+            inherit (inputs) secrets;
           };
           commit-mono-nf = prev.callPackage ./packages/fonts/commit-mono-nf.nix { };
           supercharge = prev.callPackage "${inputs.secrets}/packages/supercharge.nix" { };
@@ -320,9 +344,10 @@
       formatter = eachSystem ({ treefmtEval, ... }: treefmtEval.config.build.wrapper);
 
       checks = eachSystem (
-        { treefmtEval, ... }:
+        { treefmtEval, preCommitCheck, ... }:
         {
           formatting = treefmtEval.config.build.check self;
+          pre-commit-check = preCommitCheck;
         }
       );
 
@@ -331,6 +356,7 @@
           system,
           pkgs,
           treefmtEval,
+          preCommitCheck,
         }:
         {
           default =
@@ -353,7 +379,11 @@
                 pkgs.nixos-anywhere
                 agenix
                 pkgs.deploy-rs
-              ];
+              ]
+              ++ preCommitCheck.enabledPackages;
+
+              # Installs .git/hooks/pre-commit and links .pre-commit-config.yaml
+              inherit (preCommitCheck) shellHook;
 
               NH_FLAKE = ".";
             };

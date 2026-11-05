@@ -5,7 +5,7 @@
   unzip,
 }:
 
-stdenvNoCC.mkDerivation (finalAttrs: {
+stdenvNoCC.mkDerivation {
   pname = "berkeley-mono";
   version = "2.004";
 
@@ -36,4 +36,4 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     license = lib.licenses.unfree;
     platforms = lib.platforms.all;
   };
-})
+}

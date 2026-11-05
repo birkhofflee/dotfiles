@@ -43,6 +43,11 @@ default:
 format:
   nix fmt
 
+# Runs the pre-commit hooks (nixfmt, deadnix, statix) against every tracked file
+[group('code-quality')]
+lint:
+  nix build --no-link -L ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem).pre-commit-check"
+
 alias s := switch
 # Switch darwin configuration
 [group('darwin')]

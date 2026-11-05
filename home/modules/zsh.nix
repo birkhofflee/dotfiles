@@ -79,7 +79,7 @@ in
 
     shellAliases =
       let
-        macAliases = lib.mkIf (pkgs.stdenv.hostPlatform.isDarwin) {
+        macAliases = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
           mtr = "sudo mtr";
           pbc = "pbcopy"; # Copy to clipboard
           pbp = "pbpaste"; # Paste from clipboard

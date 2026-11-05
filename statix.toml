@@ -1,0 +1,6 @@
+# Read by `statix check` (pre-commit hook, `nix flake check`) and by editors running statix.
+#
+# repeated_keys (W20) is off: it rejects the dotted style the NixOS/home-manager
+# module system is written in (`home.packages = …; home.file = …;`), and forcing
+# those into one nested set would only move code around, not catch anything.
+disabled = ["repeated_keys"]

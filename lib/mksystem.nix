@@ -104,7 +104,7 @@ systemFunc rec {
         currentSystem = system;
         currentSystemName = name;
         currentSystemUser = user;
-        inputs = inputs;
+        inherit inputs;
       };
     }
   ];
