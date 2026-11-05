@@ -72,14 +72,6 @@ switch-nixos-desktop:
 deploy-desktop: cache-determinate
   deploy .#nixos-desktop-01
 
-# nixos-desktop-01 is the only node left in this repo's deploy.nodes, so this is
-# equivalent to deploy-desktop.
-
-# Deploy all NixOS hosts via deploy-rs
-[group('homelab')]
-deploy-all: cache-determinate
-  deploy .
-
 # Syncs the working tree (including uncommitted changes) then builds remotely.
 # The dotfiles.secret input is resolved locally (mac has GitHub SSH access) and
 # rsynced separately, then injected via --override-input on the remote build.

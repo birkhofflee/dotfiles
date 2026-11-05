@@ -165,7 +165,7 @@ Decrypted agenix secrets are never at risk here: they live in `/run/agenix` at a
 
 So on NixOS Nix would otherwise be recompiled per host per bump. The workaround is **`just cache-determinate`**: build it once on nixos-server-01 and push the ~130 MiB closure to `birkhoff.cachix.org`, which every host already trusts. `nixos-desktop-01` is the only NixOS host left in this repo, but it is x86_64-linux like the builder, so that one build covers it.
 
-**`deploy-desktop` and `deploy-all` run `just cache-determinate` first**, as a just prerequisite, so the normal workflow (`just update` → `just deploy-desktop`) never recompiles Nix. The `switch-nixos-desktop` recipe uses `--build-host nixos-server-01` and shares the same build.
+**`deploy-desktop` runs `just cache-determinate` first**, as a just prerequisite, so the normal workflow (`just update` → `just deploy-desktop`) never recompiles Nix. The `switch-nixos-desktop` recipe uses `--build-host nixos-server-01` and shares the same build.
 
 The build and the push both run on nixos-server-01 — nothing is copied back to the Mac. That host is configured from `~/Documents/Infrastructure/Homelab`, which keeps its credentials as plain files rather than agenix; the token is still readable at `/run/agenix/cachix-token` because that repo's `services/cachix.nix` keeps the path alive as a tmpfiles symlink to `/etc/cachix-token`, specifically so this recipe needed no edit. The recipe reads the token into `CACHIX_AUTH_TOKEN` on the far side, so it never crosses the wire. Because the push is server-side, extending it to whole system closures is just a matter of changing what gets piped into `cachix push`.
 
@@ -184,7 +184,6 @@ Using `just` (preferred):
 just switch                 # Build and switch to new configuration (alias: just s)
 just switch-nixos-desktop   # Switch nixos-desktop-01 remotely via nh os switch
 just deploy-desktop         # Deploy nixos-desktop-01 via deploy-rs (runs cache-determinate first)
-just deploy-all             # Deploy all NixOS hosts via deploy-rs (only the desktop remains)
 just build-desktop-image    # Build Proxmox VMA for nixos-desktop-01 (runs on nixos-server-01)
 just update                 # Update all flake inputs and commit lock file (alias: just u)
 just update-input <name>    # Update specific flake input (alias: just ui)
@@ -321,7 +320,7 @@ Every recipe lives in the root `justfile`. To split out specialized commands, cr
 
 **Justfile groups** organize commands:
 - `darwin`: macOS-specific commands (switch)
-- `homelab`: Homelab commands (switch-nixos-desktop, deploy-desktop, deploy-all, build-desktop-image)
+- `homelab`: Homelab commands (switch-nixos-desktop, deploy-desktop, build-desktop-image)
 - `flake`: Flake management (update, update-input)
 - `nix-misc`: Nix store maintenance (optimize, repair)
 - `cache`: Cachix operations (cache-darwin)
