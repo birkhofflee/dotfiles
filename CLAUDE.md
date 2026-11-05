@@ -135,7 +135,7 @@ The `home/` directory provides a **shared base** that every host's `home.nix` im
 **Homebrew** (`hosts/AlexMBP/packages/homebrew.nix`) is used for:
 - GUI applications (they self-update and conflict with Nix immutability)
 - Mac App Store apps (via `mas`)
-- Some specialized tools (displayplacer, hopenpgp-tools, screenresolution, apfel, xcodegen)
+- Some specialized tools (displayplacer, screenresolution, apfel, xcodegen)
 
 ### Binary Caches
 

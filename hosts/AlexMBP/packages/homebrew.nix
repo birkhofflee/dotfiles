@@ -7,7 +7,6 @@
     brews = [
       # "carthage"
       "displayplacer"
-      "hopenpgp-tools"
       "screenresolution"
       "apfel"
       "xcodegen"
