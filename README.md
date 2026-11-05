@@ -65,7 +65,7 @@ This is designed to work with default Ghostty macOS keybindings, or the iTerm2 N
 <summary>Keybinding Reference</summary>
 
 | Key Combo | Description |
-|-----------|-------------|
+| ----------- | ------------- |
 | `Ctrl+U` | Delete everything to the left of the cursor |
 | `Ctrl+X` then `Delete` | Delete entire line to the left of cursor |
 | `Ctrl+B` | Jump to beginning of line |
@@ -86,54 +86,54 @@ A non-exhaustive list:
 <details>
 <summary>Video & Media</summary>
 
-- `burnsrt <input.mp4> <input.srt> <output.mp4>` - Burn SRT subtitles into MP4 video
-- `shrinkvid <input> <output> [bitrate]` - Compress video (uses hardware acceleration on macOS)
-- `impaste > file.png` - Output clipboard image data to stdout
-- `favicon <input.png>` - Generate multi-size favicon.ico from an image
-- `dirtypdf <input.pdf> <output.pdf>` - Apply scanner effect to a PDF
+* `burnsrt <input.mp4> <input.srt> <output.mp4>` - Burn SRT subtitles into MP4 video
+* `shrinkvid <input> <output> [bitrate]` - Compress video (uses hardware acceleration on macOS)
+* `impaste > file.png` - Output clipboard image data to stdout
+* `favicon <input.png>` - Generate multi-size favicon.ico from an image
+* `dirtypdf <input.pdf> <output.pdf>` - Apply scanner effect to a PDF
 
 </details>
 
 <details>
 <summary>Development & Git</summary>
 
-- `gg <repo-url>` - Clone repo and cd into it
-- `aic` - Generate conventional commit message using LLMs from staged changes
-- `e [file]` - Edit file with `$VISUAL`, or open current directory if no argument
-- `s <pattern>` - Search in files and visualize with [Delta](https://github.com/dandavison/delta?tab=readme-ov-file)
+* `gg <repo-url>` - Clone repo and cd into it
+* `aic` - Generate conventional commit message using LLMs from staged changes
+* `e [file]` - Edit file with `$VISUAL`, or open current directory if no argument
+* `s <pattern>` - Search in files and visualize with [Delta](https://github.com/dandavison/delta?tab=readme-ov-file)
 
 </details>
 
 <details>
 <summary>Directory & File Management</summary>
 
-- `take <dir>` - Create directory and cd into it (equivalent to `mkdir -p && cd`)
-- `tt` - Create and cd into a temporary directory
-- `cdls <dir>` - Change to directory and list its contents
-- `decrypt_pdfs <password>` - Decrypt all PDFs in current directory
+* `take <dir>` - Create directory and cd into it (equivalent to `mkdir -p && cd`)
+* `tt` - Create and cd into a temporary directory
+* `cdls <dir>` - Change to directory and list its contents
+* `decrypt_pdfs <password>` - Decrypt all PDFs in current directory
 
 </details>
 
 <details>
 <summary>Network & Diagnostics</summary>
 
-- `t <host>` - Traceroute with [Trippy](https://trippy.rs/) (auto-updates GeoIP database)
-- `tu <host>` - UDP traceroute with Trippy
-- `https <domain> [port]` - Show TLS certificate details (default port: 443)
-- `ttfb <url>` - Measure Time To First Byte with curl
-- `listening [pattern]` - List all processes listening on TCP ports
-- `pingu <host>` - Ping until success or cancelled
-- `lip <ip>` - Lookup IP address details
-- `dns <domain>` - Lookup IP address of domain's A record
+* `t <host>` - Traceroute with [Trippy](https://trippy.rs/) (auto-updates GeoIP database)
+* `tu <host>` - UDP traceroute with Trippy
+* `https <domain> [port]` - Show TLS certificate details (default port: 443)
+* `ttfb <url>` - Measure Time To First Byte with curl
+* `listening [pattern]` - List all processes listening on TCP ports
+* `pingu <host>` - Ping until success or cancelled
+* `lip <ip>` - Lookup IP address details
+* `dns <domain>` - Lookup IP address of domain's A record
 
 </details>
 
 <details>
 <summary>Nix Utilities</summary>
 
-- `nix-pkgdir <package>` - Get the Nix store path for a package
-- `nr <package> [args...]` - Run a package from nixpkgs-unstable without installing
-- `ns <pkg1> [pkg2...]` - Start a shell with packages from nixpkgs-unstable
+* `nix-pkgdir <package>` - Get the Nix store path for a package
+* `nr <package> [args...]` - Run a package from nixpkgs-unstable without installing
+* `ns <pkg1> [pkg2...]` - Start a shell with packages from nixpkgs-unstable
 
 </details>
 
@@ -289,9 +289,9 @@ Once the VM is up, it should be connected to Tailscale automatically (if the aut
 
 If RDP fails somehow:
 
-- RDP client-side config `use redirection server name:i:1` may be required to connect.
-- On macOS, try to use [Thincast Remote Desktop Client](https://thincast.com/en/products/client) instead.
-- SSH to the VM and check status using `sudo grdctl --system`, `ss -tlnp | grep 3389`, `sudo systemctl status gnome-rdp-setup gnome-remote-desktop`
+* RDP client-side config `use redirection server name:i:1` may be required to connect.
+* On macOS, try to use [Thincast Remote Desktop Client](https://thincast.com/en/products/client) instead.
+* SSH to the VM and check status using `sudo grdctl --system`, `ss -tlnp | grep 3389`, `sudo systemctl status gnome-rdp-setup gnome-remote-desktop`
 
 #### 6. Apply config changes after provisioning
 
