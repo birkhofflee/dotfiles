@@ -83,7 +83,6 @@ systemFunc {
       config._module.args = {
         currentSystemName = name;
         currentSystemUser = user;
-        inherit inputs;
       };
     }
   ];
