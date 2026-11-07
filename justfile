@@ -158,7 +158,7 @@ cache-darwin:
 [group('cache')]
 cache-attic:
   nix build '.#darwinConfigurations.AlexMBP.config.system.build.toplevel' --print-out-paths --no-link \
-    | xargs attic push --ignore-upstream-cache-filter alexmbp
+    | xargs attic push -j 10 --ignore-upstream-cache-filter alexmbp
 
 # Build Determinate Nix for x86_64-linux on nixos-server-01 and push it to cachix
 [group('cache')]
