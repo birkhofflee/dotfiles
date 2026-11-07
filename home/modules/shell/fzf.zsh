@@ -85,7 +85,7 @@ export FZF_CTRL_T_COMMAND="fd -H -tf --follow ${exclude_list[*]}"
 export FZF_ALT_C_COMMAND="fd -td ${exclude_list[*]}"
 unset exclude_list
 
-# C-r is left to atuin; fzf.nix sets FZF_CTRL_R_COMMAND="" so fzf doesn't bind it.
+# C-r is left to atuin where it's enabled; fzf.nix then sets FZF_CTRL_R_COMMAND="" so fzf doesn't bind it.
 
 # FZF - File Browser (C-t)
 # --no-height: full screen; overrides the widget's default --height 40%

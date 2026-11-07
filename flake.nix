@@ -137,16 +137,20 @@
         inherit inputs;
       };
 
+      mkPkgs =
+        system:
+        import inputs.nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = overlaysList;
+        };
+
       # Per-system pkgs, evaluated once per system and shared by every
       # per-system output below.
       perSystem = genAttrs [ "aarch64-darwin" "x86_64-linux" ] (
         system:
         let
-          pkgs = import inputs.nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-            overlays = overlaysList;
-          };
+          pkgs = mkPkgs system;
         in
         {
           inherit system pkgs;
@@ -168,6 +172,53 @@
         }
       );
       eachSystem = f: mapAttrs (_: f) perSystem;
+
+      mkStandaloneHome =
+        _name:
+        {
+          system,
+          rexHostname,
+          user ? "ale",
+          extraModules ? [ ],
+        }:
+        inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = mkPkgs system;
+          extraSpecialArgs = {
+            inherit inputs;
+            currentSystemUser = user;
+            hasDesktop = false;
+          };
+          modules = [
+            ./home
+            # mkSystem normally adds these at the system level
+            inputs.nix-index-database.homeModules.nix-index
+            inputs.rex.homeManagerModules.default
+            {
+              # Personal Rex server as a systemd user service (linger is on, so
+              # it starts at boot), reachable over its own embedded tailnet node.
+              # Also writes xterm-rex to ~/.terminfo, which the Nix-built zsh
+              # needs: its ncurses doesn't search /usr/share/terminfo.
+              services.rex = {
+                enable = true;
+                tailscale.enable = true;
+                tailscale.hostname = rexHostname;
+              };
+              # programs.ssh isn't managed here, and the distro's rex package
+              # already installs the guard in /etc/ssh/ssh_config.d.
+              programs.rex.sshGuard = false;
+
+              programs.nix-index-database.comma.enable = true;
+              targets.genericLinux.enable = true;
+              # ssh.nix publishes the 1Password key's pubkey; this box has its
+              # own on-disk keypair, which that would leave mismatched.
+              home.file.".ssh/id_ed25519.pub".enable = false;
+              # Applied from a github: ref, so there's no ~/.config/dotfiles checkout
+              # for the LazyVim out-of-store symlink to point at.
+              dotfiles.neovim.mutableConfig = false;
+            }
+          ]
+          ++ extraModules;
+        };
     in
     {
       overlays = {
@@ -217,46 +268,30 @@
       };
 
       # Standalone home-manager for non-NixOS Linux boxes (e.g. WSL), where
-      # mkSystem can't be used. Apply with:
+      # mkSystem can't be used. Apply with one of:
       #   home-manager switch --flake .#ale@wsl
-      homeConfigurations."ale@wsl" = inputs.home-manager.lib.homeManagerConfiguration {
-        inherit (perSystem.x86_64-linux) pkgs;
-        extraSpecialArgs = {
-          inherit inputs;
-          currentSystemUser = "ale";
-          hasDesktop = false;
+      #   home-manager switch --flake .#user@ubuntu-utm
+      homeConfigurations = mapAttrs mkStandaloneHome {
+        "ale@wsl" = {
+          system = "x86_64-linux";
+          # Keep the name the node was enrolled under; changing it
+          # creates a new node that has to sign in again.
+          rexHostname = "wsl-rex";
         };
-        modules = [
-          ./home
-          # mkSystem normally adds these at the system level
-          inputs.nix-index-database.homeModules.nix-index
-          inputs.rex.homeManagerModules.default
-          {
-            # Personal Rex server as a systemd user service (linger is on, so
-            # it starts at boot), reachable over its own embedded tailnet node.
-            # Also writes xterm-rex to ~/.terminfo, which the Nix-built zsh
-            # needs: its ncurses doesn't search /usr/share/terminfo.
-            services.rex = {
-              enable = true;
-              # Keep the name the node was enrolled under; changing it
-              # creates a new node that has to sign in again.
-              tailscale.enable = true;
-              tailscale.hostname = "wsl-rex";
-            };
-            # programs.ssh isn't managed here, and the distro's rex package
-            # already installs the guard in /etc/ssh/ssh_config.d.
-            programs.rex.sshGuard = false;
-
-            programs.nix-index-database.comma.enable = true;
-            targets.genericLinux.enable = true;
-            # ssh.nix publishes the 1Password key's pubkey; this box has its
-            # own on-disk keypair, which that would leave mismatched.
-            home.file.".ssh/id_ed25519.pub".enable = false;
-            # Applied from a github: ref, so there's no ~/.config/dotfiles checkout
-            # for the LazyVim out-of-store symlink to point at.
-            dotfiles.neovim.mutableConfig = false;
-          }
-        ];
+        "user@ubuntu-utm" = {
+          system = "aarch64-linux";
+          user = "user";
+          rexHostname = "ubuntu-utm";
+          extraModules = [
+            {
+              disabledModules = [
+                ./home/modules/atuin.nix
+                ./home/modules/glances.nix
+                ./home/modules/helix.nix
+              ];
+            }
+          ];
+        };
       };
 
       packages.x86_64-linux.nixos-desktop-01-image =

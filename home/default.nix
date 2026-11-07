@@ -23,6 +23,7 @@
     ./modules/editorconfig.nix
     ./modules/fzf.nix
     ./modules/git.nix
+    ./modules/glances.nix
     ./modules/helix.nix
     ./modules/htop.nix
     ./modules/hushlogin.nix
@@ -86,7 +87,6 @@
     # ── System monitoring ──────────────────────────────────────────────────
     duf # https://github.com/muesli/duf (modern df)
     procs # https://github.com/dalance/procs (modern ps)
-    glances # https://github.com/nicolargo/glances (system monitor)
 
     # ── Shell & terminal ───────────────────────────────────────────────────
     progress # https://github.com/Xfennec/progress (coreutils progress watcher)

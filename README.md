@@ -213,7 +213,7 @@ nix run nixpkgs#nh -- darwin switch $HOME/.config/dotfiles --hostname AlexMBP --
 
 <summary>Applying the home config on a generic Linux host (e.g. WSL)</summary>
 
-On a non-NixOS distro only the user environment is managed, via a standalone home-manager configuration: `homeConfigurations."ale@wsl"` in [flake.nix](flake.nix). It assumes x86_64-linux and the username `ale` (home at `/home/ale`); copy the output and adjust `system` / `currentSystemUser` for other boxes.
+On a non-NixOS distro only the user environment is managed, via a standalone home-manager configuration in [flake.nix](flake.nix): `homeConfigurations."ale@wsl"` for x86_64-linux, or `homeConfigurations."user@ubuntu-utm"` for aarch64-linux, an Ubuntu VM on UTM (use that name in the commands below). The username is the part before the `@`, with its home under `/home`.
 
 Compared to the other hosts it leaves out agenix secrets and the 1Password and Ghostty modules, and doesn't manage `~/.ssh/id_ed25519.pub` so the host can keep its own key pair.
 
