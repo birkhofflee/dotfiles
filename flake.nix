@@ -207,6 +207,13 @@
               # already installs the guard in /etc/ssh/ssh_config.d.
               programs.rex.sshGuard = false;
 
+              # Rex sessions don't set SSH_*, so Starship would hide these as if
+              # the shell were local. Always show which machine this is.
+              programs.starship.settings = {
+                username.show_always = true;
+                hostname.ssh_only = false;
+              };
+
               programs.nix-index-database.comma.enable = true;
               targets.genericLinux.enable = true;
               # ssh.nix publishes the 1Password key's pubkey; this box has its
