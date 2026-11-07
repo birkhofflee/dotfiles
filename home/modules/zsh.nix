@@ -331,10 +331,12 @@ in
             source "${config.home.homeDirectory}/.shell/proxy.zsh"
           ''}
 
-          # Empty the autosuggestion strategy array. Later atuin will
-          # automatically add itself into this array, so we're sure
-          # that it's the only source where autosuggestions are fetched
-          ZSH_AUTOSUGGEST_STRATEGY=()
+          ${lib.optionalString config.programs.atuin.enable ''
+            # Empty the autosuggestion strategy array. Later atuin will
+            # automatically add itself into this array, so we're sure
+            # that it's the only source where autosuggestions are fetched
+            ZSH_AUTOSUGGEST_STRATEGY=()
+          ''}
 
           # Extend zsh-auto-notify's default ignore list. Must be an array
           # appended after the plugin loads; it only sets its defaults when

@@ -285,6 +285,7 @@
           extraModules = [
             {
               disabledModules = [
+                ./home/modules/atuin.nix
                 ./home/modules/glances.nix
                 ./home/modules/helix.nix
               ];
