@@ -35,6 +35,7 @@ their next `just sync-dotfiles`.
 ├── flake.nix              # Main flake configuration
 ├── lib/
 │   ├── mksystem.nix       # Helper function to create system configurations
+│   ├── mkstandalonehome.nix # Standalone home-manager configs for non-NixOS Linux (WSL, ubuntu-utm)
 │   ├── keys.nix           # Public SSH keys shared across the repo
 │   └── caches.nix         # Binary caches for every host's Nix daemon
 ├── hosts/                 # System-specific configurations
