@@ -9,8 +9,7 @@
 _name:
 {
   system,
-  rexHostname,
-  user ? "ale",
+  user,
   extraModules ? [ ],
 }:
 inputs.home-manager.lib.homeManagerConfiguration {
@@ -36,7 +35,10 @@ inputs.home-manager.lib.homeManagerConfiguration {
       services.rex = {
         enable = true;
         tailscale.enable = true;
-        tailscale.hostname = rexHostname;
+        # systemd expands %H to the box's hostname when the service starts, so
+        # the node follows it. Each name has its own saved identity: renaming
+        # the box enrolls a new node that has to sign in again.
+        tailscale.hostname = "%H";
       };
       # programs.ssh isn't managed here, and the distro's rex package
       # already installs the guard in /etc/ssh/ssh_config.d.

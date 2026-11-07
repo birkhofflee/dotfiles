@@ -230,14 +230,11 @@
       homeConfigurations = mapAttrs mkStandaloneHome {
         "ale@wsl" = {
           system = "x86_64-linux";
-          # Keep the name the node was enrolled under; changing it
-          # creates a new node that has to sign in again.
-          rexHostname = "wsl-rex";
+          user = "ale";
         };
         "user@ubuntu-utm" = {
           system = "aarch64-linux";
           user = "user";
-          rexHostname = "ubuntu-utm";
           extraModules = [
             {
               disabledModules = [
