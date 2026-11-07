@@ -282,7 +282,14 @@
           system = "aarch64-linux";
           user = "user";
           rexHostname = "ubuntu-utm";
-          extraModules = [ { disabledModules = [ ./home/modules/helix.nix ]; } ];
+          extraModules = [
+            {
+              disabledModules = [
+                ./home/modules/glances.nix
+                ./home/modules/helix.nix
+              ];
+            }
+          ];
         };
       };
 
