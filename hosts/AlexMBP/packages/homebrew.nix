@@ -104,6 +104,7 @@
       "SenPlayer" = 6443975850;
       "Slack" = 803453959;
       "Tailscale" = 1475387142;
+      "Telephone" = 406825478;
       "The Unarchiver" = 425424353;
       "WhatsApp" = 310633997;
       "Windows App" = 1295203466;
