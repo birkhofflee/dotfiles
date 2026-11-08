@@ -3,11 +3,11 @@
     "academic-research-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793785746,
-        "narHash": "sha256-Pi6RwOaV1S1cdbMeEWhMEUKmW5ufC3PvpEXt7/dJico=",
+        "lastModified": 1793954191,
+        "narHash": "sha256-PC3kmF37ebVdtO1NzHF/xTl5oMHQ5tVqgAYMV+XwOdk=",
         "owner": "Imbad0202",
         "repo": "academic-research-skills",
-        "rev": "530659d983c2f4aa584ba3f2df224df08d90b264",
+        "rev": "6d9388674de1ad0437ad95db3d52f92b92204d84",
         "type": "github"
       },
       "original": {
