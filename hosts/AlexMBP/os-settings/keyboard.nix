@@ -35,12 +35,12 @@ _:
     CustomSystemPreferences = {
       NSGlobalDomain = {
         # Set system languages
-        AppleLocale = "en_US";
+        # English (US) language with the region set to Italy
+        AppleLocale = "en_US@rg=itzzzz";
         AppleLanguages = [
           "en-US"
+          "en-IT"
           "it-IT"
-          "zh-Hans-US"
-          "zh-Hant-US"
         ];
         ApplePerAppLanguageSelectionBundleIdentifiers = [
           "com.apple.Music"
@@ -48,13 +48,13 @@ _:
           "com.wuziqi.SenPlayer"
         ];
 
+        # US-style numbers (1,234.5) despite the Italian region
         AppleICUNumberSymbols = {
           "0" = ".";
           "1" = ",";
           "10" = ".";
           "17" = ",";
         };
-        AppleMeasurementUnit = "Celsius";
 
         # 0: Caps Lock key toggles Caps Lock
         # 1: Caps Lock key switches between ABC
