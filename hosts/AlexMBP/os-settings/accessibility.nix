@@ -3,7 +3,7 @@ _:
 {
   system.defaults = {
     universalaccess = {
-      reduceMotion = true;
+      reduceMotion = false;
       reduceTransparency = false;
 
       # Use scroll gesture with the Ctrl (^) modifier key to zoom
@@ -12,7 +12,7 @@ _:
 
     CustomUserPreferences = {
       "com.apple.Accessibility" = {
-        ReduceMotionEnabled = 1;
+        ReduceMotionEnabled = 0;
       };
 
       "com.apple.universalaccess" = {
