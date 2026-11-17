@@ -12,6 +12,12 @@ in
     age.package = pkgs.age-with-plugins;
     age.identityPaths = [ "${./age-identity.txt}" ];
 
+    # The default is $TMPDIR (/var/folders/.../T), which macOS purges of files
+    # untouched for ~3 days. The agent only runs at login/switch, so secrets
+    # silently vanished and ~/.ssh/config became a dangling symlink.
+    age.secretsDir = "/Users/${username}/.local/state/agenix";
+    age.secretsMountPoint = "/Users/${username}/.local/state/agenix.d";
+
     age.secrets.ssh-config = {
       file = ../../secrets/ssh-config.age;
       path = "/Users/${username}/.ssh/config";
