@@ -113,6 +113,10 @@
       url = "github:cloudflare/security-audit-skill";
       flake = false;
     };
+    experiment-agent-skill = {
+      url = "github:Imbad0202/experiment-agent";
+      flake = false;
+    };
     # A Claude Code plugin rather than plain skills (see home/modules/agent-skills.nix)
     academic-research-skills = {
       url = "github:Imbad0202/academic-research-skills";

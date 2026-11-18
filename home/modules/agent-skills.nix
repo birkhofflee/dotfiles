@@ -19,6 +19,10 @@ let
   paper-search = pkgs.writeShellScriptBin "paper-search" ''
     exec ${pkgs.uv}/bin/uvx --from paper-search-mcp==0.1.4 paper-search "$@"
   '';
+
+  # experiment-agent's study state checker imports PyYAML, which the python3 on
+  # PATH (uv's) does not have.
+  pythonWithYaml = pkgs.python3.withPackages (ps: [ ps.pyyaml ]);
 in
 {
   # Imported here rather than by each host, so every consumer of the shared home
@@ -59,6 +63,7 @@ in
       tw-formal-writing = sourceInSkills "tw-formal-writing-skills";
       security-audit = sourceInSkills "security-audit-skill";
       paper-search.input = "paper-search-mcp";
+      experiment-agent.input = "experiment-agent-skill";
     };
 
     skills.enableAll = [
@@ -104,6 +109,20 @@ in
       paper-search = {
         from = "paper-search";
         path = "claude-code";
+      };
+      # Imbad0202/experiment-agent; SKILL.md sits at the repository root.
+      experiment-agent = {
+        from = "experiment-agent";
+        path = ".";
+        transform =
+          { original, ... }:
+          original
+          + ''
+
+            ## Running the study state checker on this machine
+
+            This overrides the `python3` commands in this skill and the `pip install pyyaml` advice. Run `scripts/check_study_state.py` with `${pythonWithYaml}/bin/python3`, which has PyYAML. Never install PyYAML with pip.
+          '';
       };
     };
 

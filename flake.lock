@@ -3,11 +3,11 @@
     "academic-research-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1794285239,
-        "narHash": "sha256-uLqF/6sLjBNJHZh6LLVMnB7CT9kkA3po+9jKl95zZsU=",
+        "lastModified": 1795016971,
+        "narHash": "sha256-J4MdL1wiJ5hCK1zC176bGI9xxyFmvJtlfvtnjlHeAns=",
         "owner": "Imbad0202",
         "repo": "academic-research-skills",
-        "rev": "06a2e6bd9743b68bb0ef2c5d161cf70abc00323e",
+        "rev": "016e65f311b55747499fb18ab4a19acb0e8e0a2c",
         "type": "github"
       },
       "original": {
@@ -200,6 +200,22 @@
       "original": {
         "owner": "emilkowalski",
         "repo": "skills",
+        "type": "github"
+      }
+    },
+    "experiment-agent-skill": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793774628,
+        "narHash": "sha256-oYTUl/ISbWICbOxrRoDXQNX+IPKl236qpxWfSkTjElk=",
+        "owner": "Imbad0202",
+        "repo": "experiment-agent",
+        "rev": "3b788b750081e8423f72e9bb99a9d1e25ea903c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Imbad0202",
+        "repo": "experiment-agent",
         "type": "github"
       }
     },
@@ -632,6 +648,7 @@
         "deploy-rs": "deploy-rs",
         "determinate": "determinate",
         "emil-skills": "emil-skills",
+        "experiment-agent-skill": "experiment-agent-skill",
         "find-skills": "find-skills",
         "firecrawl-skills": "firecrawl-skills",
         "git-hooks": "git-hooks",

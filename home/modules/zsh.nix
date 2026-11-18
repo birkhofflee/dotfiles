@@ -52,6 +52,7 @@ in
       dl = "$HOME/Downloads";
       desk = "$HOME/Desktop";
       docs = "$HOME/Documents";
+      infra = "$HOME/Documents/Infra";
       nix = "$HOME/.config/dotfiles";
       dev = "$HOME/dev";
     }
